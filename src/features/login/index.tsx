@@ -10,11 +10,17 @@ import React from 'react';
 import {Icons} from '../../resources';
 import {scale, verticalScale} from '../../styles/scaling';
 import Layout from '../../components/layout';
-import {useNavigation} from '@react-navigation/native';
+import {RootStackParamList} from '../../navigation/MainNavigator';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useLoginHook} from './hooks';
+import ErrorMessage from '../../components/error-message';
 
-const LoginScreen = () => {
-  const navigation = useNavigation();
+type LoginScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
+};
 
+const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
+  const {loginData, handleChange, login} = useLoginHook();
   return (
     <View style={styles.container}>
       <Layout scrollEnabled={true}>
@@ -73,6 +79,11 @@ const LoginScreen = () => {
                 letterSpacing: 0.36,
               }}
               placeholder="Email"
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChange={e => handleChange('email', e)}
             />
           </View>
           <View style={{height: verticalScale(17)}} />
@@ -104,6 +115,11 @@ const LoginScreen = () => {
                 letterSpacing: 0.36,
               }}
               placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChange={e => handleChange('password', e)}
             />
           </View>
           <View
@@ -116,9 +132,7 @@ const LoginScreen = () => {
             <Text style={styles.option_text}>Show password</Text>
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity style={styles.button} onPress={login}>
           <Text style={styles.start_button_text}>Login</Text>
         </TouchableOpacity>
 
@@ -156,6 +170,7 @@ const LoginScreen = () => {
             </View>
           </TouchableOpacity>
         </View>
+        <ErrorMessage />
       </Layout>
     </View>
   );

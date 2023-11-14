@@ -9,11 +9,11 @@ import ProductTourScreen from '../features/product-tour';
 import LandingScreen from '../features/landing';
 import LoginScreen from '../features/login';
 
-type RootStackParamList = {
-  Onboarding: any;
-  ProductTour: any;
-  Landing: any;
-  Login: any;
+export type RootStackParamList = {
+  Onboarding: undefined;
+  ProductTour: undefined;
+  Landing: undefined;
+  Login: undefined;
 };
 
 const MainNavigator = () => {
