@@ -3,6 +3,7 @@ import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import {selectError} from '../../store/reducer/app-slice';
 import {Colors} from '../../resources';
+import {scale} from '../../styles/scaling';
 
 const ErrorMessage = props => {
   const {message} = props;
@@ -18,17 +19,14 @@ const ErrorMessage = props => {
     setErrorMessage(error?.message);
     setVisible(true);
 
-    // Auto-hide after 3 seconds
     const timer = setTimeout(() => {
       setVisible(false);
     }, 3000);
 
-    // Clear the timer on component unmount or when the error changes
     return () => clearTimeout(timer);
   }, [error]);
 
   const handlePress = () => {
-    // Hide the error message when touched
     setVisible(false);
   };
 
@@ -62,22 +60,25 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     backgroundColor: Colors.error,
-    padding: 16,
+    padding: scale(14),
     flexDirection: 'row',
   },
   innerContainer: {
     flex: 1,
-    marginLeft: 10,
+    marginLeft: scale(10),
   },
   titleContainer: {
     backgroundColor: 'yellow',
   },
   titleText: {
+    fontSize: scale(12),
     color: 'white',
     fontWeight: 'bold',
   },
   messageText: {
     color: 'white',
+    fontSize: scale(12),
+    fontWeight: '500',
   },
 });
 

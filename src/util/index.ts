@@ -17,3 +17,8 @@ export function addParamsToURL(
   }
   return url;
 }
+
+export const getCapitalize = (word: string) => {
+  const preSetter = word || '';
+  return preSetter.toLowerCase().toUpperCase();
+};

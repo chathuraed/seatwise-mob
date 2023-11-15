@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 // Define the state type
 interface AuthState {
@@ -10,9 +10,12 @@ interface AuthState {
 }
 
 // Define the Account type if not already defined
-interface Account {
-  // Define the properties of your account
-  // For example: id: string;
+export interface Account {
+  userId: string;
+  email: string;
+  role: string;
+  iat: number; // Issued At (UNIX timestamp)
+  exp: number; // Expiration Time (UNIX timestamp)
 }
 
 // Define the initial state
@@ -81,3 +84,15 @@ export const authSlice = createSlice({
 
 // Export the actions
 export const {actions: authActions} = authSlice;
+
+const selectDomain = state => state['feature/auth'] || initialState;
+
+export const selectAuthenticated = createSelector(
+  [selectDomain],
+  auth => auth.authenticated,
+);
+
+export const selectCurrentAccount = createSelector(
+  [selectDomain],
+  auth => auth.currentAccount,
+);

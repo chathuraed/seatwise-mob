@@ -4,6 +4,7 @@ import rootSaga from './saga';
 import {createLogger} from 'redux-logger';
 import {appSlice} from './reducer/app-slice';
 import {authSlice} from './reducer/auth-slice';
+import {ownerSlice} from './reducer/owner-slice';
 // import {authSlice} from '../features/auth/redux/slice';
 // import {cartSlice} from '../features/cart/redux/slice';
 // import {appSlice} from '../features/app/slice';
@@ -18,6 +19,7 @@ const store = configureStore({
   reducer: {
     'feature/app': appSlice.reducer,
     'feature/auth': authSlice.reducer,
+    'feature/owner': ownerSlice.reducer,
     // 'feature/cart': cartSlice.reducer,
   },
   middleware: getDefaultMiddleware => {

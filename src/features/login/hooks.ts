@@ -29,7 +29,6 @@ export const useLoginHook = (): IUseLoginHook => {
   };
 
   const login = React.useCallback(() => {
-    console.log('Test', loginData);
     dispatch(authActions.loginUser(loginData));
   }, [dispatch, loginData]);
 

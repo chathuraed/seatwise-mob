@@ -38,10 +38,8 @@ const WebService = {
 
       const authToken = AppService.accessToken;
       if (secured && authToken) {
-        headers.Authorization = `Bearer ${authToken}`;
+        headers.Authorization = authToken;
       }
-
-      console.log(headers);
 
       let requestConfig: AxiosRequestConfig = {
         method,
@@ -53,7 +51,6 @@ const WebService = {
         requestConfig.data = requestData;
       } else {
         headers['Content-Type'] = 'application/x-www-form-urlencoded';
-
         if (
           typeof requestData === 'object' &&
           Object.keys(requestData).length !== 0
@@ -100,7 +97,6 @@ const WebService = {
         return response;
       }
     } catch (error) {
-      console.log('error', error.response);
       throw error.response;
     }
   },

@@ -3,7 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthService from '../../services/auth/auth-service';
 import AppService from '../../services/generic/app-service';
 import {appActions} from '../reducer/app-slice';
-import {authActions} from '../reducer/auth-slice';
+import {Account, authActions} from '../reducer/auth-slice';
+import jwt_decode from 'jwt-decode';
 
 export function* loginUserGenerator({
   payload,
@@ -27,11 +28,10 @@ export function* loginUserGenerator({
       AppService.accessToken = data.token;
       AppService.refreshToken = data.refreshToken;
 
-      console.log('data.token', data.token);
-      console.log('data.refreshToken', data.refreshToken);
-
       yield call(AsyncStorage.setItem, 'authToken', data.token);
       yield call(AsyncStorage.setItem, 'refreshToken', data.refreshToken);
+
+      const account: Account = jwt_decode(data.token);
 
       // if (payload.rememberMe) {
       //   yield call(AsyncStorage.setItem, 'rememberMe', 'true');
@@ -43,12 +43,13 @@ export function* loginUserGenerator({
       //     yield put(authActions.setCurrentAccount(accountData));
       //   }
 
+      yield put(authActions.setCurrentAccount(account));
       yield put(authActions.loginUserSuccess());
-      //   yield put(
-      //     appActions.navigateToLocation({
-      //       screen: 'App',
-      //     }),
-      //   );
+      yield put(
+        appActions.navigateToLocation({
+          screen: 'App',
+        }),
+      );
     } else if (response.status === 400) {
       let data = yield call([response, 'json']);
       console.log('test', data);
@@ -89,12 +90,12 @@ export function* checkAuthTokenGenerator({
 
     const authToken = yield call(AsyncStorage.getItem, 'authToken');
     const refreshToken = yield call(AsyncStorage.getItem, 'refreshToken');
-    const rememberMe = yield call(AsyncStorage.getItem, 'rememberMe');
-    const loginTimestamp = yield call(AsyncStorage.getItem, 'loginTimestamp');
+
+    console.log('Auth Token', authToken);
 
     AppService.accessToken = authToken;
 
-    if (!authToken || !loginTimestamp) {
+    if (!authToken) {
       yield put(
         appActions.navigateToLocation({
           screen: 'Welcome',
@@ -102,649 +103,53 @@ export function* checkAuthTokenGenerator({
       );
       yield put(appActions.removeLoading());
     } else {
-      const currentTime = Date.now();
-      console.log('time', currentTime, loginTimestamp);
-      const differenceInMilliseconds = Math.abs(currentTime - loginTimestamp);
+      console.log('token Available');
+      // then call api to get the user
+      const account: Account = jwt_decode(authToken);
 
-      // Convert milliseconds to minutes and seconds
-      const minutes = Math.floor(differenceInMilliseconds / 60000);
-      const seconds = Math.floor((differenceInMilliseconds % 60000) / 1000);
+      const isExpired = account.exp < Date.now() / 1000;
 
-      console.log(`Difference: ${minutes} minutes ${seconds} seconds`);
+      if (isExpired) {
+        console.log('expired');
+        const response = yield call(AuthService.refreshToken, {
+          token: authToken,
+          refreshToken: refreshToken,
+        });
 
-      const fifteenMinutes = 15 * 60 * 1000; // 15 minutes in milliseconds
-      // Check if the difference is greater than 15 minutes
-      const isGreaterThanFifteenMinutes =
-        differenceInMilliseconds > fifteenMinutes;
+        if (response.status === 200) {
+          let data = yield call([response, 'json']);
 
-      console.log('isGreaterThanFifteenMinutes', isGreaterThanFifteenMinutes);
+          AppService.accessToken = data.token;
+          AppService.refreshToken = data.refreshToken;
 
-      if (isGreaterThanFifteenMinutes) {
-        if (rememberMe) {
-          const response = yield call(AuthService.refreshToken, {
-            token: authToken,
-            refreshToken: refreshToken,
-          });
+          yield call(AsyncStorage.setItem, 'authToken', data.token);
+          yield call(AsyncStorage.setItem, 'refreshToken', data.refreshToken);
 
-          if (response.status === 200) {
-            let data = yield call([response, 'json']);
-
-            AppService.accessToken = data.token;
-            AppService.refreshToken = data.refreshToken;
-
-            yield call(AsyncStorage.setItem, 'authToken', data.token);
-            yield call(AsyncStorage.setItem, 'refreshToken', data.refreshToken);
-
-            if (rememberMe === 'true') {
-              yield call(
-                AsyncStorage.setItem,
-                'loginTimestamp',
-                Date.now().toString(),
-              );
-            }
-
-            const accountReponse = yield call(AuthService.getAccount);
-            if (accountReponse.status === 200) {
-              let accountData = yield call([accountReponse, 'json']);
-              yield put(authActions.setCurrentAccount(accountData));
-            }
-
-            yield put(authActions.loginUserSuccess());
-            yield put(
-              appActions.navigateToLocation({
-                screen: 'App',
-                charAt: function (pos: number): string {
-                  throw new Error('Function not implemented.');
-                },
-                charCodeAt: function (index: number): number {
-                  throw new Error('Function not implemented.');
-                },
-                concat: function (...strings: string[]): string {
-                  throw new Error('Function not implemented.');
-                },
-                indexOf: function (
-                  searchString: string,
-                  position?: number | undefined,
-                ): number {
-                  throw new Error('Function not implemented.');
-                },
-                lastIndexOf: function (
-                  searchString: string,
-                  position?: number | undefined,
-                ): number {
-                  throw new Error('Function not implemented.');
-                },
-                localeCompare: function (that: string): number {
-                  throw new Error('Function not implemented.');
-                },
-                match: function (
-                  regexp: string | RegExp,
-                ): RegExpMatchArray | null {
-                  throw new Error('Function not implemented.');
-                },
-                replace: function (
-                  searchValue: string | RegExp,
-                  replaceValue: string,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                search: function (regexp: string | RegExp): number {
-                  throw new Error('Function not implemented.');
-                },
-                slice: function (
-                  start?: number | undefined,
-                  end?: number | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                split: function (
-                  separator: string | RegExp,
-                  limit?: number | undefined,
-                ): string[] {
-                  throw new Error('Function not implemented.');
-                },
-                substring: function (
-                  start: number,
-                  end?: number | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                toLowerCase: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                toLocaleLowerCase: function (
-                  locales?: string | string[] | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                toUpperCase: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                toLocaleUpperCase: function (
-                  locales?: string | string[] | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                trim: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                length: 0,
-                substr: function (
-                  from: number,
-                  length?: number | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                codePointAt: function (pos: number): number | undefined {
-                  throw new Error('Function not implemented.');
-                },
-                includes: function (
-                  searchString: string,
-                  position?: number | undefined,
-                ): boolean {
-                  throw new Error('Function not implemented.');
-                },
-                endsWith: function (
-                  searchString: string,
-                  endPosition?: number | undefined,
-                ): boolean {
-                  throw new Error('Function not implemented.');
-                },
-                normalize: function (
-                  form: 'NFC' | 'NFD' | 'NFKC' | 'NFKD',
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                repeat: function (count: number): string {
-                  throw new Error('Function not implemented.');
-                },
-                startsWith: function (
-                  searchString: string,
-                  position?: number | undefined,
-                ): boolean {
-                  throw new Error('Function not implemented.');
-                },
-                anchor: function (name: string): string {
-                  throw new Error('Function not implemented.');
-                },
-                big: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                blink: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                bold: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                fixed: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                fontcolor: function (color: string): string {
-                  throw new Error('Function not implemented.');
-                },
-                fontsize: function (size: number): string {
-                  throw new Error('Function not implemented.');
-                },
-                italics: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                link: function (url: string): string {
-                  throw new Error('Function not implemented.');
-                },
-                small: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                strike: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                sub: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                sup: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                padStart: function (
-                  maxLength: number,
-                  fillString?: string | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                padEnd: function (
-                  maxLength: number,
-                  fillString?: string | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                trimEnd: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                trimStart: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                trimLeft: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                trimRight: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                matchAll: function (
-                  regexp: RegExp,
-                ): IterableIterator<RegExpMatchArray> {
-                  throw new Error('Function not implemented.');
-                },
-                replaceAll: function (
-                  searchValue: string | RegExp,
-                  replaceValue: string,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                at: function (index: number): string | undefined {
-                  throw new Error('Function not implemented.');
-                },
-                [Symbol.iterator]: function (): IterableIterator<string> {
-                  throw new Error('Function not implemented.');
-                },
-              }),
-            );
-          } else {
-            yield put(
-              appActions.navigateToLocation({
-                screen: 'Welcome',
-                charAt: function (pos: number): string {
-                  throw new Error('Function not implemented.');
-                },
-                charCodeAt: function (index: number): number {
-                  throw new Error('Function not implemented.');
-                },
-                concat: function (...strings: string[]): string {
-                  throw new Error('Function not implemented.');
-                },
-                indexOf: function (
-                  searchString: string,
-                  position?: number | undefined,
-                ): number {
-                  throw new Error('Function not implemented.');
-                },
-                lastIndexOf: function (
-                  searchString: string,
-                  position?: number | undefined,
-                ): number {
-                  throw new Error('Function not implemented.');
-                },
-                localeCompare: function (that: string): number {
-                  throw new Error('Function not implemented.');
-                },
-                match: function (
-                  regexp: string | RegExp,
-                ): RegExpMatchArray | null {
-                  throw new Error('Function not implemented.');
-                },
-                replace: function (
-                  searchValue: string | RegExp,
-                  replaceValue: string,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                search: function (regexp: string | RegExp): number {
-                  throw new Error('Function not implemented.');
-                },
-                slice: function (
-                  start?: number | undefined,
-                  end?: number | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                split: function (
-                  separator: string | RegExp,
-                  limit?: number | undefined,
-                ): string[] {
-                  throw new Error('Function not implemented.');
-                },
-                substring: function (
-                  start: number,
-                  end?: number | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                toLowerCase: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                toLocaleLowerCase: function (
-                  locales?: string | string[] | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                toUpperCase: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                toLocaleUpperCase: function (
-                  locales?: string | string[] | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                trim: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                length: 0,
-                substr: function (
-                  from: number,
-                  length?: number | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                codePointAt: function (pos: number): number | undefined {
-                  throw new Error('Function not implemented.');
-                },
-                includes: function (
-                  searchString: string,
-                  position?: number | undefined,
-                ): boolean {
-                  throw new Error('Function not implemented.');
-                },
-                endsWith: function (
-                  searchString: string,
-                  endPosition?: number | undefined,
-                ): boolean {
-                  throw new Error('Function not implemented.');
-                },
-                normalize: function (
-                  form: 'NFC' | 'NFD' | 'NFKC' | 'NFKD',
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                repeat: function (count: number): string {
-                  throw new Error('Function not implemented.');
-                },
-                startsWith: function (
-                  searchString: string,
-                  position?: number | undefined,
-                ): boolean {
-                  throw new Error('Function not implemented.');
-                },
-                anchor: function (name: string): string {
-                  throw new Error('Function not implemented.');
-                },
-                big: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                blink: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                bold: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                fixed: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                fontcolor: function (color: string): string {
-                  throw new Error('Function not implemented.');
-                },
-                fontsize: function (size: number): string {
-                  throw new Error('Function not implemented.');
-                },
-                italics: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                link: function (url: string): string {
-                  throw new Error('Function not implemented.');
-                },
-                small: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                strike: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                sub: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                sup: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                padStart: function (
-                  maxLength: number,
-                  fillString?: string | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                padEnd: function (
-                  maxLength: number,
-                  fillString?: string | undefined,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                trimEnd: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                trimStart: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                trimLeft: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                trimRight: function (): string {
-                  throw new Error('Function not implemented.');
-                },
-                matchAll: function (
-                  regexp: RegExp,
-                ): IterableIterator<RegExpMatchArray> {
-                  throw new Error('Function not implemented.');
-                },
-                replaceAll: function (
-                  searchValue: string | RegExp,
-                  replaceValue: string,
-                ): string {
-                  throw new Error('Function not implemented.');
-                },
-                at: function (index: number): string | undefined {
-                  throw new Error('Function not implemented.');
-                },
-                [Symbol.iterator]: function (): IterableIterator<string> {
-                  throw new Error('Function not implemented.');
-                },
-              }),
+          if (rememberMe === 'true') {
+            yield call(
+              AsyncStorage.setItem,
+              'loginTimestamp',
+              Date.now().toString(),
             );
           }
+
+          const accountReponse = yield call(AuthService.getAccount);
+          if (accountReponse.status === 200) {
+            let accountData = yield call([accountReponse, 'json']);
+            yield put(authActions.setCurrentAccount(accountData));
+          }
+
+          yield put(authActions.loginUserSuccess());
+          yield put(appActions.navigateToLocation({screen: 'App'}));
         } else {
-          yield call(logoutUserGenerator, {payload});
+          yield put(appActions.navigateToLocation({screen: 'Welcome'}));
         }
       } else {
-        yield put(authActions.loginUserSuccess());
-        yield put(
-          appActions.navigateToLocation({
-            screen: 'App',
-            charAt: function (pos: number): string {
-              throw new Error('Function not implemented.');
-            },
-            charCodeAt: function (index: number): number {
-              throw new Error('Function not implemented.');
-            },
-            concat: function (...strings: string[]): string {
-              throw new Error('Function not implemented.');
-            },
-            indexOf: function (
-              searchString: string,
-              position?: number | undefined,
-            ): number {
-              throw new Error('Function not implemented.');
-            },
-            lastIndexOf: function (
-              searchString: string,
-              position?: number | undefined,
-            ): number {
-              throw new Error('Function not implemented.');
-            },
-            localeCompare: function (that: string): number {
-              throw new Error('Function not implemented.');
-            },
-            match: function (regexp: string | RegExp): RegExpMatchArray | null {
-              throw new Error('Function not implemented.');
-            },
-            replace: function (
-              searchValue: string | RegExp,
-              replaceValue: string,
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            search: function (regexp: string | RegExp): number {
-              throw new Error('Function not implemented.');
-            },
-            slice: function (
-              start?: number | undefined,
-              end?: number | undefined,
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            split: function (
-              separator: string | RegExp,
-              limit?: number | undefined,
-            ): string[] {
-              throw new Error('Function not implemented.');
-            },
-            substring: function (
-              start: number,
-              end?: number | undefined,
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            toLowerCase: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            toLocaleLowerCase: function (
-              locales?: string | string[] | undefined,
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            toUpperCase: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            toLocaleUpperCase: function (
-              locales?: string | string[] | undefined,
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            trim: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            length: 0,
-            substr: function (
-              from: number,
-              length?: number | undefined,
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            codePointAt: function (pos: number): number | undefined {
-              throw new Error('Function not implemented.');
-            },
-            includes: function (
-              searchString: string,
-              position?: number | undefined,
-            ): boolean {
-              throw new Error('Function not implemented.');
-            },
-            endsWith: function (
-              searchString: string,
-              endPosition?: number | undefined,
-            ): boolean {
-              throw new Error('Function not implemented.');
-            },
-            normalize: function (
-              form: 'NFC' | 'NFD' | 'NFKC' | 'NFKD',
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            repeat: function (count: number): string {
-              throw new Error('Function not implemented.');
-            },
-            startsWith: function (
-              searchString: string,
-              position?: number | undefined,
-            ): boolean {
-              throw new Error('Function not implemented.');
-            },
-            anchor: function (name: string): string {
-              throw new Error('Function not implemented.');
-            },
-            big: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            blink: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            bold: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            fixed: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            fontcolor: function (color: string): string {
-              throw new Error('Function not implemented.');
-            },
-            fontsize: function (size: number): string {
-              throw new Error('Function not implemented.');
-            },
-            italics: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            link: function (url: string): string {
-              throw new Error('Function not implemented.');
-            },
-            small: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            strike: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            sub: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            sup: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            padStart: function (
-              maxLength: number,
-              fillString?: string | undefined,
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            padEnd: function (
-              maxLength: number,
-              fillString?: string | undefined,
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            trimEnd: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            trimStart: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            trimLeft: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            trimRight: function (): string {
-              throw new Error('Function not implemented.');
-            },
-            matchAll: function (
-              regexp: RegExp,
-            ): IterableIterator<RegExpMatchArray> {
-              throw new Error('Function not implemented.');
-            },
-            replaceAll: function (
-              searchValue: string | RegExp,
-              replaceValue: string,
-            ): string {
-              throw new Error('Function not implemented.');
-            },
-            at: function (index: number): string | undefined {
-              throw new Error('Function not implemented.');
-            },
-            [Symbol.iterator]: function (): IterableIterator<string> {
-              throw new Error('Function not implemented.');
-            },
-          }),
-        );
+        console.log('valid');
       }
 
+      yield put(authActions.setCurrentAccount(account));
+      yield put(appActions.navigateToLocation({screen: 'App', params: {}}));
       yield put(appActions.removeLoading());
     }
   } catch (error) {
@@ -790,190 +195,6 @@ export function* refreshAuthTokenGenerator({
       yield put(
         appActions.navigateToLocation({
           screen: 'App',
-          charAt: function (pos: number): string {
-            throw new Error('Function not implemented.');
-          },
-          charCodeAt: function (index: number): number {
-            throw new Error('Function not implemented.');
-          },
-          concat: function (...strings: string[]): string {
-            throw new Error('Function not implemented.');
-          },
-          indexOf: function (
-            searchString: string,
-            position?: number | undefined,
-          ): number {
-            throw new Error('Function not implemented.');
-          },
-          lastIndexOf: function (
-            searchString: string,
-            position?: number | undefined,
-          ): number {
-            throw new Error('Function not implemented.');
-          },
-          localeCompare: function (that: string): number {
-            throw new Error('Function not implemented.');
-          },
-          match: function (regexp: string | RegExp): RegExpMatchArray | null {
-            throw new Error('Function not implemented.');
-          },
-          replace: function (
-            searchValue: string | RegExp,
-            replaceValue: string,
-          ): string {
-            throw new Error('Function not implemented.');
-          },
-          search: function (regexp: string | RegExp): number {
-            throw new Error('Function not implemented.');
-          },
-          slice: function (
-            start?: number | undefined,
-            end?: number | undefined,
-          ): string {
-            throw new Error('Function not implemented.');
-          },
-          split: function (
-            separator: string | RegExp,
-            limit?: number | undefined,
-          ): string[] {
-            throw new Error('Function not implemented.');
-          },
-          substring: function (
-            start: number,
-            end?: number | undefined,
-          ): string {
-            throw new Error('Function not implemented.');
-          },
-          toLowerCase: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          toLocaleLowerCase: function (
-            locales?: string | string[] | undefined,
-          ): string {
-            throw new Error('Function not implemented.');
-          },
-          toUpperCase: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          toLocaleUpperCase: function (
-            locales?: string | string[] | undefined,
-          ): string {
-            throw new Error('Function not implemented.');
-          },
-          trim: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          length: 0,
-          substr: function (from: number, length?: number | undefined): string {
-            throw new Error('Function not implemented.');
-          },
-          codePointAt: function (pos: number): number | undefined {
-            throw new Error('Function not implemented.');
-          },
-          includes: function (
-            searchString: string,
-            position?: number | undefined,
-          ): boolean {
-            throw new Error('Function not implemented.');
-          },
-          endsWith: function (
-            searchString: string,
-            endPosition?: number | undefined,
-          ): boolean {
-            throw new Error('Function not implemented.');
-          },
-          normalize: function (form: 'NFC' | 'NFD' | 'NFKC' | 'NFKD'): string {
-            throw new Error('Function not implemented.');
-          },
-          repeat: function (count: number): string {
-            throw new Error('Function not implemented.');
-          },
-          startsWith: function (
-            searchString: string,
-            position?: number | undefined,
-          ): boolean {
-            throw new Error('Function not implemented.');
-          },
-          anchor: function (name: string): string {
-            throw new Error('Function not implemented.');
-          },
-          big: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          blink: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          bold: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          fixed: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          fontcolor: function (color: string): string {
-            throw new Error('Function not implemented.');
-          },
-          fontsize: function (size: number): string {
-            throw new Error('Function not implemented.');
-          },
-          italics: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          link: function (url: string): string {
-            throw new Error('Function not implemented.');
-          },
-          small: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          strike: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          sub: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          sup: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          padStart: function (
-            maxLength: number,
-            fillString?: string | undefined,
-          ): string {
-            throw new Error('Function not implemented.');
-          },
-          padEnd: function (
-            maxLength: number,
-            fillString?: string | undefined,
-          ): string {
-            throw new Error('Function not implemented.');
-          },
-          trimEnd: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          trimStart: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          trimLeft: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          trimRight: function (): string {
-            throw new Error('Function not implemented.');
-          },
-          matchAll: function (
-            regexp: RegExp,
-          ): IterableIterator<RegExpMatchArray> {
-            throw new Error('Function not implemented.');
-          },
-          replaceAll: function (
-            searchValue: string | RegExp,
-            replaceValue: string,
-          ): string {
-            throw new Error('Function not implemented.');
-          },
-          at: function (index: number): string | undefined {
-            throw new Error('Function not implemented.');
-          },
-          [Symbol.iterator]: function (): IterableIterator<string> {
-            throw new Error('Function not implemented.');
-          },
         }),
       );
     }
@@ -981,187 +202,6 @@ export function* refreshAuthTokenGenerator({
     yield put(
       appActions.navigateToLocation({
         screen: 'Welcome',
-        charAt: function (pos: number): string {
-          throw new Error('Function not implemented.');
-        },
-        charCodeAt: function (index: number): number {
-          throw new Error('Function not implemented.');
-        },
-        concat: function (...strings: string[]): string {
-          throw new Error('Function not implemented.');
-        },
-        indexOf: function (
-          searchString: string,
-          position?: number | undefined,
-        ): number {
-          throw new Error('Function not implemented.');
-        },
-        lastIndexOf: function (
-          searchString: string,
-          position?: number | undefined,
-        ): number {
-          throw new Error('Function not implemented.');
-        },
-        localeCompare: function (that: string): number {
-          throw new Error('Function not implemented.');
-        },
-        match: function (regexp: string | RegExp): RegExpMatchArray | null {
-          throw new Error('Function not implemented.');
-        },
-        replace: function (
-          searchValue: string | RegExp,
-          replaceValue: string,
-        ): string {
-          throw new Error('Function not implemented.');
-        },
-        search: function (regexp: string | RegExp): number {
-          throw new Error('Function not implemented.');
-        },
-        slice: function (
-          start?: number | undefined,
-          end?: number | undefined,
-        ): string {
-          throw new Error('Function not implemented.');
-        },
-        split: function (
-          separator: string | RegExp,
-          limit?: number | undefined,
-        ): string[] {
-          throw new Error('Function not implemented.');
-        },
-        substring: function (start: number, end?: number | undefined): string {
-          throw new Error('Function not implemented.');
-        },
-        toLowerCase: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        toLocaleLowerCase: function (
-          locales?: string | string[] | undefined,
-        ): string {
-          throw new Error('Function not implemented.');
-        },
-        toUpperCase: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        toLocaleUpperCase: function (
-          locales?: string | string[] | undefined,
-        ): string {
-          throw new Error('Function not implemented.');
-        },
-        trim: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        length: 0,
-        substr: function (from: number, length?: number | undefined): string {
-          throw new Error('Function not implemented.');
-        },
-        codePointAt: function (pos: number): number | undefined {
-          throw new Error('Function not implemented.');
-        },
-        includes: function (
-          searchString: string,
-          position?: number | undefined,
-        ): boolean {
-          throw new Error('Function not implemented.');
-        },
-        endsWith: function (
-          searchString: string,
-          endPosition?: number | undefined,
-        ): boolean {
-          throw new Error('Function not implemented.');
-        },
-        normalize: function (form: 'NFC' | 'NFD' | 'NFKC' | 'NFKD'): string {
-          throw new Error('Function not implemented.');
-        },
-        repeat: function (count: number): string {
-          throw new Error('Function not implemented.');
-        },
-        startsWith: function (
-          searchString: string,
-          position?: number | undefined,
-        ): boolean {
-          throw new Error('Function not implemented.');
-        },
-        anchor: function (name: string): string {
-          throw new Error('Function not implemented.');
-        },
-        big: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        blink: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        bold: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        fixed: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        fontcolor: function (color: string): string {
-          throw new Error('Function not implemented.');
-        },
-        fontsize: function (size: number): string {
-          throw new Error('Function not implemented.');
-        },
-        italics: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        link: function (url: string): string {
-          throw new Error('Function not implemented.');
-        },
-        small: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        strike: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        sub: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        sup: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        padStart: function (
-          maxLength: number,
-          fillString?: string | undefined,
-        ): string {
-          throw new Error('Function not implemented.');
-        },
-        padEnd: function (
-          maxLength: number,
-          fillString?: string | undefined,
-        ): string {
-          throw new Error('Function not implemented.');
-        },
-        trimEnd: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        trimStart: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        trimLeft: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        trimRight: function (): string {
-          throw new Error('Function not implemented.');
-        },
-        matchAll: function (
-          regexp: RegExp,
-        ): IterableIterator<RegExpMatchArray> {
-          throw new Error('Function not implemented.');
-        },
-        replaceAll: function (
-          searchValue: string | RegExp,
-          replaceValue: string,
-        ): string {
-          throw new Error('Function not implemented.');
-        },
-        at: function (index: number): string | undefined {
-          throw new Error('Function not implemented.');
-        },
-        [Symbol.iterator]: function (): IterableIterator<string> {
-          throw new Error('Function not implemented.');
-        },
       }),
     );
   } finally {

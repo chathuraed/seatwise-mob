@@ -33,7 +33,7 @@ export const appSlice = createSlice({
       state.errors = {};
       state.error = {};
     },
-    navigateToLocation: (_state, _action: PayloadAction<string>) => {},
+    navigateToLocation: (state, action) => {},
   },
 });
 
