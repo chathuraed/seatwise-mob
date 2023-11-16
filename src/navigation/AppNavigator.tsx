@@ -1,134 +1,68 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import {useSelector} from 'react-redux';
+import {Text, View} from 'react-native';
 import {selectCurrentAccount} from '../store/reducer/auth-slice';
-import {Text, TouchableOpacity, View} from 'react-native';
-import BlankScreen from '../features/blank';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {Colors} from '../resources';
-import DashboardScreen from '../features/owner/dashboard';
-import SchedulesScreen from '../features/owner/schedules';
-import BookingScreen from '../features/owner/bookigs';
-import RoutesScreen from '../features/owner/routes';
-import DriverScreen from '../features/owner/drivers';
-import AssistantScreen from '../features/owner/assistants';
+import OwnerDrawer from './owner';
 
-const OwnerHomeScreen = () => {
-  return (
-    <View>
-      <Text>Owner Home</Text>
-    </View>
-  );
+// Define a type for your stack navigator params
+export type StackParamList = {
+  OwnerHome: undefined;
+  DriverHome: undefined;
+  AssistantHome: undefined;
+  PassengerHome: undefined;
 };
 
-const DriverHomeScreen = () => {
-  return (
-    <View>
-      <Text>Driver Home</Text>
-    </View>
-  );
-};
+// Home Screens
+const DriverHomeScreen: React.FC = () => (
+  <View>
+    <Text>Driver Home</Text>
+  </View>
+);
 
-const AssistantHomeScreen = () => {
-  return (
-    <View>
-      <Text>Assistant Home</Text>
-    </View>
-  );
-};
+const AssistantHomeScreen: React.FC = () => (
+  <View>
+    <Text>Assistant Home</Text>
+  </View>
+);
 
-const PassengerHomeScreen = () => {
-  return (
-    <View>
-      <Text>Passenger Home</Text>
-    </View>
-  );
-};
+const PassengerHomeScreen: React.FC = () => (
+  <View>
+    <Text>Passenger Home</Text>
+  </View>
+);
 
-const OwnerNavigator = () => {
-  const Stack = createNativeStackNavigator();
-  return (
+const createNavigator = (
+  initialRouteName: keyof StackParamList,
+  component: React.FC,
+) => {
+  const Stack = createNativeStackNavigator<StackParamList>();
+
+  const Navigator: React.FC = () => (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="OwnerHome">
-      <Stack.Screen name="OwnerHome" component={MyDrawer} />
+      initialRouteName={initialRouteName}>
+      <Stack.Screen name={initialRouteName} component={component} />
     </Stack.Navigator>
   );
+
+  return Navigator;
 };
 
-const Drawer = createDrawerNavigator();
+const OwnerNavigator = createNavigator('OwnerHome', OwnerDrawer);
+const DriverNavigator = createNavigator('DriverHome', DriverHomeScreen);
+const AssistantNavigator = createNavigator(
+  'AssistantHome',
+  AssistantHomeScreen,
+);
+const PassengerNavigator = createNavigator(
+  'PassengerHome',
+  PassengerHomeScreen,
+);
 
-function MyDrawer() {
-  return (
-    <Drawer.Navigator
-      initialRouteName="Dashboard"
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: Colors.green, // Set your header background color
-        },
-        headerTintColor: '#fff', // Set your header text color
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-        headerRight: () => (
-          <TouchableOpacity onPress={() => console.log('Header Right Pressed')}>
-            <Text style={{color: '#fff', marginRight: 15}}>Options</Text>
-          </TouchableOpacity>
-        ),
-      }}>
-      <Drawer.Screen name="Dashboard" component={DashboardScreen} />
-      <Drawer.Screen name="Bookings" component={BookingScreen} />
-      <Drawer.Screen name="Buses" component={RoutesScreen} />
-      <Drawer.Screen name="Routes" component={RoutesScreen} />
-      <Drawer.Screen name="Schedules" component={SchedulesScreen} />
-      <Drawer.Screen name="Drivers" component={DriverScreen} />
-      <Drawer.Screen name="Assistants" component={AssistantScreen} />
-    </Drawer.Navigator>
-  );
-}
-
-const DriverNavigator = () => {
-  const Stack = createNativeStackNavigator();
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-      initialRouteName="DriverHome">
-      <Stack.Screen name="DriverHome" component={DriverHomeScreen} />
-    </Stack.Navigator>
-  );
-};
-
-const AssistantNavigator = () => {
-  const Stack = createNativeStackNavigator();
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-      initialRouteName="AssistantHome">
-      <Stack.Screen name="AssistantHome" component={AssistantHomeScreen} />
-    </Stack.Navigator>
-  );
-};
-
-const PassengerNavigator = () => {
-  const Stack = createNativeStackNavigator();
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-      initialRouteName="PassengerHome">
-      <Stack.Screen name="PassengerHome" component={PassengerHomeScreen} />
-    </Stack.Navigator>
-  );
-};
-
+// Main App Navigator
 export type AppStackParamList = {
   OwnerDashboard: undefined;
   DriverDashboard: undefined;
@@ -138,9 +72,8 @@ export type AppStackParamList = {
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
 
-const AppNavigator = () => {
+const AppNavigator: React.FC = () => {
   const account = useSelector(selectCurrentAccount);
-  console.log('account', account);
 
   return (
     <Stack.Navigator

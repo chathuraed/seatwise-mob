@@ -1,81 +1,42 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {useRoutesHook} from './hook';
+import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import {scale, verticalScale} from '../../../styles/scaling';
 import {getCapitalize} from '../../../util';
+import Ionicon from 'react-native-vector-icons/Ionicons';
+import {Colors} from '../../../resources';
+import Layout from '../../../components/layout';
+import {useRoutesHook} from './hook';
+import {useNavigation} from '@react-navigation/native';
+import CustomHeader from '../../../components/custom-header';
 
-const RoutesScreen = () => {
+const RoutesScreen = ({navigation}) => {
+  // const navigation = useNavigation();
   const {routes} = useRoutesHook();
   return (
     <View style={styles.container}>
-      <View style={{height: 8}} />
-      {routes.map((route, i) => {
-        return (
+      <CustomHeader navigation={navigation} title="Routes" />
+      <View style={styles.spacing} />
+      <Layout scrollEnabled={true}>
+        {routes.map((route, i) => (
           <TouchableOpacity
             onPress={() => {}}
-            style={{
-              marginHorizontal: scale(16),
-              marginVertical: verticalScale(8),
-              backgroundColor: '#F5F4F8',
-              paddingHorizontal: scale(16),
-              paddingVertical: verticalScale(12),
-              borderRadius: scale(20),
-            }}
+            style={styles.routeContainer}
             key={i.toString()}>
-            <Text
-              style={{
-                color: '#53587A',
-                fontSize: scale(16),
-                fontFamily: 'Lato',
-                fontWeight: 'bold',
-                lineHeight: scale(20),
-                letterSpacing: 0.36,
-              }}>
+            <Text style={styles.routeTitle}>
               {getCapitalize(route.permit_id)}
             </Text>
-            <Text
-              style={{
-                fontSize: scale(14),
-                fontWeight: '700',
-                fontStyle: 'normal',
-                lineHeight: scale(20),
-                letterSpacing: 0.36,
-                color: '#252B5C',
-                marginTop: scale(8),
-              }}>
-              From : {route.origin}
-            </Text>
-            <Text
-              style={{
-                fontSize: scale(14),
-                fontWeight: '700',
-                fontStyle: 'normal',
-                lineHeight: scale(20),
-                letterSpacing: 0.36,
-                color: '#252B5C',
-                marginTop: scale(8),
-              }}>
+            <Text style={styles.routeText}>From : {route.origin}</Text>
+            <Text style={styles.routeText}>
               Destination : {route.destination}
             </Text>
           </TouchableOpacity>
-        );
-      })}
+        ))}
+      </Layout>
 
       <TouchableOpacity
-        style={{
-          borderWidth: 1,
-          borderColor: 'rgba(0,0,0,0.2)',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: 70,
-          position: 'absolute',
-          bottom: scale(15),
-          right: scale(15),
-          height: 70,
-          backgroundColor: '#fff',
-          borderRadius: 100,
-        }}>
-        {/* <Icon name="plus" size={30} color="#01a699" /> */}
+        style={styles.addButton}
+        onPress={() => navigation.navigate('RouteCreate')}>
+        <Ionicon name="add" size={scale(30)} color="#ffffff" />
       </TouchableOpacity>
     </View>
   );
@@ -85,12 +46,45 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
-  centeredText: {
-    fontSize: 20,
-    textAlign: 'center',
+  spacing: {
+    height: 8,
+  },
+  routeContainer: {
+    marginHorizontal: scale(16),
+    marginVertical: verticalScale(8),
+    backgroundColor: '#F5F4F8',
+    paddingHorizontal: scale(16),
+    paddingVertical: verticalScale(12),
+    borderRadius: scale(20),
+  },
+  routeTitle: {
+    color: '#53587A',
+    fontSize: scale(16),
+    fontFamily: 'Lato',
+    fontWeight: 'bold',
+    lineHeight: scale(20),
+    letterSpacing: 0.36,
+  },
+  routeText: {
+    fontSize: scale(14),
+    fontWeight: '700',
+    fontStyle: 'normal',
+    lineHeight: scale(20),
+    letterSpacing: 0.36,
+    color: '#252B5C',
+    marginTop: scale(8),
+  },
+  addButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: scale(60),
+    position: 'absolute',
+    bottom: scale(20),
+    right: scale(16),
+    height: scale(60),
+    backgroundColor: Colors.green,
+    borderRadius: scale(100),
   },
 });
 
