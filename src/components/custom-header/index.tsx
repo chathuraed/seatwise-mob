@@ -1,45 +1,58 @@
-import {View, Button, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {Colors} from '../../resources';
-import {scale} from '../../styles/scaling';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {scale} from '../../styles/scaling';
 
-type Props = {
-  title?: string;
-  navigation: any;
-};
+const CustomHeader = ({title}) => {
+  const navigation = useNavigation();
 
-const CustomHeader = (props: Props) => {
-  const {navigation, title} = props;
   return (
     <View
-      style={{
-        backgroundColor: Colors.green,
-        height: scale(80),
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingTop: 50,
-        paddingHorizontal: scale(14),
-      }}>
-      {/* <Button
-        title="Hello"
-        onPress={() => {
-          navigation.openDrawer();
-        }}
-      /> */}
+      style={[
+        styles.headerContainer,
+        Platform.OS === 'android' && styles.androidHeader,
+        {height: scale(84)},
+      ]}>
       <TouchableOpacity
-        style={{width: 30, height: 30}}
         onPress={() => {
           navigation.openDrawer();
         }}>
-        <Ionicons name="menu" size={scale(20)} />
+        <Ionicons name="menu" size={scale(26)} />
       </TouchableOpacity>
-      {title && <Text>{title}</Text>}
-
-      <View style={{width: 30, height: 30}}></View>
+      <Text style={styles.title}>{title}</Text>
+      <View style={styles.rightSpace} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    paddingHorizontal: scale(12),
+    paddingBottom: scale(10),
+    ...Platform.select({
+      android: {
+        backgroundColor: Colors.green,
+      },
+      ios: {
+        backgroundColor: Colors.green,
+      },
+    }),
+  },
+  androidHeader: {
+    // Android-specific styles
+  },
+  title: {
+    fontSize: scale(16),
+    fontWeight: '500',
+  },
+  rightSpace: {
+    width: scale(24),
+  },
+});
 
 export default CustomHeader;

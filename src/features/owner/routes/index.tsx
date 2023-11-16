@@ -1,12 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {scale, verticalScale} from '../../../styles/scaling';
 import {getCapitalize} from '../../../util';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../../../resources';
 import Layout from '../../../components/layout';
 import {useRoutesHook} from './hook';
-import {useNavigation} from '@react-navigation/native';
 import CustomHeader from '../../../components/custom-header';
 
 const RoutesScreen = ({navigation}) => {
@@ -14,7 +13,7 @@ const RoutesScreen = ({navigation}) => {
   const {routes} = useRoutesHook();
   return (
     <View style={styles.container}>
-      <CustomHeader navigation={navigation} title="Routes" />
+      <CustomHeader title="Routes" />
       <View style={styles.spacing} />
       <Layout scrollEnabled={true}>
         {routes.map((route, i) => (

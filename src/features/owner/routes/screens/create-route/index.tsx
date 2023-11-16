@@ -4,6 +4,7 @@ import {View, Text, StyleSheet, Button} from 'react-native';
 
 const CreateRouteScreen = () => {
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Button onPress={() => navigation.goBack()} title="Back" />

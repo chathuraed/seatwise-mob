@@ -31,7 +31,17 @@ const RoutesStackNavigator: React.FC = () => {
         component={RoutesScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="RouteCreate" component={CreateRouteScreen} />
+      <Stack.Screen
+        name="RouteCreate"
+        component={CreateRouteScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: Colors.green,
+          },
+          headerTintColor: '#000',
+          headerTitle: 'Create Route',
+        }}
+      />
       {/* Add more screens for the RoutesStackNavigator if needed */}
     </Stack.Navigator>
   );
@@ -45,18 +55,6 @@ const OwnerDrawer: React.FC = () => {
       initialRouteName="Dashboard"
       screenOptions={{
         headerShown: false,
-        // headerStyle: {
-        //   backgroundColor: Colors.green,
-        // },
-        // headerTintColor: '#fff',
-        // headerTitleStyle: {
-        //   fontWeight: 'bold',
-        // },
-        // headerRight: () => (
-        //   <TouchableOpacity onPress={() => console.log('Header Right Pressed')}>
-        //     <Text style={{color: '#fff', marginRight: 15}}>Options</Text>
-        //   </TouchableOpacity>
-        // ),
       }}>
       <Drawer.Screen name="Dashboard" component={DashboardScreen} />
       <Drawer.Screen name="Bookings" component={SchedulesScreen} />

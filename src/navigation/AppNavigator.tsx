@@ -44,7 +44,7 @@ const createNavigator = (
         headerShown: false,
       }}
       initialRouteName={initialRouteName}>
-      <Stack.Screen name={initialRouteName} component={component} />
+      <Stack.Screen name={initialRouteName} component={component}  />
     </Stack.Navigator>
   );
 

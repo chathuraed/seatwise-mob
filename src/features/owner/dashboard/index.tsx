@@ -3,8 +3,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {scale, verticalScale} from '../../../styles/scaling';
 import {useDashboardHook} from './hook';
-import {useDispatch} from 'react-redux';
-import {ownerActions} from '../../../store/reducer/owner-slice';
+import CustomHeader from '../../../components/custom-header';
 
 const ITEMS = [
   {
@@ -44,6 +43,7 @@ const DashboardScreen = () => {
 
   return (
     <View style={styles.container}>
+      <CustomHeader title="Dashboard" />
       <View style={styles.card_grid}>
         {ITEMS.map((item, i) => (
           <View key={i.toString()} style={styles.card}>
