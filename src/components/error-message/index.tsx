@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
-import {selectError} from '../../store/reducer/app-slice';
 import {Colors} from '../../resources';
 import {scale} from '../../styles/scaling';
+import {selectError} from '../../store/reducer/app-slice';
 
-const ErrorMessage = props => {
+const ErrorMessage = (props: any) => {
   const {message} = props;
 
   const [errorTitle, setErrorTitle] = useState(null);

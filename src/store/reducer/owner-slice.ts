@@ -23,6 +23,7 @@ export const ownerSlice = createSlice({
   initialState,
   reducers: {
     getAllRoutes: state => {},
+    createRoute: state => {},
     setRoutes: (state, action: PayloadAction<any[]>) => {
       state.routes = action.payload;
     },

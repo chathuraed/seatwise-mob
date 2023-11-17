@@ -1,9 +1,9 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {Images} from '../../resources';
-import {scale, verticalScale} from '../../styles/scaling';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import {Images} from '../../resources';
+import {scale, verticalScale} from '../../styles/scaling';
 
 const OnboardingScreen = () => {
   const navigation = useNavigation();

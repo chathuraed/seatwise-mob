@@ -1,20 +1,29 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {ReactNode} from 'react';
 import {
-  SafeAreaView,
-  KeyboardAvoidingView,
   ScrollView,
   View,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollViewProps,
+  KeyboardAvoidingViewProps,
 } from 'react-native';
 
-const LayoutContainerComponent = props => {
-  const {scrollEnabled, children} = props;
+interface LayoutContainerProps {
+  scrollEnabled?: boolean;
+  children: ReactNode;
+}
 
+const LayoutContainerComponent: React.FC<
+  LayoutContainerProps & ScrollViewProps
+> = ({scrollEnabled, children, ...scrollViewProps}) => {
   if (scrollEnabled) {
     return (
       <ScrollView
         bounces={false}
         contentContainerStyle={{flexGrow: 1}}
-        keyboardShouldPersistTaps={'handled'}>
+        keyboardShouldPersistTaps={'handled'}
+        {...scrollViewProps}>
         <View style={{flex: 1}}>{children}</View>
       </ScrollView>
     );
@@ -23,21 +32,22 @@ const LayoutContainerComponent = props => {
   }
 };
 
-const Layout = props => {
+interface LayoutProps extends KeyboardAvoidingViewProps {
+  scrollEnabled?: boolean;
+  children: ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = ({...layoutProps}) => {
   return (
-    <>
-      <SafeAreaView style={{flex: 1}}>
-        <KeyboardAvoidingView
-          style={{
-            flexGrow: 1,
-            // marginBottom: keyboardStatus === 'closed' ? 0 : 50
-          }}
-          // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          enabled={true}>
-          <LayoutContainerComponent {...props} />
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </>
+    <KeyboardAvoidingView
+      style={{
+        flexGrow: 1,
+      }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      enabled={true}
+      {...layoutProps}>
+      <LayoutContainerComponent {...layoutProps} />
+    </KeyboardAvoidingView>
   );
 };
 

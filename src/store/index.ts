@@ -5,9 +5,6 @@ import {createLogger} from 'redux-logger';
 import {appSlice} from './reducer/app-slice';
 import {authSlice} from './reducer/auth-slice';
 import {ownerSlice} from './reducer/owner-slice';
-// import {authSlice} from '../features/auth/redux/slice';
-// import {cartSlice} from '../features/cart/redux/slice';
-// import {appSlice} from '../features/app/slice';
 
 const sagaMiddleware = createSagaMiddleware();
 

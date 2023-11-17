@@ -2,7 +2,7 @@ import {takeLatest} from 'redux-saga/effects';
 import * as RootNavigation from '../../navigation/rootNavigation';
 import {appActions} from '../reducer/app-slice';
 
-export function* navigateToLocationGenerator({payload}: any) {
+export function* navigateToLocationGenerator({payload}) {
   RootNavigation.navigate(payload.screen, payload.params);
 }
 

@@ -33,16 +33,6 @@ export function* loginUserGenerator({
 
       const account: Account = jwt_decode(data.token);
 
-      // if (payload.rememberMe) {
-      //   yield call(AsyncStorage.setItem, 'rememberMe', 'true');
-      // }
-
-      //   const accountReponse = yield call(AuthService.getAccount);
-      //   if (accountReponse.status === 200) {
-      //     let accountData = yield call([accountReponse, 'json']);
-      //     yield put(authActions.setCurrentAccount(accountData));
-      //   }
-
       yield put(authActions.setCurrentAccount(account));
       yield put(authActions.loginUserSuccess());
       yield put(
@@ -98,7 +88,7 @@ export function* checkAuthTokenGenerator({
     if (!authToken) {
       yield put(
         appActions.navigateToLocation({
-          screen: 'Welcome',
+          screen: 'Onboarding',
         }),
       );
       yield put(appActions.removeLoading());
@@ -125,14 +115,6 @@ export function* checkAuthTokenGenerator({
           yield call(AsyncStorage.setItem, 'authToken', data.token);
           yield call(AsyncStorage.setItem, 'refreshToken', data.refreshToken);
 
-          if (rememberMe === 'true') {
-            yield call(
-              AsyncStorage.setItem,
-              'loginTimestamp',
-              Date.now().toString(),
-            );
-          }
-
           const accountReponse = yield call(AuthService.getAccount);
           if (accountReponse.status === 200) {
             let accountData = yield call([accountReponse, 'json']);
@@ -142,7 +124,7 @@ export function* checkAuthTokenGenerator({
           yield put(authActions.loginUserSuccess());
           yield put(appActions.navigateToLocation({screen: 'App'}));
         } else {
-          yield put(appActions.navigateToLocation({screen: 'Welcome'}));
+          yield put(appActions.navigateToLocation({screen: 'Onboarding'}));
         }
       } else {
         console.log('valid');
@@ -155,7 +137,7 @@ export function* checkAuthTokenGenerator({
   } catch (error) {
     yield put(
       appActions.navigateToLocation({
-        screen: 'Welcome',
+        screen: 'Onboarding',
       }),
     );
   }
@@ -201,7 +183,7 @@ export function* refreshAuthTokenGenerator({
   } catch (error) {
     yield put(
       appActions.navigateToLocation({
-        screen: 'Welcome',
+        screen: 'Onboarding',
       }),
     );
   } finally {

@@ -253,4 +253,14 @@ const cities = [
   'Yirangalla',
 ];
 
-export {cities};
+const VALIDATION_MESSAGES = {
+  REQUIRED: 'This field is required',
+  EMAIL: 'Invalid email',
+  PHONE: 'Invalid phone number',
+  NUMBER: 'Invalid number',
+  PASSWORD:
+    'Password must contain at least 8 characters with at least one digit, lowercase and uppercase letter',
+  CONFIRM_PASSWORD: "Password didn't match",
+};
+
+export {cities, VALIDATION_MESSAGES};

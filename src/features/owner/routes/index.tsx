@@ -44,7 +44,6 @@ const RoutesScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
   },
   spacing: {
     height: 8,
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
   routeContainer: {
     marginHorizontal: scale(16),
     marginVertical: verticalScale(8),
-    backgroundColor: '#F5F4F8',
+    backgroundColor: Colors.white,
     paddingHorizontal: scale(16),
     paddingVertical: verticalScale(12),
     borderRadius: scale(20),

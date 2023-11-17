@@ -7,13 +7,9 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {width, scale, verticalScale} from '../../styles/scaling';
-import {Images} from '../../resources';
 import {useNavigation} from '@react-navigation/native';
-
-type Props = {
-  navigation: any;
-};
+import {scale, verticalScale, width} from '../../styles/scaling';
+import {Images} from '../../resources';
 
 const STEPS = [
   {
@@ -41,16 +37,7 @@ const STEPS = [
 
 const Indicator = ({scrollX}) => {
   return (
-    <View
-      style={{
-        position: 'absolute',
-        flexDirection: 'row',
-        bottom: verticalScale(120),
-        zIndex: 10,
-        left: 0,
-        right: 0,
-        justifyContent: 'center',
-      }}>
+    <View style={styles.indicatorContainer}>
       {STEPS.map((_, i) => {
         const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
         const size = scrollX.interpolate({
@@ -60,18 +47,16 @@ const Indicator = ({scrollX}) => {
         return (
           <Animated.View
             key={`indicator-${i}`}
-            style={{
-              height: verticalScale(10),
-              width: scale(10),
-              borderRadius: scale(5),
-              margin: scale(10),
-              backgroundColor: 'white',
-              transform: [
-                {
-                  scale: size,
-                },
-              ],
-            }}
+            style={[
+              styles.indicator,
+              {
+                transform: [
+                  {
+                    scale: size,
+                  },
+                ],
+              },
+            ]}
           />
         );
       })}
@@ -82,7 +67,7 @@ const Indicator = ({scrollX}) => {
 const ProductTourScreen = () => {
   const navigation = useNavigation();
 
-  const scrollX = React.useRef(new Animated.Value(0)).current;
+  const scrollX = React.useRef<any>(new Animated.Value(0)).current;
 
   const flatListRef = React.useRef(null);
 
@@ -235,5 +220,21 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     paddingVertical: verticalScale(17),
     paddingHorizontal: scale(60),
+  },
+  indicatorContainer: {
+    position: 'absolute',
+    flexDirection: 'row',
+    bottom: verticalScale(120),
+    zIndex: 10,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+  },
+  indicator: {
+    height: verticalScale(10),
+    width: scale(10),
+    borderRadius: scale(5),
+    margin: scale(10),
+    backgroundColor: 'white',
   },
 });

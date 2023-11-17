@@ -1,8 +1,8 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {scale, verticalScale} from '../../styles/scaling';
 import {Icons, Images} from '../../resources';
-import {useNavigation} from '@react-navigation/native';
 
 const IMAGES = [
   {

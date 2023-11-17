@@ -1,11 +1,12 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Colors} from '../../resources';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {scale} from '../../styles/scaling';
+import {Colors} from '../../resources';
 
-const CustomHeader = ({title}) => {
+const CustomHeader = ({title}: any) => {
   const navigation = useNavigation();
 
   return (

@@ -2,8 +2,8 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 import {Text, View} from 'react-native';
+import OwnerDrawer, {DrawerParamList} from './owner';
 import {selectCurrentAccount} from '../store/reducer/auth-slice';
-import OwnerDrawer from './owner';
 
 // Define a type for your stack navigator params
 export type StackParamList = {
@@ -44,7 +44,7 @@ const createNavigator = (
         headerShown: false,
       }}
       initialRouteName={initialRouteName}>
-      <Stack.Screen name={initialRouteName} component={component}  />
+      <Stack.Screen name={initialRouteName} component={component} />
     </Stack.Navigator>
   );
 
@@ -64,7 +64,7 @@ const PassengerNavigator = createNavigator(
 
 // Main App Navigator
 export type AppStackParamList = {
-  OwnerDashboard: undefined;
+  OwnerDashboard: DrawerParamList;
   DriverDashboard: undefined;
   AssistantDashboard: undefined;
   PassengerDashboard: undefined;
@@ -80,24 +80,26 @@ const AppNavigator: React.FC = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      {account.role === 'owner' && (
+      <Stack.Screen name="OwnerDashboard" component={OwnerNavigator} />
+      <Stack.Screen name="DriverDashboard" component={DriverNavigator} />
+      {/* {account?.role === 'owner' && (
         <Stack.Screen name="OwnerDashboard" component={OwnerNavigator} />
       )}
-      {account.role === 'driver' && (
+      {account?.role === 'driver' && (
         <Stack.Screen name="DriverDashboard" component={DriverNavigator} />
       )}
-      {account.role === 'assistant' && (
+      {account?.role === 'assistant' && (
         <Stack.Screen
           name="AssistantDashboard"
           component={AssistantNavigator}
         />
       )}
-      {account.role === 'passenger' && (
+      {account?.role === 'passenger' && (
         <Stack.Screen
           name="PassengerDashboard"
           component={PassengerNavigator}
         />
-      )}
+      )} */}
     </Stack.Navigator>
   );
 };
