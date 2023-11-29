@@ -41,11 +41,9 @@ const CreateScheduleScreen = () => {
 
   const route = useRoute();
 
-  const {routeData} = route.params;
+  const {selectedRoute, fromSettings, schedule} = route.params;
 
-  console.log('CreateScheduleScreen', routeData);
-
-  const {origin, destination} = routeData;
+  const {origin, destination} = selectedRoute;
 
   const dropdownItems = generateDropdownItems([origin, destination]);
 
@@ -60,7 +58,7 @@ const CreateScheduleScreen = () => {
   } = useForm({
     mode: 'all',
     defaultValues: {
-      routeId: routeData.permit_id,
+      routeId: selectedRoute.permit_id,
       origin: '',
       destination: '',
       start_time: moment(),
@@ -69,10 +67,18 @@ const CreateScheduleScreen = () => {
     },
   });
 
-  const watchOrigin = watch('origin');
-  const watchDestination = watch('destination');
+  useEffect(() => {
+    if (fromSettings && selectedRoute && schedule) {
+      setValue('routeId', selectedRoute.permit_id);
+      setValue('origin', schedule.origin);
+      setValue('destination', schedule.destination);
+      setValue('start_time', moment(schedule.start_time, 'h:mm A'));
+      setValue('end_time', moment(schedule.end_time, 'h:mm A'));
+      setValue('available_at', schedule.available_at);
+    }
+  }, [fromSettings, schedule, selectedRoute, setValue]);
 
-  console.log('items', items);
+  const watchOrigin = watch('origin');
 
   useEffect(() => {
     if (watchOrigin && items.length > 0) {
@@ -84,26 +90,17 @@ const CreateScheduleScreen = () => {
     }
   }, [watchOrigin, setValue, items]); // Added items as a dependency
 
-  useEffect(() => {
-    if (watchDestination && items.length > 0) {
-      // Added a check for items.length
-      const selectedDestination = items.find(
-        item => item.value !== watchDestination,
-      );
-      if (selectedDestination) {
-        setValue('origin', selectedDestination.value);
-      }
-    }
-  }, [watchDestination, setValue, items]);
-
   const create = data => {
     Keyboard.dismiss();
     const formattedData = {
       ...data,
-      routeId: routeData._id,
+      routeId: selectedRoute._id,
       start_time: data.start_time.format('h:mm A'),
       end_time: data.end_time.format('h:mm A'),
+      ...(fromSettings && schedule ? {scheduleId: schedule._id} : {}),
     };
+
+    console.log(formattedData);
     dispatch(ownerActions.createSchedule(formattedData));
   };
 
@@ -202,7 +199,8 @@ const CreateScheduleScreen = () => {
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <DropdownPicker
-                  placeholder="Select a City"
+                  disabled
+                  placeholder="Please set origin"
                   containerStyle={{marginBottom: 15}}
                   label={'Destination'}
                   value={value}

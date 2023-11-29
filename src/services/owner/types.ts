@@ -12,6 +12,7 @@ export interface IRouteRequest {
 
 export interface IScheduleRequest {
   routeId: string;
+  scheduleId?: string;
   origin?: string;
   destination?: string;
   start_time?: string;

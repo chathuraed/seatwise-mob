@@ -132,6 +132,7 @@ export function* createScheduleGenerator({
     yield put(appActions.removeErrors());
 
     const response = yield call(OwnerService.createSchedule, {
+      ...(payload.scheduleId ? {scheduleId: payload.scheduleId} : {}),
       routeId: payload.routeId,
       origin: payload.origin,
       destination: payload.destination,
@@ -146,6 +147,15 @@ export function* createScheduleGenerator({
         appActions.showToast({
           title: 'Success',
           message: 'Schedule added successfully',
+        }),
+      );
+      yield RootNavigation.goBack();
+    } else if (response.status === 200) {
+      console.log('update success');
+      yield put(
+        appActions.showToast({
+          title: 'Success',
+          message: 'Schedule updated successfully',
         }),
       );
       yield RootNavigation.goBack();

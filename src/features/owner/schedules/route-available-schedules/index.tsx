@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import {useIsFocused, useRoute} from '@react-navigation/native';
 import {scale, verticalScale} from '../../../../styles/scaling';
 import {Colors} from '../../../../resources/colors';
 import {getCapitalize} from '../../../../util';
@@ -12,6 +18,7 @@ import Layout from '../../../../components/layout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const RouteAvailableSchedulesScreen = () => {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const selectedRoute = useSelector(selectRoute);
 
@@ -19,20 +26,17 @@ const RouteAvailableSchedulesScreen = () => {
 
   React.useEffect(() => {
     const fetchData = () => {
+      console.log('focused', selectedRoute._id);
       const params = {
         id: selectedRoute._id,
       };
       dispatch(ownerActions.getRoute(params));
     };
 
-    fetchData();
-
-    const unsubscribe = navigationRef.addListener('focus', () => {
+    if (isFocused) {
       fetchData();
-    });
-
-    return () => unsubscribe();
-  }, [dispatch, selectedRoute._id]);
+    }
+  }, [dispatch, selectedRoute._id, isFocused]);
 
   return (
     <View style={styles.container}>
@@ -112,13 +116,16 @@ const RouteAvailableSchedulesScreen = () => {
                   backgroundColor: Colors.green,
                   padding: scale(8),
                 }}
-                onPress={() => {}}>
+                onPress={() => navigate('CreateSchedule', {selectedRoute})}>
                 <Text style={{fontSize: scale(14), fontWeight: '600'}}>
                   Add
                 </Text>
               </TouchableOpacity>
             </View>
-            <Layout scrollEnabled>
+
+            <ScrollView
+              contentContainerStyle={{flexGrow: 1}}
+              showsVerticalScrollIndicator={false}>
               {selectedRoute.schedules.map((schedule, i) => (
                 <View
                   key={i.toString()}
@@ -139,7 +146,14 @@ const RouteAvailableSchedulesScreen = () => {
                         fontSize: scale(16),
                         color: Colors.textGray,
                       }}>{`#${i + 1}`}</Text>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigate('CreateSchedule', {
+                          selectedRoute,
+                          fromSettings: true,
+                          schedule,
+                        })
+                      }>
                       <Ionicons
                         name="settings-outline"
                         size={scale(26)}
@@ -180,7 +194,10 @@ const RouteAvailableSchedulesScreen = () => {
                             marginLeft: index !== 0 ? 10 : 0,
                           }}>
                           <Text
-                            style={{textAlign: 'center', fontSize: scale(10)}}>
+                            style={{
+                              textAlign: 'center',
+                              fontSize: scale(10),
+                            }}>
                             {abbreviatedDay}
                           </Text>
                         </View>
@@ -189,7 +206,7 @@ const RouteAvailableSchedulesScreen = () => {
                   </View>
                 </View>
               ))}
-            </Layout>
+            </ScrollView>
           </>
         ) : (
           <View
@@ -224,6 +241,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   routeContainer: {
+    flex: 1,
     marginHorizontal: scale(16),
     marginVertical: verticalScale(8),
     backgroundColor: Colors.white,
