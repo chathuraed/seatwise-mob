@@ -29,6 +29,8 @@ const TextField = (props: any) => {
             style={[styles.input, inputStyle]}
             placeholderTextColor="#a3a3a3"
             {...props}
+            editable={!props.disabled}
+            selectTextOnFocus={!props.disabled}
           />
         </View>
       </View>

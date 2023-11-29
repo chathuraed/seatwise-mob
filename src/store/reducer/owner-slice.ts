@@ -3,6 +3,8 @@ import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 // Define the state type
 interface OwnerState {
   routes: any;
+  buses: any;
+  route: object | undefined;
 }
 
 // Define the Account type if not already defined
@@ -15,6 +17,8 @@ export interface Account {
 // Define the initial state
 const initialState: OwnerState = {
   routes: [],
+  buses: [],
+  route: undefined,
 };
 
 // Create the slice
@@ -23,10 +27,20 @@ export const ownerSlice = createSlice({
   initialState,
   reducers: {
     getAllRoutes: state => {},
+    getAllBuses: state => {},
     createRoute: state => {},
     setRoutes: (state, action: PayloadAction<any[]>) => {
       state.routes = action.payload;
     },
+    setSelectedRoute: (state, action: PayloadAction<any[]>) => {
+      state.route = action.payload;
+    },
+    setBuses: (state, action: PayloadAction<any[]>) => {
+      state.buses = action.payload;
+    },
+    createSchedule: state => {},
+    createBus: state => {},
+    getRoute: state => {},
   },
 });
 
@@ -39,6 +53,10 @@ export const selectRoutes = createSelector(
   [selectDomain],
   owner => owner.routes,
 );
+
+export const selectRoute = createSelector([selectDomain], owner => owner.route);
+
+export const selectBuses = createSelector([selectDomain], owner => owner.buses);
 
 // export const selectCurrentAccount = createSelector(
 //   [selectDomain],

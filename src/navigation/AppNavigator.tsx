@@ -1,11 +1,10 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector} from 'react-redux';
 import {Text, View} from 'react-native';
 import OwnerDrawer, {DrawerParamList} from './owner';
 import {selectCurrentAccount} from '../store/reducer/auth-slice';
 
-// Define a type for your stack navigator params
 export type StackParamList = {
   OwnerHome: undefined;
   DriverHome: undefined;
@@ -13,7 +12,6 @@ export type StackParamList = {
   PassengerHome: undefined;
 };
 
-// Home Screens
 const DriverHomeScreen: React.FC = () => (
   <View>
     <Text>Driver Home</Text>
@@ -36,7 +34,7 @@ const createNavigator = (
   initialRouteName: keyof StackParamList,
   component: React.FC,
 ) => {
-  const Stack = createNativeStackNavigator<StackParamList>();
+  const Stack = createStackNavigator<StackParamList>();
 
   const Navigator: React.FC = () => (
     <Stack.Navigator
@@ -62,7 +60,6 @@ const PassengerNavigator = createNavigator(
   PassengerHomeScreen,
 );
 
-// Main App Navigator
 export type AppStackParamList = {
   OwnerDashboard: DrawerParamList;
   DriverDashboard: undefined;
@@ -70,7 +67,7 @@ export type AppStackParamList = {
   PassengerDashboard: undefined;
 };
 
-const Stack = createNativeStackNavigator<AppStackParamList>();
+const Stack = createStackNavigator<AppStackParamList>();
 
 const AppNavigator: React.FC = () => {
   const account = useSelector(selectCurrentAccount);
@@ -80,9 +77,7 @@ const AppNavigator: React.FC = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="OwnerDashboard" component={OwnerNavigator} />
-      <Stack.Screen name="DriverDashboard" component={DriverNavigator} />
-      {/* {account?.role === 'owner' && (
+      {account?.role === 'owner' && (
         <Stack.Screen name="OwnerDashboard" component={OwnerNavigator} />
       )}
       {account?.role === 'driver' && (
@@ -99,7 +94,7 @@ const AppNavigator: React.FC = () => {
           name="PassengerDashboard"
           component={PassengerNavigator}
         />
-      )} */}
+      )}
     </Stack.Navigator>
   );
 };

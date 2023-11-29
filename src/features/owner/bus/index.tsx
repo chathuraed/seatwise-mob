@@ -5,54 +5,44 @@ import {getCapitalize} from '../../../util';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../../../resources';
 import Layout from '../../../components/layout';
-import {useRoutesHook} from './hook';
+
 import CustomHeader from '../../../components/custom-header';
 import {navigate} from '../../../navigation/rootNavigation';
+import {useBusHook} from './hook';
 
-const RoutesScreen = ({}) => {
-  // const navigation = useNavigation();
-  const {routes, setRoute} = useRoutesHook();
+const BusesScreen = ({}) => {
+  const {buses} = useBusHook();
+
   return (
     <View style={styles.container}>
-      <CustomHeader title="Routes" />
+      <CustomHeader title="Buses" />
       <View style={styles.spacing} />
-
       <Layout scrollEnabled={true}>
-        {routes.length > 0 ? (
-          routes.map((route, i) => (
+        {buses.length > 0 ? (
+          buses.map((bus, i) => (
             <TouchableOpacity
-              onPress={async () => {
-                setRoute(route);
-                navigate('RouteAvailableSchedules');
-              }}
+              onPress={() => navigate('BusDetails', {bus_data: bus})}
               style={styles.routeContainer}
               key={i.toString()}>
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.busTitle}>
-                  {getCapitalize(route.bus.busNumber)}
-                </Text>
-
-                <Text style={styles.routeTitle}>
-                  #{getCapitalize(route.permit_id)}
-                </Text>
-              </View>
-              <Text style={styles.routeText}>From : {route.origin}</Text>
+              <Text style={styles.routeTitle}>
+                {getCapitalize(bus.busNumber)}
+              </Text>
+              <Text style={styles.routeText}>Model: {bus.model}</Text>
               <Text style={styles.routeText}>
-                Destination : {route.destination}
+                Capacity: {bus.seatingCapacity}
               </Text>
             </TouchableOpacity>
           ))
         ) : (
           <View style={styles.centerTextContainer}>
-            <Text style={styles.centerText}>No routes available</Text>
+            <Text style={styles.centerText}>No buses available</Text>
           </View>
         )}
       </Layout>
 
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => navigate('RouteCreate')}>
+        onPress={() => navigate('BusCreate')}>
         <Ionicon name="add" size={scale(30)} color="#ffffff" />
       </TouchableOpacity>
     </View>
@@ -74,17 +64,9 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(12),
     borderRadius: scale(20),
   },
-  busTitle: {
-    color: '#53587A',
-    fontSize: scale(18),
-    fontFamily: 'Lato',
-    fontWeight: 'bold',
-    lineHeight: scale(20),
-    letterSpacing: 0.36,
-  },
   routeTitle: {
     color: '#53587A',
-    fontSize: scale(12),
+    fontSize: scale(16),
     fontFamily: 'Lato',
     fontWeight: 'bold',
     lineHeight: scale(20),
@@ -122,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RoutesScreen;
+export default BusesScreen;

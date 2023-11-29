@@ -7,6 +7,18 @@ const OwnerService = {
   createRoute: async (data: any) => {
     return WebService.request('owner/route', 'POST', data, true);
   },
+  createSchedule: async (data: any) => {
+    return WebService.request('owner/schedule', 'POST', data, true);
+  },
+  loadBuses: async () => {
+    return WebService.request('owner/buses', 'GET', {}, true);
+  },
+  createBus: async (data: any) => {
+    return WebService.request('owner/bus', 'POST', data, true);
+  },
+  loadRoute: async (params: any) => {
+    return WebService.request('owner/route', 'GET', params, true);
+  },
 };
 
 export default OwnerService;

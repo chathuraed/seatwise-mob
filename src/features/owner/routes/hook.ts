@@ -5,6 +5,7 @@ import {ownerActions, selectRoutes} from '../../../store/reducer/owner-slice';
 
 interface IUseRoutesHook {
   routes: any;
+  setRoute: (v: any) => void;
 }
 
 export const useRoutesHook = (): IUseRoutesHook => {
@@ -26,5 +27,12 @@ export const useRoutesHook = (): IUseRoutesHook => {
     return () => unsubscribe();
   }, [dispatch, navigation]);
 
-  return {routes};
+  const setRoute = React.useCallback(
+    (route: any[]) => {
+      dispatch(ownerActions.setSelectedRoute(route));
+    },
+    [dispatch],
+  );
+
+  return {routes, setRoute};
 };

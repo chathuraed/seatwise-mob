@@ -31,6 +31,8 @@ export function* loginUserGenerator({
       yield call(AsyncStorage.setItem, 'authToken', data.token);
       yield call(AsyncStorage.setItem, 'refreshToken', data.refreshToken);
 
+      console.log('refresh', data.refreshToken);
+
       const account: Account = jwt_decode(data.token);
 
       yield put(authActions.setCurrentAccount(account));
@@ -79,8 +81,6 @@ export function* checkAuthTokenGenerator({
     yield put(appActions.setLoading('Loading...'));
 
     const authToken = yield call(AsyncStorage.getItem, 'authToken');
-    const refreshToken = yield call(AsyncStorage.getItem, 'refreshToken');
-
     console.log('Auth Token', authToken);
 
     AppService.accessToken = authToken;
@@ -101,13 +101,13 @@ export function* checkAuthTokenGenerator({
 
       if (isExpired) {
         console.log('expired');
-        const response = yield call(AuthService.refreshToken, {
-          token: authToken,
-          refreshToken: refreshToken,
-        });
+        const response = yield call(AuthService.refreshToken);
+
+        console.log('test', response);
 
         if (response.status === 200) {
-          let data = yield call([response, 'json']);
+          let {data} = response;
+          console.log(data);
 
           AppService.accessToken = data.token;
           AppService.refreshToken = data.refreshToken;
@@ -115,14 +115,15 @@ export function* checkAuthTokenGenerator({
           yield call(AsyncStorage.setItem, 'authToken', data.token);
           yield call(AsyncStorage.setItem, 'refreshToken', data.refreshToken);
 
-          const accountReponse = yield call(AuthService.getAccount);
-          if (accountReponse.status === 200) {
-            let accountData = yield call([accountReponse, 'json']);
-            yield put(authActions.setCurrentAccount(accountData));
-          }
+          const new_account: Account = jwt_decode(data.token);
 
+          yield put(authActions.setCurrentAccount(new_account));
           yield put(authActions.loginUserSuccess());
-          yield put(appActions.navigateToLocation({screen: 'App'}));
+          yield put(
+            appActions.navigateToLocation({
+              screen: 'App',
+            }),
+          );
         } else {
           yield put(appActions.navigateToLocation({screen: 'Onboarding'}));
         }
@@ -158,10 +159,7 @@ export function* refreshAuthTokenGenerator({
     console.log('token', authToken);
     console.log('refreshToken', refreshToken);
 
-    const response = yield call(AuthService.refreshToken, {
-      token: authToken,
-      refreshToken: refreshToken,
-    });
+    const response = yield call(AuthService.refreshToken);
 
     if (response.status === 200) {
       let data = yield call([response, 'json']);

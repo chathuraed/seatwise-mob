@@ -34,6 +34,7 @@ export const appSlice = createSlice({
       state.error = {};
     },
     navigateToLocation: (state, action) => {},
+    showToast: (state, action) => {},
   },
 });
 

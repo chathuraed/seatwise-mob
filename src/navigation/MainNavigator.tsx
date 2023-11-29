@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import {navigationRef} from './rootNavigation';
 import {useDispatch} from 'react-redux';
@@ -19,7 +19,7 @@ export type RootStackParamList = {
   App: AppStackParamList;
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const dispatch = useDispatch();

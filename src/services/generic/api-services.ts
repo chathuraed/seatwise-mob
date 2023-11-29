@@ -93,59 +93,53 @@ const WebService = {
           return Promise.reject(false);
         }
       } else {
-        console.log('called > ', apiUrl, requestData, method, response);
+        // console.log('called > ', apiUrl, requestData, method, response);
         return response;
       }
     } catch (error) {
+      console.log(error);
       throw error.response;
     }
   },
 
-  refreshToken: async (): Promise<boolean> => {
-    return new Promise<boolean>(async (resolve, reject) => {
-      console.log('calling refresh token');
-      try {
-        const currentAccessToken = AppService.accessToken;
-        const storedRefreshToken = await AsyncStorage.getItem('refreshToken');
+  refreshToken: async <T = any>(): Promise<ApiResponse<T>> => {
+    try {
+      const apiUrl = `${AppService.getAPI()}auth/refresh-token`;
+      const storedRefreshToken = await AsyncStorage.getItem('refreshToken');
+      const requestBody = {
+        token: storedRefreshToken,
+      };
 
-        const requestBody = {
-          token: currentAccessToken,
-          refreshToken: storedRefreshToken,
-        };
-
-        const requestHeaders = {
+      const requestOptions: AxiosRequestConfig = {
+        method: 'POST',
+        headers: {
           accept: '*/*',
           'Content-Type': 'application/json-patch+json',
-        };
+        },
+        data: JSON.stringify(requestBody),
+      };
 
-        const requestOptions: AxiosRequestConfig = {
-          method: 'POST',
-          headers: requestHeaders,
-          data: JSON.stringify(requestBody),
-        };
+      const refreshTokenResponse = await axios(apiUrl, requestOptions);
 
-        const refreshTokenResponse: AxiosResponse<RefreshTokenResponse> =
-          await axios(AppService.getAPI() + 'Auth/Refresh', requestOptions);
+      console.log('refreshTokenResponse', refreshTokenResponse);
 
-        console.log('refreshTokenResponse', refreshTokenResponse);
+      if (refreshTokenResponse.status === 200) {
+        const {token, refreshToken} = refreshTokenResponse.data;
 
-        if (refreshTokenResponse.status === 200) {
-          const responseData = refreshTokenResponse.data;
+        AppService.accessToken = token;
+        AppService.refreshToken = refreshToken;
 
-          AppService.accessToken = responseData.accessToken;
-          AppService.refreshToken = responseData.refreshToken;
-          await AsyncStorage.setItem('refreshToken', responseData.refreshToken);
-          if (AppService.rememberMe === 'true') {
-            await AsyncStorage.setItem('authToken', responseData.accessToken);
-          }
-          resolve(true);
-        } else {
-          reject(false);
-        }
-      } catch (error) {
-        reject(false);
+        await AsyncStorage.setItem('authToken', token);
+        await AsyncStorage.setItem('refreshToken', refreshToken);
+      } else {
+        // Handle error if needed
       }
-    });
+
+      return refreshTokenResponse;
+    } catch (error) {
+      console.log('error', error);
+      throw error.response;
+    }
   },
 };
 

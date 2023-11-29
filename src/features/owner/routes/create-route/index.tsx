@@ -1,18 +1,24 @@
 import React from 'react';
 import {View, StyleSheet, Keyboard} from 'react-native';
 
-import {scale, verticalScale} from '../../../../../styles/scaling';
+import {scale, verticalScale} from '../../../../styles/scaling';
 import {Controller, useForm} from 'react-hook-form';
-import TextField from '../../../../../components/input';
-import {VALIDATION_MESSAGES, cities} from '../../../../../resources/constants';
-import {Colors} from '../../../../../resources';
-import CustomPicker from '../../../../../components/custom-picker';
-import CustomButton from '../../../../../components/custom-button';
-import {useDispatch} from 'react-redux';
-import {ownerActions} from '../../../../../store/reducer/owner-slice';
-import ErrorMessage from '../../../../../components/error-message';
+import TextField from '../../../../components/input';
+import {VALIDATION_MESSAGES, cities} from '../../../../resources/constants';
+import {Colors} from '../../../../resources';
+import CustomPicker from '../../../../components/custom-picker';
+import CustomButton from '../../../../components/custom-button';
+import {useDispatch, useSelector} from 'react-redux';
+import {ownerActions, selectBuses} from '../../../../store/reducer/owner-slice';
+import ErrorMessage from '../../../../components/error-message';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {goBack, navigate} from '../../../../../navigation/rootNavigation';
+import {
+  goBack,
+  navigate,
+  navigationRef,
+} from '../../../../navigation/rootNavigation';
+import Toast from 'react-native-toast-message';
+import DropdownPicker from '../../../../components/dropdown-picker';
 
 const generateDropdownItems = items => {
   return items.map(item => ({
@@ -21,19 +27,33 @@ const generateDropdownItems = items => {
   }));
 };
 
-// const generateDropdownItems = items => {
-//   return items.map(item => ({
-//     label: item,
-//     value: item.toLowerCase().replace(/\s+/g, '_'),
-//   }));
-// };
+const generateBusItems = items => {
+  return items.map(item => ({
+    label: item.busNumber,
+    value: item._id,
+  }));
+};
 
 const CreateRouteScreen = () => {
   const dispatch = useDispatch();
 
-  const dropdownItems = generateDropdownItems(cities);
+  const cityList = generateDropdownItems(cities);
+  const busList = useSelector(selectBuses);
+  const buses = generateBusItems(busList);
 
-  const [items, setItems] = React.useState(dropdownItems);
+  React.useEffect(() => {
+    const fetchData = () => {
+      dispatch(ownerActions.getAllBuses());
+    };
+
+    fetchData();
+
+    const unsubscribe = navigationRef.addListener('focus', () => {
+      fetchData();
+    });
+
+    return () => unsubscribe();
+  }, [dispatch]);
 
   const {
     control,
@@ -43,6 +63,7 @@ const CreateRouteScreen = () => {
     mode: 'all',
     defaultValues: {
       permit_id: '',
+      busId: '',
       origin: '',
       destination: '',
     },
@@ -55,8 +76,6 @@ const CreateRouteScreen = () => {
   };
 
   return (
-    // <View style={styles.container}>
-    // <Layout scrollEnabled={true}>
     <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
       <View style={{flex: 1}}>
         <View
@@ -89,6 +108,27 @@ const CreateRouteScreen = () => {
               required: VALIDATION_MESSAGES.REQUIRED,
             }}
             render={({field: {onChange, onBlur, value}}) => (
+              <DropdownPicker
+                placeholder="Select a Bus"
+                containerStyle={{marginBottom: 15}}
+                label={'Bus'}
+                value={value}
+                setValue={onChange}
+                setSelectedItem={onChange}
+                items={buses}
+                errorMessage={errors?.busId?.message}
+                onClose={onBlur}
+              />
+            )}
+            name="busId"
+          />
+
+          <Controller
+            control={control}
+            rules={{
+              required: VALIDATION_MESSAGES.REQUIRED,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
               <CustomPicker
                 placeholder="Select a City"
                 searchPlaceholder="Search..."
@@ -98,7 +138,7 @@ const CreateRouteScreen = () => {
                 value={value}
                 setValue={onChange}
                 setSelectedItem={onChange}
-                items={items}
+                items={cityList}
                 errorMessage={errors?.origin?.message}
                 onClose={onBlur}
               />
@@ -121,7 +161,7 @@ const CreateRouteScreen = () => {
                 value={value}
                 setValue={onChange}
                 setSelectedItem={onChange}
-                items={items}
+                items={cityList}
                 errorMessage={errors?.destination?.message}
                 onClose={onBlur}
               />
@@ -154,8 +194,6 @@ const CreateRouteScreen = () => {
         <ErrorMessage />
       </View>
     </SafeAreaView>
-    // </Layout>
-    // </View>
   );
 };
 
