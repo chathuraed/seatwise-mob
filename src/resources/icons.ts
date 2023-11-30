@@ -4,6 +4,6 @@ const Icons = {
   envelop: require('../../assets/icons/login/envelop.png'),
   lock: require('../../assets/icons/login/lock.png'),
   back: require('../../assets/icons/back.png'),
-};
+}
 
-export {Icons};
+export {Icons}

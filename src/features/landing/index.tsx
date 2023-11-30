@@ -1,8 +1,8 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {scale, verticalScale} from '../../styles/scaling';
-import {Icons, Images} from '../../resources';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import React from 'react'
+import {useNavigation} from '@react-navigation/native'
+import {scale, verticalScale} from '../../styles/scaling'
+import {Icons, Images} from '../../resources'
 
 const IMAGES = [
   {
@@ -21,10 +21,10 @@ const IMAGES = [
     id: 4,
     uri: Images.login_4,
   },
-];
+]
 
 const LandingScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   return (
     <View style={styles.container}>
@@ -78,10 +78,10 @@ const LandingScreen = () => {
         </View>
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
-export default LandingScreen;
+export default LandingScreen
 
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'white'},
@@ -178,4 +178,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.36,
   },
-});
+})

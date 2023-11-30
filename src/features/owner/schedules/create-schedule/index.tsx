@@ -1,23 +1,23 @@
-import React, {useEffect} from 'react';
-import {View, StyleSheet, Keyboard} from 'react-native';
+import React, {useEffect} from 'react'
+import {View, StyleSheet, Keyboard} from 'react-native'
 
-import {scale, verticalScale} from '../../../../styles/scaling';
-import {Controller, useForm} from 'react-hook-form';
-import TextField from '../../../../components/input';
-import {VALIDATION_MESSAGES} from '../../../../resources/constants';
-import {Colors} from '../../../../resources';
-import CustomButton from '../../../../components/custom-button';
-import {useDispatch} from 'react-redux';
-import ErrorMessage from '../../../../components/error-message';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {goBack} from '../../../../navigation/rootNavigation';
-import DateTimeField from '../../../../components/date-time-picker';
-import moment from 'moment';
-import MultipleSelect from '../../../../components/multiple-select';
-import Layout from '../../../../components/layout';
-import {useRoute} from '@react-navigation/native';
-import DropdownPicker from '../../../../components/dropdown-picker';
-import {ownerActions} from '../../../../store/reducer/owner-slice';
+import {scale, verticalScale} from '../../../../styles/scaling'
+import {Controller, useForm} from 'react-hook-form'
+import TextField from '../../../../components/input'
+import {VALIDATION_MESSAGES} from '../../../../resources/constants'
+import {Colors} from '../../../../resources'
+import CustomButton from '../../../../components/custom-button'
+import {useDispatch} from 'react-redux'
+import ErrorMessage from '../../../../components/error-message'
+import {SafeAreaView} from 'react-native-safe-area-context'
+import {goBack} from '../../../../navigation/rootNavigation'
+import DateTimeField from '../../../../components/date-time-picker'
+import moment from 'moment'
+import MultipleSelect from '../../../../components/multiple-select'
+import Layout from '../../../../components/layout'
+import {useRoute} from '@react-navigation/native'
+import DropdownPicker from '../../../../components/dropdown-picker'
+import {ownerActions} from '../../../../store/reducer/owner-slice'
 
 const days = [
   {key: 'monday', value: 'Monday'},
@@ -27,27 +27,27 @@ const days = [
   {key: 'friday', value: 'Friday'},
   {key: 'saturday', value: 'Saturday'},
   {key: 'sunday', value: 'Sunday'},
-];
+]
 
 const generateDropdownItems = items => {
   return items.map(item => ({
     label: item,
     value: item,
-  }));
-};
+  }))
+}
 
 const CreateScheduleScreen = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const route = useRoute();
+  const route = useRoute()
 
-  const {selectedRoute, fromSettings, schedule} = route.params;
+  const {selectedRoute, fromSettings, schedule} = route.params
 
-  const {origin, destination} = selectedRoute;
+  const {origin, destination} = selectedRoute
 
-  const dropdownItems = generateDropdownItems([origin, destination]);
+  const dropdownItems = generateDropdownItems([origin, destination])
 
-  const [items, setItems] = React.useState(dropdownItems);
+  const [items, setItems] = React.useState(dropdownItems)
 
   const {
     control,
@@ -65,44 +65,44 @@ const CreateScheduleScreen = () => {
       end_time: moment(),
       available_at: [],
     },
-  });
+  })
 
   useEffect(() => {
     if (fromSettings && selectedRoute && schedule) {
-      setValue('routeId', selectedRoute.permit_id);
-      setValue('origin', schedule.origin);
-      setValue('destination', schedule.destination);
-      setValue('start_time', moment(schedule.start_time, 'h:mm A'));
-      setValue('end_time', moment(schedule.end_time, 'h:mm A'));
-      setValue('available_at', schedule.available_at);
+      setValue('routeId', selectedRoute.permit_id)
+      setValue('origin', schedule.origin)
+      setValue('destination', schedule.destination)
+      setValue('start_time', moment(schedule.start_time, 'h:mm A'))
+      setValue('end_time', moment(schedule.end_time, 'h:mm A'))
+      setValue('available_at', schedule.available_at)
     }
-  }, [fromSettings, schedule, selectedRoute, setValue]);
+  }, [fromSettings, schedule, selectedRoute, setValue])
 
-  const watchOrigin = watch('origin');
+  const watchOrigin = watch('origin')
 
   useEffect(() => {
     if (watchOrigin && items.length > 0) {
       // Added a check for items.length
-      const selectedOrigin = items.find(item => item.value !== watchOrigin);
+      const selectedOrigin = items.find(item => item.value !== watchOrigin)
       if (selectedOrigin) {
-        setValue('destination', selectedOrigin.value);
+        setValue('destination', selectedOrigin.value)
       }
     }
-  }, [watchOrigin, setValue, items]); // Added items as a dependency
+  }, [watchOrigin, setValue, items]) // Added items as a dependency
 
   const create = data => {
-    Keyboard.dismiss();
+    Keyboard.dismiss()
     const formattedData = {
       ...data,
       routeId: selectedRoute._id,
       start_time: data.start_time.format('h:mm A'),
       end_time: data.end_time.format('h:mm A'),
       ...(fromSettings && schedule ? {scheduleId: schedule._id} : {}),
-    };
+    }
 
-    console.log(formattedData);
-    dispatch(ownerActions.createSchedule(formattedData));
-  };
+    console.log(formattedData)
+    dispatch(ownerActions.createSchedule(formattedData))
+  }
 
   return (
     <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
@@ -219,7 +219,7 @@ const CreateScheduleScreen = () => {
               rules={{
                 required: VALIDATION_MESSAGES.REQUIRED,
               }}
-              render={({field: {onChange, onBlur, value}}) => (
+              render={({field: {onChange, value}}) => (
                 <MultipleSelect
                   itemsPerRow={2}
                   containerStyle={{marginBottom: 15}}
@@ -228,7 +228,7 @@ const CreateScheduleScreen = () => {
                   value={value}
                   showNumber={false}
                   onChange={newValue => {
-                    onChange(newValue);
+                    onChange(newValue)
                   }}
                   errorMessage={errors?.available_at?.message}
                 />
@@ -262,8 +262,8 @@ const CreateScheduleScreen = () => {
         </View>
       </Layout>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -273,6 +273,6 @@ const styles = StyleSheet.create({
   centeredText: {
     fontSize: 20,
   },
-});
+})
 
-export default CreateScheduleScreen;
+export default CreateScheduleScreen

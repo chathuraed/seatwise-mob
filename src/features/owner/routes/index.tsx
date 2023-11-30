@@ -1,17 +1,17 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {scale, verticalScale} from '../../../styles/scaling';
-import {getCapitalize} from '../../../util';
-import Ionicon from 'react-native-vector-icons/Ionicons';
-import {Colors} from '../../../resources';
-import Layout from '../../../components/layout';
-import {useRoutesHook} from './hook';
-import CustomHeader from '../../../components/custom-header';
-import {navigate} from '../../../navigation/rootNavigation';
+import React from 'react'
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {scale, verticalScale} from '../../../styles/scaling'
+import {getCapitalize} from '../../../util'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+import {Colors} from '../../../resources'
+import Layout from '../../../components/layout'
+import {useRoutesHook} from './hook'
+import CustomHeader from '../../../components/custom-header'
+import {navigate} from '../../../navigation/rootNavigation'
 
 const RoutesScreen = ({}) => {
   // const navigation = useNavigation();
-  const {routes, setRoute} = useRoutesHook();
+  const {routes, setRoute} = useRoutesHook()
   return (
     <View style={styles.container}>
       <CustomHeader title="Routes" />
@@ -22,8 +22,8 @@ const RoutesScreen = ({}) => {
           routes.map((route, i) => (
             <TouchableOpacity
               onPress={async () => {
-                setRoute(route);
-                navigate('RouteAvailableSchedules');
+                setRoute(route)
+                navigate('RouteAvailableSchedules')
               }}
               style={styles.routeContainer}
               key={i.toString()}>
@@ -56,8 +56,8 @@ const RoutesScreen = ({}) => {
         <Ionicon name="add" size={scale(30)} color="#ffffff" />
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -120,6 +120,6 @@ const styles = StyleSheet.create({
     color: '#53587A',
     fontWeight: 'bold',
   },
-});
+})
 
-export default RoutesScreen;
+export default RoutesScreen

@@ -1,6 +1,6 @@
-import React from 'react';
-import {Text, TextInput, View, StyleSheet} from 'react-native';
-import {Colors} from '../../resources';
+import React from 'react'
+import {Text, TextInput, View, StyleSheet} from 'react-native'
+import {Colors} from '../../resources'
 
 const TextField = (props: any) => {
   const {
@@ -11,7 +11,7 @@ const TextField = (props: any) => {
     errorMessage,
     inputStyle = {},
     labelStyle = {},
-  } = props;
+  } = props
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -41,8 +41,8 @@ const TextField = (props: any) => {
         </View>
       )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {},
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
   errorText: {
     color: Colors.error,
   },
-});
+})
 
-export default TextField;
+export default TextField

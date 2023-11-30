@@ -5,23 +5,23 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import React from 'react';
-import {Icons} from '../../resources';
-import {scale, verticalScale} from '../../styles/scaling';
-import Layout from '../../components/layout';
-import {RootStackParamList} from '../../navigation/MainNavigator';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {useLoginHook} from './hooks';
-import ErrorMessage from '../../components/error-message';
-import {SafeAreaView} from 'react-native-safe-area-context';
+} from 'react-native'
+import React from 'react'
+import {Icons} from '../../resources'
+import {scale, verticalScale} from '../../styles/scaling'
+import Layout from '../../components/layout'
+import {RootStackParamList} from '../../navigation/MainNavigator'
+import {NativeStackNavigationProp} from '@react-navigation/native-stack'
+import {useLoginHook} from './hooks'
+import ErrorMessage from '../../components/error-message'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 type LoginScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
-};
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>
+}
 
 const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
-  const {loginData, handleChange, login} = useLoginHook();
+  const {loginData, handleChange, login} = useLoginHook()
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
@@ -180,10 +180,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
         </Layout>
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-export default LoginScreen;
+export default LoginScreen
 
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'white'},
@@ -285,4 +285,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.36,
   },
-});
+})

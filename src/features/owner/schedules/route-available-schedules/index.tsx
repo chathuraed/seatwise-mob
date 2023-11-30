@@ -1,42 +1,42 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import {useIsFocused, useRoute} from '@react-navigation/native';
-import {scale, verticalScale} from '../../../../styles/scaling';
-import {Colors} from '../../../../resources/colors';
-import {getCapitalize} from '../../../../util';
-import {navigate, navigationRef} from '../../../../navigation/rootNavigation';
-import {useDispatch, useSelector} from 'react-redux';
-import {ownerActions, selectRoute} from '../../../../store/reducer/owner-slice';
-import Layout from '../../../../components/layout';
+} from 'react-native'
+import {useIsFocused, useRoute} from '@react-navigation/native'
+import {scale, verticalScale} from '../../../../styles/scaling'
+import {Colors} from '../../../../resources/colors'
+import {getCapitalize} from '../../../../util'
+import {navigate, navigationRef} from '../../../../navigation/rootNavigation'
+import {useDispatch, useSelector} from 'react-redux'
+import {ownerActions, selectRoute} from '../../../../store/reducer/owner-slice'
+import Layout from '../../../../components/layout'
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const RouteAvailableSchedulesScreen = () => {
-  const isFocused = useIsFocused();
-  const dispatch = useDispatch();
-  const selectedRoute = useSelector(selectRoute);
+  const isFocused = useIsFocused()
+  const dispatch = useDispatch()
+  const selectedRoute = useSelector(selectRoute)
 
-  console.log(selectedRoute);
+  console.log(selectedRoute)
 
   React.useEffect(() => {
     const fetchData = () => {
-      console.log('focused', selectedRoute._id);
+      console.log('focused', selectedRoute._id)
       const params = {
         id: selectedRoute._id,
-      };
-      dispatch(ownerActions.getRoute(params));
-    };
+      }
+      dispatch(ownerActions.getRoute(params))
+    }
 
     if (isFocused) {
-      fetchData();
+      fetchData()
     }
-  }, [dispatch, selectedRoute._id, isFocused]);
+  }, [dispatch, selectedRoute._id, isFocused])
 
   return (
     <View style={styles.container}>
@@ -181,7 +181,7 @@ const RouteAvailableSchedulesScreen = () => {
                   />
                   <View style={{flexDirection: 'row'}}>
                     {schedule.available_at.map((day, index) => {
-                      const abbreviatedDay = day.slice(0, 3).toUpperCase();
+                      const abbreviatedDay = day.slice(0, 3).toUpperCase()
 
                       return (
                         <View
@@ -201,7 +201,7 @@ const RouteAvailableSchedulesScreen = () => {
                             {abbreviatedDay}
                           </Text>
                         </View>
-                      );
+                      )
                     })}
                   </View>
                 </View>
@@ -233,8 +233,8 @@ const RouteAvailableSchedulesScreen = () => {
         )}
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -295,6 +295,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.border,
     marginVertical: scale(16),
   },
-});
+})
 
-export default RouteAvailableSchedulesScreen;
+export default RouteAvailableSchedulesScreen

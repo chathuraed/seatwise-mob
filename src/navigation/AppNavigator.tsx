@@ -1,40 +1,40 @@
-import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {useSelector} from 'react-redux';
-import {Text, View} from 'react-native';
-import OwnerDrawer, {DrawerParamList} from './owner';
-import {selectCurrentAccount} from '../store/reducer/auth-slice';
+import React from 'react'
+import {createStackNavigator} from '@react-navigation/stack'
+import {useSelector} from 'react-redux'
+import {Text, View} from 'react-native'
+import OwnerDrawer, {DrawerParamList} from './owner'
+import {selectCurrentAccount} from '../store/reducer/auth-slice'
 
 export type StackParamList = {
-  OwnerHome: undefined;
-  DriverHome: undefined;
-  AssistantHome: undefined;
-  PassengerHome: undefined;
-};
+  OwnerHome: undefined
+  DriverHome: undefined
+  AssistantHome: undefined
+  PassengerHome: undefined
+}
 
 const DriverHomeScreen: React.FC = () => (
   <View>
     <Text>Driver Home</Text>
   </View>
-);
+)
 
 const AssistantHomeScreen: React.FC = () => (
   <View>
     <Text>Assistant Home</Text>
   </View>
-);
+)
 
 const PassengerHomeScreen: React.FC = () => (
   <View>
     <Text>Passenger Home</Text>
   </View>
-);
+)
 
 const createNavigator = (
   initialRouteName: keyof StackParamList,
   component: React.FC,
 ) => {
-  const Stack = createStackNavigator<StackParamList>();
+  const Stack = createStackNavigator<StackParamList>()
 
   const Navigator: React.FC = () => (
     <Stack.Navigator
@@ -44,33 +44,27 @@ const createNavigator = (
       initialRouteName={initialRouteName}>
       <Stack.Screen name={initialRouteName} component={component} />
     </Stack.Navigator>
-  );
+  )
 
-  return Navigator;
-};
+  return Navigator
+}
 
-const OwnerNavigator = createNavigator('OwnerHome', OwnerDrawer);
-const DriverNavigator = createNavigator('DriverHome', DriverHomeScreen);
-const AssistantNavigator = createNavigator(
-  'AssistantHome',
-  AssistantHomeScreen,
-);
-const PassengerNavigator = createNavigator(
-  'PassengerHome',
-  PassengerHomeScreen,
-);
+const OwnerNavigator = createNavigator('OwnerHome', OwnerDrawer)
+const DriverNavigator = createNavigator('DriverHome', DriverHomeScreen)
+const AssistantNavigator = createNavigator('AssistantHome', AssistantHomeScreen)
+const PassengerNavigator = createNavigator('PassengerHome', PassengerHomeScreen)
 
 export type AppStackParamList = {
-  OwnerDashboard: DrawerParamList;
-  DriverDashboard: undefined;
-  AssistantDashboard: undefined;
-  PassengerDashboard: undefined;
-};
+  OwnerDashboard: DrawerParamList
+  DriverDashboard: undefined
+  AssistantDashboard: undefined
+  PassengerDashboard: undefined
+}
 
-const Stack = createStackNavigator<AppStackParamList>();
+const Stack = createStackNavigator<AppStackParamList>()
 
 const AppNavigator: React.FC = () => {
-  const account = useSelector(selectCurrentAccount);
+  const account = useSelector(selectCurrentAccount)
 
   return (
     <Stack.Navigator
@@ -96,7 +90,7 @@ const AppNavigator: React.FC = () => {
         />
       )}
     </Stack.Navigator>
-  );
-};
+  )
+}
 
-export default AppNavigator;
+export default AppNavigator

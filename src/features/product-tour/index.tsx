@@ -5,11 +5,11 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import React from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {scale, verticalScale, width} from '../../styles/scaling';
-import {Images} from '../../resources';
+} from 'react-native'
+import React from 'react'
+import {useNavigation} from '@react-navigation/native'
+import {scale, verticalScale, width} from '../../styles/scaling'
+import {Images} from '../../resources'
 
 const STEPS = [
   {
@@ -33,17 +33,17 @@ const STEPS = [
       'Receive instant confirmation of your reservation along with ticket details for your journey.',
     image: Images.tour_3,
   },
-];
+]
 
 const Indicator = ({scrollX}) => {
   return (
     <View style={styles.indicatorContainer}>
       {STEPS.map((_, i) => {
-        const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
+        const inputRange = [(i - 1) * width, i * width, (i + 1) * width]
         const size = scrollX.interpolate({
           inputRange,
           outputRange: [0.8, 1.4, 0.8],
-        });
+        })
         return (
           <Animated.View
             key={`indicator-${i}`}
@@ -58,31 +58,31 @@ const Indicator = ({scrollX}) => {
               },
             ]}
           />
-        );
+        )
       })}
     </View>
-  );
-};
+  )
+}
 
 const ProductTourScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
-  const scrollX = React.useRef<any>(new Animated.Value(0)).current;
+  const scrollX = React.useRef<any>(new Animated.Value(0)).current
 
-  const flatListRef = React.useRef(null);
+  const flatListRef = React.useRef(null)
 
   const handleNextButtonPress = () => {
     // Get the current index of the FlatList
-    const currentIndex = Math.floor(scrollX._value / width);
+    const currentIndex = Math.floor(scrollX._value / width)
 
     // Check if there's a next item, and if so, scroll to it
     if (currentIndex < STEPS.length - 1) {
-      const nextIndex = currentIndex + 1;
-      flatListRef.current?.scrollToIndex({index: nextIndex});
+      const nextIndex = currentIndex + 1
+      flatListRef.current?.scrollToIndex({index: nextIndex})
     } else {
-      navigation.navigate('Landing');
+      navigation.navigate('Landing')
     }
-  };
+  }
   return (
     <View style={styles.container}>
       <View style={styles.top_bar}>
@@ -132,14 +132,14 @@ const ProductTourScreen = () => {
                 </View>
               </View>
             </View>
-          );
+          )
         }}
       />
     </View>
-  );
-};
+  )
+}
 
-export default ProductTourScreen;
+export default ProductTourScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -237,4 +237,4 @@ const styles = StyleSheet.create({
     margin: scale(10),
     backgroundColor: 'white',
   },
-});
+})

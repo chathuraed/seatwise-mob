@@ -1,13 +1,13 @@
-import React from 'react';
-import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import React from 'react'
+import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native'
+import {useNavigation} from '@react-navigation/native'
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {scale} from '../../styles/scaling';
-import {Colors} from '../../resources';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import {scale} from '../../styles/scaling'
+import {Colors} from '../../resources'
 
 const CustomHeader = ({title}: any) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   return (
     <View
@@ -18,15 +18,15 @@ const CustomHeader = ({title}: any) => {
       ]}>
       <TouchableOpacity
         onPress={() => {
-          navigation.openDrawer();
+          navigation.openDrawer()
         }}>
         <Ionicons name="menu" size={scale(26)} />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.rightSpace} />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
   rightSpace: {
     width: scale(24),
   },
-});
+})
 
-export default CustomHeader;
+export default CustomHeader

@@ -251,7 +251,7 @@ const cities = [
   'Yalppanam',
   'Yatiyantota',
   'Yirangalla',
-];
+]
 
 const VALIDATION_MESSAGES = {
   REQUIRED: 'This field is required',
@@ -261,6 +261,6 @@ const VALIDATION_MESSAGES = {
   PASSWORD:
     'Password must contain at least 8 characters with at least one digit, lowercase and uppercase letter',
   CONFIRM_PASSWORD: "Password didn't match",
-};
+}
 
-export {cities, VALIDATION_MESSAGES};
+export {cities, VALIDATION_MESSAGES}

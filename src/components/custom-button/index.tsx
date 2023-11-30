@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import React from 'react'
+import {Text, TouchableOpacity, StyleSheet} from 'react-native'
 
 const CustomButton = (props: any) => {
   const {
@@ -11,7 +11,7 @@ const CustomButton = (props: any) => {
     onPress,
     style,
     disabled,
-  } = props;
+  } = props
 
   return (
     <TouchableOpacity
@@ -42,8 +42,8 @@ const CustomButton = (props: any) => {
         {title}
       </Text>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: 'bold',
   },
-});
+})
 
-export default CustomButton;
+export default CustomButton

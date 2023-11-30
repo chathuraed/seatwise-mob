@@ -1,16 +1,16 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {useNavigation} from '@react-navigation/native'
+import React from 'react'
+import {View, Text, StyleSheet, Button} from 'react-native'
 
 const DriverScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
       <Text style={styles.centeredText}>Driver Screen</Text>
       <Button onPress={() => navigation.navigate('About')} title="Back" />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +22,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
-});
+})
 
-export default DriverScreen;
+export default DriverScreen

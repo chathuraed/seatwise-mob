@@ -1,27 +1,27 @@
-import {call, put, takeLatest} from 'redux-saga/effects';
-import {appActions} from '../reducer/app-slice';
-import {ownerActions} from '../reducer/owner-slice';
-import OwnerService from '../../services/owner/owner-service';
+import {call, put, takeLatest} from 'redux-saga/effects'
+import {appActions} from '../reducer/app-slice'
+import {ownerActions} from '../reducer/owner-slice'
+import OwnerService from '../../services/owner/owner-service'
 import {
   IBusRequest,
   IRouteRequest,
   IScheduleRequest,
-} from '../../services/owner/types';
+} from '../../services/owner/types'
 
-import * as RootNavigation from '../../navigation/rootNavigation';
+import * as RootNavigation from '../../navigation/rootNavigation'
 
 export function* getAllRoutesGenerator(): Generator<any, void, any> {
   try {
-    yield put(appActions.setLoading('Loading'));
-    yield put(appActions.removeErrors());
+    yield put(appActions.setLoading('Loading'))
+    yield put(appActions.removeErrors())
 
-    const response = yield call(OwnerService.loadRoutes);
+    const response = yield call(OwnerService.loadRoutes)
 
     if (response.status === 200) {
-      const {data} = response;
-      yield put(ownerActions.setRoutes(data));
+      const {data} = response
+      yield put(ownerActions.setRoutes(data))
     } else if (response.status === 400) {
-      let data = yield call([response, 'json']);
+      let data = yield call([response, 'json'])
       yield put(
         appActions.setError({
           error: {
@@ -30,32 +30,32 @@ export function* getAllRoutesGenerator(): Generator<any, void, any> {
           },
           type: '',
         }),
-      );
+      )
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   } finally {
-    yield put(appActions.removeLoading());
+    yield put(appActions.removeLoading())
   }
 }
 
 export function* getRouteGenerator({
   payload,
 }: {
-  payload: any;
+  payload: any
 }): Generator<any, void, any> {
   try {
-    yield put(appActions.setLoading('Loading'));
-    yield put(appActions.removeErrors());
+    yield put(appActions.setLoading('Loading'))
+    yield put(appActions.removeErrors())
 
-    const response = yield call(OwnerService.loadRoute, payload);
+    const response = yield call(OwnerService.loadRoute, payload)
 
     if (response.status === 200) {
-      const {data} = response;
-      console.log('Test', data);
-      yield put(ownerActions.setSelectedRoute(data));
+      const {data} = response
+      console.log('Test', data)
+      yield put(ownerActions.setSelectedRoute(data))
     } else if (response.status === 400) {
-      let data = yield call([response, 'json']);
+      let data = yield call([response, 'json'])
       yield put(
         appActions.setError({
           error: {
@@ -64,39 +64,39 @@ export function* getRouteGenerator({
           },
           type: '',
         }),
-      );
+      )
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   } finally {
-    yield put(appActions.removeLoading());
+    yield put(appActions.removeLoading())
   }
 }
 export function* createRouteGenerator({
   payload,
 }: {
-  payload: IRouteRequest;
+  payload: IRouteRequest
 }): Generator<any, void, any> {
   try {
-    yield put(appActions.setLoading('Please Wait'));
-    yield put(appActions.removeErrors());
+    yield put(appActions.setLoading('Please Wait'))
+    yield put(appActions.removeErrors())
 
     const response = yield call(OwnerService.createRoute, {
       permit_id: payload.permit_id,
       busId: payload.busId,
       origin: payload.origin,
       destination: payload.destination,
-    });
+    })
 
     if (response.status === 201) {
-      console.log('success');
+      console.log('success')
       yield put(
         appActions.showToast({
           title: 'Success',
           message: 'Route added successfully',
         }),
-      );
-      yield RootNavigation.goBack();
+      )
+      yield RootNavigation.goBack()
     } else {
       yield put(
         appActions.setError({
@@ -106,7 +106,7 @@ export function* createRouteGenerator({
           },
           type: '',
         }),
-      );
+      )
     }
   } catch (error) {
     yield put(
@@ -117,19 +117,19 @@ export function* createRouteGenerator({
         },
         type: '',
       }),
-    );
+    )
   } finally {
-    yield put(appActions.removeLoading());
+    yield put(appActions.removeLoading())
   }
 }
 export function* createScheduleGenerator({
   payload,
 }: {
-  payload: IScheduleRequest;
+  payload: IScheduleRequest
 }): Generator<any, void, any> {
   try {
-    yield put(appActions.setLoading('Please Wait'));
-    yield put(appActions.removeErrors());
+    yield put(appActions.setLoading('Please Wait'))
+    yield put(appActions.removeErrors())
 
     const response = yield call(OwnerService.createSchedule, {
       ...(payload.scheduleId ? {scheduleId: payload.scheduleId} : {}),
@@ -139,26 +139,26 @@ export function* createScheduleGenerator({
       start_time: payload.start_time,
       end_time: payload.end_time,
       available_at: payload.available_at,
-    });
+    })
 
     if (response.status === 201) {
-      console.log('success');
+      console.log('success')
       yield put(
         appActions.showToast({
           title: 'Success',
           message: 'Schedule added successfully',
         }),
-      );
-      yield RootNavigation.goBack();
+      )
+      yield RootNavigation.goBack()
     } else if (response.status === 200) {
-      console.log('update success');
+      console.log('update success')
       yield put(
         appActions.showToast({
           title: 'Success',
           message: 'Schedule updated successfully',
         }),
-      );
-      yield RootNavigation.goBack();
+      )
+      yield RootNavigation.goBack()
     } else {
       yield put(
         appActions.setError({
@@ -168,7 +168,7 @@ export function* createScheduleGenerator({
           },
           type: '',
         }),
-      );
+      )
     }
   } catch (error) {
     yield put(
@@ -179,24 +179,24 @@ export function* createScheduleGenerator({
         },
         type: '',
       }),
-    );
+    )
   } finally {
-    yield put(appActions.removeLoading());
+    yield put(appActions.removeLoading())
   }
 }
 
 export function* getAllBusesGenerator(): Generator<any, void, any> {
   try {
-    yield put(appActions.setLoading('Loading'));
-    yield put(appActions.removeErrors());
+    yield put(appActions.setLoading('Loading'))
+    yield put(appActions.removeErrors())
 
-    const response = yield call(OwnerService.loadBuses);
+    const response = yield call(OwnerService.loadBuses)
 
     if (response.status === 200) {
-      const {data} = response;
-      yield put(ownerActions.setBuses(data));
+      const {data} = response
+      yield put(ownerActions.setBuses(data))
     } else if (response.status === 400) {
-      let data = yield call([response, 'json']);
+      let data = yield call([response, 'json'])
       yield put(
         appActions.setError({
           error: {
@@ -205,32 +205,32 @@ export function* getAllBusesGenerator(): Generator<any, void, any> {
           },
           type: '',
         }),
-      );
+      )
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   } finally {
-    yield put(appActions.removeLoading());
+    yield put(appActions.removeLoading())
   }
 }
 
 export function* getBusGenerator({
   payload,
 }: {
-  payload: any;
+  payload: any
 }): Generator<any, void, any> {
   try {
-    yield put(appActions.setLoading('Loading'));
-    yield put(appActions.removeErrors());
+    yield put(appActions.setLoading('Loading'))
+    yield put(appActions.removeErrors())
 
-    const response = yield call(OwnerService.loadBus, payload);
+    const response = yield call(OwnerService.loadBus, payload)
 
     if (response.status === 200) {
-      const {data} = response;
-      console.log('bus', data);
-      yield put(ownerActions.setBus(data));
+      const {data} = response
+      console.log('bus', data)
+      yield put(ownerActions.setBus(data))
     } else if (response.status === 400) {
-      let data = yield call([response, 'json']);
+      let data = yield call([response, 'json'])
       yield put(
         appActions.setError({
           error: {
@@ -239,23 +239,23 @@ export function* getBusGenerator({
           },
           type: '',
         }),
-      );
+      )
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   } finally {
-    yield put(appActions.removeLoading());
+    yield put(appActions.removeLoading())
   }
 }
 
 export function* createBusGenerator({
   payload,
 }: {
-  payload: IBusRequest;
+  payload: IBusRequest
 }): Generator<any, void, any> {
   try {
-    yield put(appActions.setLoading('Please Wait'));
-    yield put(appActions.removeErrors());
+    yield put(appActions.setLoading('Please Wait'))
+    yield put(appActions.removeErrors())
 
     const response = yield call(OwnerService.createBus, {
       ...(payload.busId ? {userId: payload.userId, busId: payload.busId} : {}),
@@ -264,26 +264,26 @@ export function* createBusGenerator({
       seatingCapacity: payload.seatingCapacity,
       arrangement: payload.arrangement,
       seats: payload.seats,
-    });
+    })
 
     if (response.status === 201) {
-      console.log('success');
+      console.log('success')
       yield put(
         appActions.showToast({
           title: 'Success',
           message: 'Bus added successfully',
         }),
-      );
-      yield RootNavigation.goBack();
+      )
+      yield RootNavigation.goBack()
     } else if (response.status === 200) {
-      console.log('update success');
+      console.log('update success')
       yield put(
         appActions.showToast({
           title: 'Success',
           message: 'Bus updated successfully',
         }),
-      );
-      yield RootNavigation.goBack();
+      )
+      yield RootNavigation.goBack()
     } else {
       yield put(
         appActions.setError({
@@ -293,7 +293,7 @@ export function* createBusGenerator({
           },
           type: '',
         }),
-      );
+      )
     }
   } catch (error) {
     yield put(
@@ -304,20 +304,20 @@ export function* createBusGenerator({
         },
         type: '',
       }),
-    );
+    )
   } finally {
-    yield put(appActions.removeLoading());
+    yield put(appActions.removeLoading())
   }
 }
 
 export function* ownerSaga() {
-  yield takeLatest(ownerActions.getAllRoutes, getAllRoutesGenerator);
-  yield takeLatest(ownerActions.getRoute, getRouteGenerator);
-  yield takeLatest(ownerActions.createRoute, createRouteGenerator);
-  yield takeLatest(ownerActions.createSchedule, createScheduleGenerator);
-  yield takeLatest(ownerActions.getAllBuses, getAllBusesGenerator);
-  yield takeLatest(ownerActions.getBus, getBusGenerator);
-  yield takeLatest(ownerActions.createBus, createBusGenerator);
+  yield takeLatest(ownerActions.getAllRoutes, getAllRoutesGenerator)
+  yield takeLatest(ownerActions.getRoute, getRouteGenerator)
+  yield takeLatest(ownerActions.createRoute, createRouteGenerator)
+  yield takeLatest(ownerActions.createSchedule, createScheduleGenerator)
+  yield takeLatest(ownerActions.getAllBuses, getAllBusesGenerator)
+  yield takeLatest(ownerActions.getBus, getBusGenerator)
+  yield takeLatest(ownerActions.createBus, createBusGenerator)
 }
 
-export default ownerSaga;
+export default ownerSaga

@@ -1,34 +1,34 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
-import {useSelector} from 'react-redux';
-import {Colors} from '../../resources';
-import {scale} from '../../styles/scaling';
-import {selectError} from '../../store/reducer/app-slice';
+import React, {useEffect, useState} from 'react'
+import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
+import {useSelector} from 'react-redux'
+import {Colors} from '../../resources'
+import {scale} from '../../styles/scaling'
+import {selectError} from '../../store/reducer/app-slice'
 
 const ErrorMessage = (props: any) => {
-  const {message} = props;
+  const {message} = props
 
-  const [errorTitle, setErrorTitle] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [visible, setVisible] = useState(false);
+  const [errorTitle, setErrorTitle] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [visible, setVisible] = useState(false)
 
-  const error = useSelector(selectError);
+  const error = useSelector(selectError)
 
   useEffect(() => {
-    setErrorTitle(error?.title);
-    setErrorMessage(error?.message);
-    setVisible(true);
+    setErrorTitle(error?.title)
+    setErrorMessage(error?.message)
+    setVisible(true)
 
     const timer = setTimeout(() => {
-      setVisible(false);
-    }, 3000);
+      setVisible(false)
+    }, 3000)
 
-    return () => clearTimeout(timer);
-  }, [error]);
+    return () => clearTimeout(timer)
+  }, [error])
 
   const handlePress = () => {
-    setVisible(false);
-  };
+    setVisible(false)
+  }
 
   return (
     <>
@@ -52,8 +52,8 @@ const ErrorMessage = (props: any) => {
         </TouchableOpacity>
       ) : null}
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
     fontSize: scale(12),
     fontWeight: '500',
   },
-});
+})
 
-export default ErrorMessage;
+export default ErrorMessage

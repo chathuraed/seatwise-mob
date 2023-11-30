@@ -12,6 +12,6 @@ const Images = {
   login_5: require('../../assets/images/login/5.jpg'),
   login_6: require('../../assets/images/login/6.jpg'),
   city_life: require('../../assets/images/login/Login/city_life.png'),
-};
+}
 
-export {Images};
+export {Images}

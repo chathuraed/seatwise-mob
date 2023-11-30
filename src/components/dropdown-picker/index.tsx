@@ -1,10 +1,10 @@
-import React from 'react';
-import {Text, View} from 'react-native';
-import {Colors} from '../../resources';
-import DropDownPicker from 'react-native-dropdown-picker';
+import React from 'react'
+import {Text, View} from 'react-native'
+import {Colors} from '../../resources'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 const DropdownPicker = props => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
   const {
     containerStyle,
     label,
@@ -14,9 +14,9 @@ const DropdownPicker = props => {
     setItems,
     labelStyle = {},
     onBlur,
-  } = props;
+  } = props
 
-  const [value, setValue] = React.useState(null);
+  const [value, setValue] = React.useState(null)
 
   return (
     <View style={containerStyle}>
@@ -55,7 +55,7 @@ const DropdownPicker = props => {
         </View>
       ) : null}
     </View>
-  );
-};
+  )
+}
 
-export default DropdownPicker;
+export default DropdownPicker

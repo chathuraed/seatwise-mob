@@ -1,20 +1,20 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {scale, verticalScale} from '../../../styles/scaling';
-import {getCapitalize} from '../../../util';
-import Ionicon from 'react-native-vector-icons/Ionicons';
-import {Colors} from '../../../resources';
-import Layout from '../../../components/layout';
+import React from 'react'
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {scale, verticalScale} from '../../../styles/scaling'
+import {getCapitalize} from '../../../util'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+import {Colors} from '../../../resources'
+import Layout from '../../../components/layout'
 
-import CustomHeader from '../../../components/custom-header';
-import {navigate} from '../../../navigation/rootNavigation';
-import {useBusHook} from './hook';
-import {useDispatch} from 'react-redux';
-import {ownerActions} from '../../../store/reducer/owner-slice';
+import CustomHeader from '../../../components/custom-header'
+import {navigate} from '../../../navigation/rootNavigation'
+import {useBusHook} from './hook'
+import {useDispatch} from 'react-redux'
+import {ownerActions} from '../../../store/reducer/owner-slice'
 
 const BusesScreen = ({}) => {
-  const dispatch = useDispatch();
-  const {buses} = useBusHook();
+  const dispatch = useDispatch()
+  const {buses} = useBusHook()
 
   return (
     <View style={styles.container}>
@@ -25,8 +25,8 @@ const BusesScreen = ({}) => {
           buses.map((bus, i) => (
             <TouchableOpacity
               onPress={() => {
-                dispatch(ownerActions.setBus(bus));
-                navigate('BusDetails');
+                dispatch(ownerActions.setBus(bus))
+                navigate('BusDetails')
               }}
               style={styles.routeContainer}
               key={i.toString()}>
@@ -52,8 +52,8 @@ const BusesScreen = ({}) => {
         <Ionicon name="add" size={scale(30)} color="#ffffff" />
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -108,6 +108,6 @@ const styles = StyleSheet.create({
     color: '#53587A',
     fontWeight: 'bold',
   },
-});
+})
 
-export default BusesScreen;
+export default BusesScreen

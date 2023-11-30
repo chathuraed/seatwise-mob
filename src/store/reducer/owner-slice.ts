@@ -1,18 +1,18 @@
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 // Define the state type
 interface OwnerState {
-  routes: any;
-  buses: any;
-  route: object | undefined;
-  bus: object | undefined;
+  routes: any
+  buses: any
+  route: object | undefined
+  bus: object | undefined
 }
 
 // Define the Account type if not already defined
 export interface Account {
-  userId: string;
-  email: string;
-  role: string;
+  userId: string
+  email: string
+  role: string
 }
 
 // Define the initial state
@@ -21,7 +21,7 @@ const initialState: OwnerState = {
   buses: [],
   route: undefined,
   bus: undefined,
-};
+}
 
 // Create the slice
 export const ownerSlice = createSlice({
@@ -32,39 +32,39 @@ export const ownerSlice = createSlice({
     getAllBuses: state => {},
     createRoute: state => {},
     setRoutes: (state, action: PayloadAction<any[]>) => {
-      state.routes = action.payload;
+      state.routes = action.payload
     },
     setSelectedRoute: (state, action: PayloadAction<any[]>) => {
-      state.route = action.payload;
+      state.route = action.payload
     },
     setBuses: (state, action: PayloadAction<any[]>) => {
-      state.buses = action.payload;
+      state.buses = action.payload
     },
     setBus: (state, action: PayloadAction<any[]>) => {
-      state.bus = action.payload;
+      state.bus = action.payload
     },
     createSchedule: state => {},
     createBus: state => {},
     getRoute: state => {},
     getBus: state => {},
   },
-});
+})
 
 // Export the actions
-export const {actions: ownerActions} = ownerSlice;
+export const {actions: ownerActions} = ownerSlice
 
-const selectDomain = state => state['feature/owner'] || initialState;
+const selectDomain = state => state['feature/owner'] || initialState
 
 export const selectRoutes = createSelector(
   [selectDomain],
   owner => owner.routes,
-);
+)
 
-export const selectRoute = createSelector([selectDomain], owner => owner.route);
+export const selectRoute = createSelector([selectDomain], owner => owner.route)
 
-export const selectBuses = createSelector([selectDomain], owner => owner.buses);
+export const selectBuses = createSelector([selectDomain], owner => owner.buses)
 
-export const selectBus = createSelector([selectDomain], owner => owner.bus);
+export const selectBus = createSelector([selectDomain], owner => owner.bus)
 
 // export const selectCurrentAccount = createSelector(
 //   [selectDomain],

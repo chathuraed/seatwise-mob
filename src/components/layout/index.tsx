@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {ReactNode} from 'react';
+import React, {ReactNode} from 'react'
 import {
   ScrollView,
   View,
@@ -7,11 +7,11 @@ import {
   Platform,
   ScrollViewProps,
   KeyboardAvoidingViewProps,
-} from 'react-native';
+} from 'react-native'
 
 interface LayoutContainerProps {
-  scrollEnabled?: boolean;
-  children: ReactNode;
+  scrollEnabled?: boolean
+  children: ReactNode
 }
 
 const LayoutContainerComponent: React.FC<
@@ -26,15 +26,15 @@ const LayoutContainerComponent: React.FC<
         {...scrollViewProps}>
         <View style={{flex: 1}}>{children}</View>
       </ScrollView>
-    );
+    )
   } else {
-    return <View style={{flex: 1}}>{children}</View>;
+    return <View style={{flex: 1}}>{children}</View>
   }
-};
+}
 
 interface LayoutProps extends KeyboardAvoidingViewProps {
-  scrollEnabled?: boolean;
-  children: ReactNode;
+  scrollEnabled?: boolean
+  children: ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = ({...layoutProps}) => {
@@ -48,7 +48,7 @@ const Layout: React.FC<LayoutProps> = ({...layoutProps}) => {
       {...layoutProps}>
       <LayoutContainerComponent {...layoutProps} />
     </KeyboardAvoidingView>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

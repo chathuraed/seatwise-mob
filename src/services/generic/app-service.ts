@@ -1,12 +1,12 @@
-import Config from 'react-native-config';
+import Config from 'react-native-config'
 
 const AppService = {
   accessToken: '',
   refreshToken: '',
   rememberMe: 'false',
   getAPI: () => {
-    return `${Config.API_URL}/api/`;
+    return `${Config.API_URL}/api/`
   },
-};
+}
 
-export default AppService;
+export default AppService

@@ -1,47 +1,47 @@
-import React from 'react';
+import React from 'react'
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import {useIsFocused} from '@react-navigation/native';
-import {scale, verticalScale} from '../../../../styles/scaling';
-import {Colors} from '../../../../resources/colors';
-import {getCapitalize} from '../../../../util';
-import {navigate} from '../../../../navigation/rootNavigation';
+} from 'react-native'
+import {useIsFocused} from '@react-navigation/native'
+import {scale, verticalScale} from '../../../../styles/scaling'
+import {Colors} from '../../../../resources/colors'
+import {getCapitalize} from '../../../../util'
+import {navigate} from '../../../../navigation/rootNavigation'
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useDispatch, useSelector} from 'react-redux';
-import {ownerActions, selectBus} from '../../../../store/reducer/owner-slice';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import {useDispatch, useSelector} from 'react-redux'
+import {ownerActions, selectBus} from '../../../../store/reducer/owner-slice'
 
 const BusDetailsScreen = () => {
-  const dispatch = useDispatch();
-  const isFocused = useIsFocused();
-  const bus = useSelector(selectBus);
+  const dispatch = useDispatch()
+  const isFocused = useIsFocused()
+  const bus = useSelector(selectBus)
 
   React.useEffect(() => {
     const fetchData = () => {
       const params = {
         id: bus._id,
-      };
-      dispatch(ownerActions.getBus(params));
-    };
+      }
+      dispatch(ownerActions.getBus(params))
+    }
 
     if (isFocused) {
-      fetchData();
+      fetchData()
     }
-  }, [dispatch, bus._id, isFocused]);
+  }, [dispatch, bus._id, isFocused])
 
   const renderSeat = seat => {
-    const {number, state} = seat;
+    const {number, state} = seat
     const seatStyle = [
       styles.seat,
       state === 'available' && styles.availableSeat,
       state === 'no-seat' && styles.noSeat,
       state === 'disabled' && styles.disabledSeat,
-    ];
+    ]
 
     return (
       <TouchableOpacity
@@ -51,8 +51,8 @@ const BusDetailsScreen = () => {
         disabled={state === 'no-seat'}>
         <Text>{number}</Text>
       </TouchableOpacity>
-    );
-  };
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -138,8 +138,8 @@ const BusDetailsScreen = () => {
         ) : null}
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -198,6 +198,6 @@ const styles = StyleSheet.create({
   disabledSeat: {
     backgroundColor: '#DB4220',
   },
-});
+})
 
-export default BusDetailsScreen;
+export default BusDetailsScreen

@@ -1,16 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
-import RNDateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment';
-import React, {useEffect, useState, useCallback} from 'react';
+import RNDateTimePicker from '@react-native-community/datetimepicker'
+import moment from 'moment'
+import React, {useEffect, useState, useCallback} from 'react'
 import {
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
-} from 'react-native';
-import Iconions from 'react-native-vector-icons/Ionicons';
-import {Colors} from '../../resources';
+} from 'react-native'
+import Iconions from 'react-native-vector-icons/Ionicons'
+import {Colors} from '../../resources'
 
 const DateTimeField = props => {
   const {
@@ -22,43 +22,43 @@ const DateTimeField = props => {
     errorMessage,
     value,
     disableFuture = false,
-  } = props;
+  } = props
 
-  const [dateLabel, setDateLabel] = useState('');
+  const [dateLabel, setDateLabel] = useState('')
   const [dateValue, setDateValue] = useState(
     value ? new Date(value).getTime() : new Date().getTime(),
-  );
-  const [showPicker, setShowPicker] = useState(false);
+  )
+  const [showPicker, setShowPicker] = useState(false)
 
   useEffect(() => {
-    setDateLabel(getDisplayValue(value));
-  }, [value]);
+    setDateLabel(getDisplayValue(value))
+  }, [value])
 
   const getDisplayValue = useCallback(
     dateValueToCheck => {
       if (!dateValueToCheck) {
-        return '';
+        return ''
       }
       if (mode === 'date') {
-        return moment(dateValueToCheck).format('DD MMM YYYY');
+        return moment(dateValueToCheck).format('DD MMM YYYY')
       } else {
-        return moment(dateValueToCheck).format('hh:mm A');
+        return moment(dateValueToCheck).format('hh:mm A')
       }
     },
     [mode],
-  );
+  )
 
   const handleBlur = () => {
-    setShowPicker(false);
+    setShowPicker(false)
     if (onBlur) {
-      onBlur();
+      onBlur()
     }
-  };
+  }
 
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        setShowPicker(true);
+        setShowPicker(true)
       }}
       onBlur={handleBlur}>
       <View style={containerStyle}>
@@ -100,20 +100,20 @@ const DateTimeField = props => {
                 mode={mode}
                 value={new Date(dateValue)}
                 onChange={event => {
-                  setShowPicker(false);
+                  setShowPicker(false)
                   if (event.type === 'set') {
                     if (event.nativeEvent.timestamp === 0) {
-                      event.nativeEvent.timestamp = new Date().getTime();
+                      event.nativeEvent.timestamp = new Date().getTime()
                     }
-                    setDateValue(event.nativeEvent.timestamp);
-                    setDateLabel(getDisplayValue(event.nativeEvent.timestamp));
+                    setDateValue(event.nativeEvent.timestamp)
+                    setDateLabel(getDisplayValue(event.nativeEvent.timestamp))
                     if (onChange) {
-                      onChange(event.nativeEvent.timestamp);
+                      onChange(event.nativeEvent.timestamp)
                     }
                   }
                 }}
                 onError={() => {
-                  setShowPicker(false);
+                  setShowPicker(false)
                 }}
                 maximumDate={disableFuture ? new Date() : undefined}
               />
@@ -133,8 +133,8 @@ const DateTimeField = props => {
         ) : null}
       </View>
     </TouchableWithoutFeedback>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -150,6 +150,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-});
+})
 
-export default DateTimeField;
+export default DateTimeField

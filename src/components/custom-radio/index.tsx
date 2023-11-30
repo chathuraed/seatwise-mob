@@ -1,7 +1,7 @@
-import React from 'react';
-import {Text, View} from 'react-native';
-import RadioGroup from 'react-native-radio-buttons-group'; // Import the radio button component
-import {Colors} from '../../resources';
+import React from 'react'
+import {Text, View} from 'react-native'
+import RadioGroup from 'react-native-radio-buttons-group' // Import the radio button component
+import {Colors} from '../../resources'
 
 const CustomRadio = props => {
   const {
@@ -12,7 +12,7 @@ const CustomRadio = props => {
     labelStyle = {},
     onChange,
     value,
-  } = props;
+  } = props
 
   return (
     <View style={containerStyle}>
@@ -37,7 +37,7 @@ const CustomRadio = props => {
         </View>
       ) : null}
     </View>
-  );
-};
+  )
+}
 
-export default CustomRadio;
+export default CustomRadio

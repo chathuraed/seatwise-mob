@@ -1,31 +1,39 @@
-import React from 'react';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import {Colors} from '../../resources';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import DashboardScreen from '../../features/owner/dashboard';
-import SchedulesScreen from '../../features/owner/schedules';
-import RoutesScreen from '../../features/owner/routes';
-import DriverScreen from '../../features/owner/drivers';
-import AssistantScreen from '../../features/owner/assistants';
-import CreateRouteScreen from '../../features/owner/routes/create-route';
-import RouteAvailableSchedulesScreen from '../../features/owner/schedules/route-available-schedules';
-import CreateScheduleScreen from '../../features/owner/schedules/create-schedule';
-import BusesScreen from '../../features/owner/bus';
-import CreateBusScreen from '../../features/owner/bus/create-bus';
-import BusDetailsScreen from '../../features/owner/bus/bus-details';
+import React from 'react'
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+  createDrawerNavigator,
+} from '@react-navigation/drawer'
+import {Colors} from '../../resources'
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import DashboardScreen from '../../features/owner/dashboard'
+import SchedulesScreen from '../../features/owner/schedules'
+import RoutesScreen from '../../features/owner/routes'
+import DriverScreen from '../../features/owner/drivers'
+import AssistantScreen from '../../features/owner/assistants'
+import CreateRouteScreen from '../../features/owner/routes/create-route'
+import RouteAvailableSchedulesScreen from '../../features/owner/schedules/route-available-schedules'
+import CreateScheduleScreen from '../../features/owner/schedules/create-schedule'
+import BusesScreen from '../../features/owner/bus'
+import CreateBusScreen from '../../features/owner/bus/create-bus'
+import BusDetailsScreen from '../../features/owner/bus/bus-details'
+import {Button} from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {useDispatch} from 'react-redux'
+import {authActions} from '../../store/reducer/auth-slice'
 
 export type DrawerParamList = {
-  Dashboard: undefined;
-  Bookings: undefined;
-  Buses: undefined;
-  Routes: undefined;
-  Schedules: undefined;
-  Drivers: undefined;
-  Assistants: undefined;
-};
+  Dashboard: undefined
+  Bookings: undefined
+  Buses: undefined
+  Routes: undefined
+  Schedules: undefined
+  Drivers: undefined
+  Assistants: undefined
+}
 
 const RoutesStackNavigator: React.FC = () => {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator()
 
   return (
     <Stack.Navigator initialRouteName="RouteList">
@@ -81,11 +89,11 @@ const RoutesStackNavigator: React.FC = () => {
       />
       {/* Add more screens for the RoutesStackNavigator if needed */}
     </Stack.Navigator>
-  );
-};
+  )
+}
 
 const BusStackNavigator: React.FC = () => {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator()
 
   return (
     <Stack.Navigator initialRouteName="BusList">
@@ -119,18 +127,42 @@ const BusStackNavigator: React.FC = () => {
       />
       {/* Add more screens for the RoutesStackNavigator if needed */}
     </Stack.Navigator>
-  );
-};
+  )
+}
+
+const CustomDrawerContent = props => {
+  const dispatch = useDispatch()
+  const {navigation} = props
+
+  const handleLogout = async () => {
+    // Implement your logout logic here
+    // For example, navigate to the login screen
+    await AsyncStorage.clear()
+    dispatch(authActions.logoutUser())
+    navigation.navigate('Login')
+  }
+
+  return (
+    <DrawerContentScrollView {...props}>
+      {/* Original drawer items */}
+      <DrawerItemList {...props} />
+
+      {/* Logout button */}
+      <Button title="Logout" onPress={handleLogout} />
+    </DrawerContentScrollView>
+  )
+}
 
 const OwnerDrawer: React.FC = () => {
-  const Drawer = createDrawerNavigator<DrawerParamList>();
+  const Drawer = createDrawerNavigator<DrawerParamList>()
 
   return (
     <Drawer.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+      drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name="Dashboard" component={DashboardScreen} />
       <Drawer.Screen name="Bookings" component={SchedulesScreen} />
       <Drawer.Screen name="Buses" component={BusStackNavigator} />
@@ -139,7 +171,7 @@ const OwnerDrawer: React.FC = () => {
       <Drawer.Screen name="Drivers" component={DriverScreen} />
       <Drawer.Screen name="Assistants" component={AssistantScreen} />
     </Drawer.Navigator>
-  );
-};
+  )
+}
 
-export default OwnerDrawer;
+export default OwnerDrawer

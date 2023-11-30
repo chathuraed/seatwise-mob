@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
-import InlineCheckbox from '../inline-checkbox';
-import {Colors} from '../../resources';
+import React, {useEffect, useState} from 'react'
+import {Text, View} from 'react-native'
+import InlineCheckbox from '../inline-checkbox'
+import {Colors} from '../../resources'
 
 const MultipleSelect = props => {
   const {
@@ -13,13 +13,13 @@ const MultipleSelect = props => {
     showNumber,
     errorMessage,
     itemsPerRow,
-  } = props;
+  } = props
 
-  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [selectedKeys, setSelectedKeys] = useState([])
 
   useEffect(() => {
-    setSelectedKeys(value ? value : []);
-  }, [value]);
+    setSelectedKeys(value ? value : [])
+  }, [value])
 
   const renderCheckboxes = () => {
     if (!itemsPerRow) {
@@ -35,16 +35,16 @@ const MultipleSelect = props => {
                 showNumber={showNumber}
                 value={selectedKeys.includes(option.key)}
                 onChange={value => {
-                  const tempKeys = [...selectedKeys];
+                  const tempKeys = [...selectedKeys]
 
                   if (tempKeys.includes(option.key)) {
-                    const keyIndex = tempKeys.indexOf(option.key);
-                    tempKeys.splice(keyIndex, 1);
+                    const keyIndex = tempKeys.indexOf(option.key)
+                    tempKeys.splice(keyIndex, 1)
                   } else {
-                    tempKeys.push(option.key);
+                    tempKeys.push(option.key)
                   }
-                  setSelectedKeys(tempKeys);
-                  onChange(tempKeys);
+                  setSelectedKeys(tempKeys)
+                  onChange(tempKeys)
                 }}
                 containerStyle={{
                   backgroundColor: 'white',
@@ -54,10 +54,10 @@ const MultipleSelect = props => {
                   borderWidth: 1,
                 }}
               />
-            );
+            )
           })}
         </View>
-      );
+      )
     } else {
       return (
         <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
@@ -70,16 +70,16 @@ const MultipleSelect = props => {
               showNumber={showNumber}
               value={selectedKeys.includes(option.key)}
               onChange={value => {
-                const tempKeys = [...selectedKeys];
+                const tempKeys = [...selectedKeys]
 
                 if (tempKeys.includes(option.key)) {
-                  const keyIndex = tempKeys.indexOf(option.key);
-                  tempKeys.splice(keyIndex, 1);
+                  const keyIndex = tempKeys.indexOf(option.key)
+                  tempKeys.splice(keyIndex, 1)
                 } else {
-                  tempKeys.push(option.key);
+                  tempKeys.push(option.key)
                 }
-                setSelectedKeys(tempKeys);
-                onChange(tempKeys);
+                setSelectedKeys(tempKeys)
+                onChange(tempKeys)
               }}
               containerStyle={{
                 backgroundColor: 'white',
@@ -92,9 +92,9 @@ const MultipleSelect = props => {
             />
           ))}
         </View>
-      );
+      )
     }
-  };
+  }
 
   return (
     <View style={containerStyle}>
@@ -118,7 +118,7 @@ const MultipleSelect = props => {
         </View>
       ) : null}
     </View>
-  );
-};
+  )
+}
 
-export default MultipleSelect;
+export default MultipleSelect

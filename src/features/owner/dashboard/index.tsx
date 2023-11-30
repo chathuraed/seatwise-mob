@@ -1,9 +1,9 @@
 // BlankScreen.js
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {scale, verticalScale} from '../../../styles/scaling';
-import {useDashboardHook} from './hook';
-import CustomHeader from '../../../components/custom-header';
+import React from 'react'
+import {View, Text, StyleSheet} from 'react-native'
+import {scale, verticalScale} from '../../../styles/scaling'
+import {useDashboardHook} from './hook'
+import CustomHeader from '../../../components/custom-header'
 
 const ITEMS = [
   {
@@ -36,10 +36,10 @@ const ITEMS = [
     label: 'Assistants',
     value: 7,
   },
-];
+]
 
 const DashboardScreen = () => {
-  const {data} = useDashboardHook();
+  const {data} = useDashboardHook()
 
   return (
     <View style={styles.container}>
@@ -55,8 +55,8 @@ const DashboardScreen = () => {
         ))}
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -81,6 +81,6 @@ const styles = StyleSheet.create({
     borderRadius: scale(20),
     backgroundColor: 'pink',
   },
-});
+})
 
-export default DashboardScreen;
+export default DashboardScreen

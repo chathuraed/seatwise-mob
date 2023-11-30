@@ -1,13 +1,13 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React from 'react'
+import {View, Text, StyleSheet} from 'react-native'
 
 const BookingScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.centeredText}>Booking Screen</Text>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -19,6 +19,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
-});
+})
 
-export default BookingScreen;
+export default BookingScreen

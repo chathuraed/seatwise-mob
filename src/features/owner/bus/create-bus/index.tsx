@@ -1,20 +1,20 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {View, StyleSheet, Keyboard, Text, ScrollView} from 'react-native';
+import React, {useEffect, useMemo, useState} from 'react'
+import {View, StyleSheet, Keyboard, Text, ScrollView} from 'react-native'
 
-import {scale, verticalScale} from '../../../../styles/scaling';
-import {Controller, useForm} from 'react-hook-form';
-import TextField from '../../../../components/input';
-import {VALIDATION_MESSAGES} from '../../../../resources/constants';
-import {Colors} from '../../../../resources';
-import CustomButton from '../../../../components/custom-button';
-import {useDispatch} from 'react-redux';
-import {ownerActions} from '../../../../store/reducer/owner-slice';
-import ErrorMessage from '../../../../components/error-message';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {goBack} from '../../../../navigation/rootNavigation';
-import CustomRadio from '../../../../components/custom-radio';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useRoute} from '@react-navigation/native';
+import {scale, verticalScale} from '../../../../styles/scaling'
+import {Controller, useForm} from 'react-hook-form'
+import TextField from '../../../../components/input'
+import {VALIDATION_MESSAGES} from '../../../../resources/constants'
+import {Colors} from '../../../../resources'
+import CustomButton from '../../../../components/custom-button'
+import {useDispatch} from 'react-redux'
+import {ownerActions} from '../../../../store/reducer/owner-slice'
+import ErrorMessage from '../../../../components/error-message'
+import {SafeAreaView} from 'react-native-safe-area-context'
+import {goBack} from '../../../../navigation/rootNavigation'
+import CustomRadio from '../../../../components/custom-radio'
+import {TouchableOpacity} from 'react-native-gesture-handler'
+import {useRoute} from '@react-navigation/native'
 
 const twoThreeLayout = [
   {number: 'A1', state: 'available'},
@@ -23,7 +23,7 @@ const twoThreeLayout = [
   {number: 'A3', state: 'available'},
   {number: 'A4', state: 'available'},
   {number: 'A5', state: 'available'},
-];
+]
 
 const twoTwoLayout = [
   {number: 'A1', state: 'available'},
@@ -31,14 +31,14 @@ const twoTwoLayout = [
   {number: null, state: 'no-seat'},
   {number: 'A3', state: 'available'},
   {number: 'A4', state: 'available'},
-];
+]
 
 const CreateBusScreen = () => {
-  const route = useRoute();
-  const {bus, fromSettings} = route.params;
+  const route = useRoute()
+  const {bus, fromSettings} = route.params
 
-  console.log('Data', route.params);
-  const dispatch = useDispatch();
+  console.log('Data', route.params)
+  const dispatch = useDispatch()
 
   const seatArrangements = useMemo(
     () => [
@@ -54,7 +54,7 @@ const CreateBusScreen = () => {
       },
     ],
     [],
-  );
+  )
 
   const {
     control,
@@ -71,132 +71,132 @@ const CreateBusScreen = () => {
       arrangement: '2x3',
       seats: [],
     },
-  });
+  })
 
   useEffect(() => {
     if (fromSettings && bus) {
-      console.log('TEST', bus);
-      setValue('busNumber', bus.busNumber);
-      setValue('model', bus.model);
-      setValue('seatingCapacity', bus.seatingCapacity.toString());
-      setValue('arrangement', bus.arrangement);
-      setValue('seats', bus.seats);
+      console.log('TEST', bus)
+      setValue('busNumber', bus.busNumber)
+      setValue('model', bus.model)
+      setValue('seatingCapacity', bus.seatingCapacity.toString())
+      setValue('arrangement', bus.arrangement)
+      setValue('seats', bus.seats)
     }
-  }, [fromSettings, bus, setValue]);
+  }, [fromSettings, bus, setValue])
 
-  const seatingCapacity = parseInt(watch('seatingCapacity'), 10);
-  const selectedArrangement = watch('arrangement');
+  const seatingCapacity = parseInt(watch('seatingCapacity'), 10)
+  const selectedArrangement = watch('arrangement')
 
   const generateSeatData = (capacity, layout) => {
     if (capacity <= 4) {
-      return [];
+      return []
     }
-    const seatsPerRow = layout.filter(seat => seat.number !== null).length;
-    const rows = Math.ceil(capacity / seatsPerRow);
-    const newSeatData = [];
+    const seatsPerRow = layout.filter(seat => seat.number !== null).length
+    const rows = Math.ceil(capacity / seatsPerRow)
+    const newSeatData = []
 
-    let seatNumberCounter = 1;
+    let seatNumberCounter = 1
 
     for (let i = 0; i < rows; i++) {
-      const row = [];
+      const row = []
 
       layout.forEach(seat => {
         const seatNumber = seat.number
           ? `${seat.number[0]}${
               seat.number[1] !== null ? seatNumberCounter++ : ''
             }`
-          : null;
-        const newSeat = seat.number ? {...seat, number: seatNumber} : seat; // Keep 'no-seat' as is
-        row.push(newSeat);
-      });
+          : null
+        const newSeat = seat.number ? {...seat, number: seatNumber} : seat // Keep 'no-seat' as is
+        row.push(newSeat)
+      })
 
-      newSeatData.push(row);
+      newSeatData.push(row)
     }
 
-    return newSeatData;
-  };
+    return newSeatData
+  }
 
-  const [seatData, setSeatData] = useState([]);
+  const [seatData, setSeatData] = useState([])
 
   const mergeSeatsWithoutModifying = (existingSeats, layout, newCapacity) => {
-    const newSeatData = [];
+    const newSeatData = []
 
     for (let i = 0; i < Math.ceil(newCapacity / layout.length); i++) {
-      const existingRow = existingSeats[i] || [];
-      const newRow = [];
+      const existingRow = existingSeats[i] || []
+      const newRow = []
 
-      let seatNumberCounter = 1;
+      let seatNumberCounter = 1
 
       layout.forEach(seat => {
         const existingSeat = existingRow.find(
           existing => existing.number === seat.number,
-        );
+        )
         const seatNumber = seat.number
           ? `${seat.number[0]}${
               seat.number[1] !== null ? seatNumberCounter++ : ''
             }`
-          : null;
+          : null
         const newSeat = seat.number
           ? {
               ...seat,
               number: seatNumber,
               state: existingSeat ? existingSeat.state : seat.state,
             }
-          : seat;
+          : seat
 
-        newRow.push(newSeat);
-      });
+        newRow.push(newSeat)
+      })
 
-      newSeatData.push(newRow);
+      newSeatData.push(newRow)
     }
 
-    return newSeatData;
-  };
+    return newSeatData
+  }
 
   useEffect(() => {
     if (seatingCapacity) {
-      let layout = twoTwoLayout;
+      let layout = twoTwoLayout
       if (selectedArrangement === '2x3') {
-        layout = twoThreeLayout;
+        layout = twoThreeLayout
       }
 
       if (!fromSettings) {
-        const temp_seats = generateSeatData(seatingCapacity, layout);
-        setSeatData(temp_seats);
-        setValue('seats', temp_seats);
+        const temp_seats = generateSeatData(seatingCapacity, layout)
+        setSeatData(temp_seats)
+        setValue('seats', temp_seats)
       } else {
         // Merge the generated seat data with the existing seat data without modifying the state
         const mergedSeats = mergeSeatsWithoutModifying(
           bus.seats,
           layout,
           seatingCapacity,
-        );
-        setSeatData(mergedSeats);
-        setValue('seats', mergedSeats);
+        )
+        setSeatData(mergedSeats)
+        setValue('seats', mergedSeats)
       }
     }
-  }, [bus.seats, fromSettings, seatingCapacity, selectedArrangement, setValue]);
+  }, [bus.seats, fromSettings, seatingCapacity, selectedArrangement, setValue])
 
   const handleSeatPress = (rowIndex, seatIndex) => {
     setSeatData(prevSeatData => {
-      const newSeatData = [...prevSeatData];
-      const seat = newSeatData[rowIndex][seatIndex];
+      const newSeatData = [...prevSeatData]
+      const seat = newSeatData[rowIndex][seatIndex]
 
       if (seat.state === 'available') {
-        seat.state = 'disabled';
+        seat.state = 'disabled'
       } else if (seat.state === 'disabled') {
-        seat.state = 'available';
+        seat.state = 'available'
       }
 
       // Convert seatData to JSON string and set it in the form
-      setValue('seats', newSeatData);
+      setValue('seats', newSeatData)
 
-      return newSeatData;
-    });
-  };
+      return newSeatData
+    })
+  }
 
   const renderSeat = (seat, rowIndex, seatIndex) => {
-    const {number, state} = seat;
+    const {number, state} = seat
     const seatStyle = [
       styles.seat,
       state === 'available' && styles.availableSeat,
@@ -204,7 +204,7 @@ const CreateBusScreen = () => {
       state === 'no-seat' && styles.noSeat,
       state === 'user-selected' && styles.userSelectedSeat,
       state === 'disabled' && styles.disabledSeat,
-    ];
+    ]
 
     return (
       <TouchableOpacity
@@ -214,18 +214,18 @@ const CreateBusScreen = () => {
         disabled={state === 'no-seat'}>
         <Text>{number}</Text>
       </TouchableOpacity>
-    );
-  };
+    )
+  }
 
   const create = data => {
-    Keyboard.dismiss();
+    Keyboard.dismiss()
     const formattedData = {
       ...data,
 
       ...(fromSettings && bus ? {busId: bus._id, userId: bus.user_id} : {}),
-    };
-    dispatch(ownerActions.createBus(formattedData));
-  };
+    }
+    dispatch(ownerActions.createBus(formattedData))
+  }
 
   return (
     <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
@@ -342,8 +342,8 @@ const CreateBusScreen = () => {
       </View>
       <ErrorMessage />
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -391,6 +391,6 @@ const styles = StyleSheet.create({
   disabledSeat: {
     backgroundColor: '#DB4220', // Light gray color for disabled seats
   },
-});
+})
 
-export default CreateBusScreen;
+export default CreateBusScreen

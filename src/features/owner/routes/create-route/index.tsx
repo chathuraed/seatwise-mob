@@ -1,59 +1,59 @@
-import React from 'react';
-import {View, StyleSheet, Keyboard} from 'react-native';
+import React from 'react'
+import {View, StyleSheet, Keyboard} from 'react-native'
 
-import {scale, verticalScale} from '../../../../styles/scaling';
-import {Controller, useForm} from 'react-hook-form';
-import TextField from '../../../../components/input';
-import {VALIDATION_MESSAGES, cities} from '../../../../resources/constants';
-import {Colors} from '../../../../resources';
-import CustomPicker from '../../../../components/custom-picker';
-import CustomButton from '../../../../components/custom-button';
-import {useDispatch, useSelector} from 'react-redux';
-import {ownerActions, selectBuses} from '../../../../store/reducer/owner-slice';
-import ErrorMessage from '../../../../components/error-message';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {scale, verticalScale} from '../../../../styles/scaling'
+import {Controller, useForm} from 'react-hook-form'
+import TextField from '../../../../components/input'
+import {VALIDATION_MESSAGES, cities} from '../../../../resources/constants'
+import {Colors} from '../../../../resources'
+import CustomPicker from '../../../../components/custom-picker'
+import CustomButton from '../../../../components/custom-button'
+import {useDispatch, useSelector} from 'react-redux'
+import {ownerActions, selectBuses} from '../../../../store/reducer/owner-slice'
+import ErrorMessage from '../../../../components/error-message'
+import {SafeAreaView} from 'react-native-safe-area-context'
 import {
   goBack,
   navigate,
   navigationRef,
-} from '../../../../navigation/rootNavigation';
-import Toast from 'react-native-toast-message';
-import DropdownPicker from '../../../../components/dropdown-picker';
+} from '../../../../navigation/rootNavigation'
+import Toast from 'react-native-toast-message'
+import DropdownPicker from '../../../../components/dropdown-picker'
 
 const generateDropdownItems = items => {
   return items.map(item => ({
     label: item,
     value: item,
-  }));
-};
+  }))
+}
 
 const generateBusItems = items => {
   return items.map(item => ({
     label: item.busNumber,
     value: item._id,
-  }));
-};
+  }))
+}
 
 const CreateRouteScreen = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const cityList = generateDropdownItems(cities);
-  const busList = useSelector(selectBuses);
-  const buses = generateBusItems(busList);
+  const cityList = generateDropdownItems(cities)
+  const busList = useSelector(selectBuses)
+  const buses = generateBusItems(busList)
 
   React.useEffect(() => {
     const fetchData = () => {
-      dispatch(ownerActions.getAllBuses());
-    };
+      dispatch(ownerActions.getAllBuses())
+    }
 
-    fetchData();
+    fetchData()
 
     const unsubscribe = navigationRef.addListener('focus', () => {
-      fetchData();
-    });
+      fetchData()
+    })
 
-    return () => unsubscribe();
-  }, [dispatch]);
+    return () => unsubscribe()
+  }, [dispatch])
 
   const {
     control,
@@ -67,13 +67,13 @@ const CreateRouteScreen = () => {
       origin: '',
       destination: '',
     },
-  });
+  })
 
   const create = data => {
-    Keyboard.dismiss();
-    console.log(JSON.stringify(data));
-    dispatch(ownerActions.createRoute(data));
-  };
+    Keyboard.dismiss()
+    console.log(JSON.stringify(data))
+    dispatch(ownerActions.createRoute(data))
+  }
 
   return (
     <SafeAreaView style={{flex: 1}} edges={['right', 'left', 'bottom']}>
@@ -194,8 +194,8 @@ const CreateRouteScreen = () => {
         <ErrorMessage />
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -205,6 +205,6 @@ const styles = StyleSheet.create({
   centeredText: {
     fontSize: 20,
   },
-});
+})
 
-export default CreateRouteScreen;
+export default CreateRouteScreen

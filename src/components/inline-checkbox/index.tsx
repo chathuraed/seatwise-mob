@@ -1,7 +1,7 @@
-import React from 'react';
-import {Text, TouchableWithoutFeedback, View} from 'react-native';
-import Iconions from 'react-native-vector-icons/Ionicons';
-import {Colors} from '../../resources';
+import React from 'react'
+import {Text, TouchableWithoutFeedback, View} from 'react-native'
+import Iconions from 'react-native-vector-icons/Ionicons'
+import {Colors} from '../../resources'
 
 const InlineCheckbox = props => {
   const {
@@ -12,17 +12,17 @@ const InlineCheckbox = props => {
     value,
     onChange,
     showNumber,
-  } = props;
+  } = props
 
-  const selected = !!value;
+  const selected = !!value
 
-  const checkIconSize = checkSize ? checkSize : 15;
+  const checkIconSize = checkSize ? checkSize : 15
 
   return (
     <TouchableWithoutFeedback
       onPress={() => {
         if (onChange) {
-          onChange(!selected);
+          onChange(!selected)
         }
       }}>
       <View
@@ -81,7 +81,7 @@ const InlineCheckbox = props => {
         </View>
       </View>
     </TouchableWithoutFeedback>
-  );
-};
+  )
+}
 
-export default InlineCheckbox;
+export default InlineCheckbox

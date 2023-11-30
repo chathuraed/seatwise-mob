@@ -1,10 +1,10 @@
-import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction, createSelector} from '@reduxjs/toolkit'
 
 interface AppState {
-  loading: boolean;
-  loadingText?: string;
-  errors?: Record<string, any>;
-  error?: any;
+  loading: boolean
+  loadingText?: string
+  errors?: Record<string, any>
+  error?: any
 }
 
 const initialState: AppState = {
@@ -12,42 +12,42 @@ const initialState: AppState = {
   loadingText: '',
   errors: {},
   error: {},
-};
+}
 
 export const appSlice = createSlice({
   name: 'feature/app',
   initialState,
   reducers: {
     setLoading: (state, action: PayloadAction<string>) => {
-      state.loading = true;
-      state.loadingText = action.payload;
+      state.loading = true
+      state.loadingText = action.payload
     },
     removeLoading: state => {
-      state.loading = false;
+      state.loading = false
     },
     setError: (state, action: PayloadAction<{type: string; error: any}>) => {
-      state.errors[action.payload.type] = action.payload.error;
-      state.error = action.payload.error;
+      state.errors[action.payload.type] = action.payload.error
+      state.error = action.payload.error
     },
     removeErrors: state => {
-      state.errors = {};
-      state.error = {};
+      state.errors = {}
+      state.error = {}
     },
     navigateToLocation: (state, action) => {},
     showToast: (state, action) => {},
   },
-});
+})
 
 // Export the actions
-export const {actions: appActions} = appSlice;
+export const {actions: appActions} = appSlice
 
-const selectDomain = state => state['feature/app'] || initialState;
+const selectDomain = state => state['feature/app'] || initialState
 
-export const selectLoading = createSelector([selectDomain], app => app.loading);
+export const selectLoading = createSelector([selectDomain], app => app.loading)
 
 export const selectLoadingText = createSelector(
   [selectDomain],
   app => app.loadingText,
-);
+)
 
-export const selectError = createSelector([selectDomain], app => app.error);
+export const selectError = createSelector([selectDomain], app => app.error)

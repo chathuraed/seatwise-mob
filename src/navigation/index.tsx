@@ -1,21 +1,15 @@
-import React from 'react';
-import {
-  ActivityIndicator,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import PropTypes from 'prop-types';
-import MainNavigator from './MainNavigator';
-import {useSelector} from 'react-redux';
-import {BlurView} from '@react-native-community/blur';
-import {selectLoading, selectLoadingText} from '../store/reducer/app-slice';
-import {scale} from '../styles/scaling';
+import React from 'react'
+import {ActivityIndicator, Platform, StyleSheet, Text, View} from 'react-native'
+import PropTypes from 'prop-types'
+import MainNavigator from './MainNavigator'
+import {useSelector} from 'react-redux'
+import {BlurView} from '@react-native-community/blur'
+import {selectLoading, selectLoadingText} from '../store/reducer/app-slice'
+import {scale} from '../styles/scaling'
 
 const InitialPoint = () => {
-  const isLoading = useSelector(selectLoading);
-  const loadingText = useSelector(selectLoadingText);
+  const isLoading = useSelector(selectLoading)
+  const loadingText = useSelector(selectLoadingText)
 
   return (
     <View style={styles.container}>
@@ -32,13 +26,13 @@ const InitialPoint = () => {
         </View>
       )}
     </View>
-  );
-};
+  )
+}
 
 InitialPoint.propTypes = {
   blurViewActive: PropTypes.bool,
   storeRef: PropTypes.func,
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -61,6 +55,6 @@ const styles = StyleSheet.create({
     lineHeight: scale(40),
     letterSpacing: 0.75,
   },
-});
+})
 
-export default InitialPoint;
+export default InitialPoint

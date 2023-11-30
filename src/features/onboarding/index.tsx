@@ -1,12 +1,12 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
-import {useNavigation} from '@react-navigation/native';
-import {Images} from '../../resources';
-import {scale, verticalScale} from '../../styles/scaling';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import React from 'react'
+import LinearGradient from 'react-native-linear-gradient'
+import {useNavigation} from '@react-navigation/native'
+import {Images} from '../../resources'
+import {scale, verticalScale} from '../../styles/scaling'
 
 const OnboardingScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   return (
     <View style={styles.container}>
@@ -32,10 +32,10 @@ const OnboardingScreen = () => {
         locations={[0.05, 0.7]}
       />
     </View>
-  );
-};
+  )
+}
 
-export default OnboardingScreen;
+export default OnboardingScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -99,4 +99,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.3,
   },
-});
+})
