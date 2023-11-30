@@ -40,9 +40,13 @@ export const ownerSlice = createSlice({
     setBuses: (state, action: PayloadAction<any[]>) => {
       state.buses = action.payload;
     },
+    setBus: (state, action: PayloadAction<any[]>) => {
+      state.bus = action.payload;
+    },
     createSchedule: state => {},
     createBus: state => {},
     getRoute: state => {},
+    getBus: state => {},
   },
 });
 
@@ -59,6 +63,8 @@ export const selectRoutes = createSelector(
 export const selectRoute = createSelector([selectDomain], owner => owner.route);
 
 export const selectBuses = createSelector([selectDomain], owner => owner.buses);
+
+export const selectBus = createSelector([selectDomain], owner => owner.bus);
 
 // export const selectCurrentAccount = createSelector(
 //   [selectDomain],

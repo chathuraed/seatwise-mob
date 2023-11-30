@@ -13,6 +13,9 @@ const OwnerService = {
   loadBuses: async () => {
     return WebService.request('owner/buses', 'GET', {}, true);
   },
+  loadBus: async (data: any) => {
+    return WebService.request('owner/bus', 'GET', data, true);
+  },
   createBus: async (data: any) => {
     return WebService.request('owner/bus', 'POST', data, true);
   },

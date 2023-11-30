@@ -214,6 +214,40 @@ export function* getAllBusesGenerator(): Generator<any, void, any> {
   }
 }
 
+export function* getBusGenerator({
+  payload,
+}: {
+  payload: any;
+}): Generator<any, void, any> {
+  try {
+    yield put(appActions.setLoading('Loading'));
+    yield put(appActions.removeErrors());
+
+    const response = yield call(OwnerService.loadBus, payload);
+
+    if (response.status === 200) {
+      const {data} = response;
+      console.log('bus', data);
+      yield put(ownerActions.setBus(data));
+    } else if (response.status === 400) {
+      let data = yield call([response, 'json']);
+      yield put(
+        appActions.setError({
+          error: {
+            title: '',
+            message: data.Message,
+          },
+          type: '',
+        }),
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  } finally {
+    yield put(appActions.removeLoading());
+  }
+}
+
 export function* createBusGenerator({
   payload,
 }: {
@@ -282,6 +316,7 @@ export function* ownerSaga() {
   yield takeLatest(ownerActions.createRoute, createRouteGenerator);
   yield takeLatest(ownerActions.createSchedule, createScheduleGenerator);
   yield takeLatest(ownerActions.getAllBuses, getAllBusesGenerator);
+  yield takeLatest(ownerActions.getBus, getBusGenerator);
   yield takeLatest(ownerActions.createBus, createBusGenerator);
 }
 

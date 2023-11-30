@@ -1,17 +1,33 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import {useIsFocused, useRoute} from '@react-navigation/native';
 import {scale, verticalScale} from '../../../../styles/scaling';
 import {Colors} from '../../../../resources/colors';
 import {getCapitalize} from '../../../../util';
 import {navigate} from '../../../../navigation/rootNavigation';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useDispatch, useSelector} from 'react-redux';
+import {ownerActions, selectBus} from '../../../../store/reducer/owner-slice';
 
 const BusDetailsScreen = () => {
-  const route = useRoute();
-  const {bus_data} = route.params;
-  console.log(bus_data);
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  const bus = useSelector(selectBus);
+
+  React.useEffect(() => {
+    const fetchData = () => {
+      const params = {
+        id: bus._id,
+      };
+      dispatch(ownerActions.getBus(params));
+    };
+
+    if (isFocused) {
+      fetchData();
+    }
+  }, [dispatch, bus._id, isFocused]);
+
   return (
     <View style={styles.container}>
       <View style={styles.routeContainer}>
@@ -21,15 +37,13 @@ const BusDetailsScreen = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <Text style={styles.routeTitle}>
-            {getCapitalize(bus_data?.busNumber)}
-          </Text>
+          <Text style={styles.routeTitle}>{getCapitalize(bus?.busNumber)}</Text>
 
           <TouchableOpacity
             onPress={() =>
               navigate('BusCreate', {
                 fromSettings: true,
-                bus_data,
+                bus,
               })
             }>
             <Ionicons
@@ -39,13 +53,11 @@ const BusDetailsScreen = () => {
             />
           </TouchableOpacity>
         </View>
-        <Text style={styles.routeText}>Model : {bus_data.model}</Text>
-        <Text style={styles.routeText}>
-          Capacity : {bus_data.seatingCapacity}
-        </Text>
+        <Text style={styles.routeText}>Model : {bus.model}</Text>
+        <Text style={styles.routeText}>Capacity : {bus.seatingCapacity}</Text>
         <View style={styles.hr} />
         {
-          bus_data.schedules && bus_data.schedules.length ? (
+          bus.seats && bus.seats.length ? (
             <Text>Seat layout available</Text>
           ) : null
           // <View

@@ -9,8 +9,11 @@ import Layout from '../../../components/layout';
 import CustomHeader from '../../../components/custom-header';
 import {navigate} from '../../../navigation/rootNavigation';
 import {useBusHook} from './hook';
+import {useDispatch} from 'react-redux';
+import {ownerActions} from '../../../store/reducer/owner-slice';
 
 const BusesScreen = ({}) => {
+  const dispatch = useDispatch();
   const {buses} = useBusHook();
 
   return (
@@ -21,7 +24,10 @@ const BusesScreen = ({}) => {
         {buses.length > 0 ? (
           buses.map((bus, i) => (
             <TouchableOpacity
-              onPress={() => navigate('BusDetails', {bus_data: bus})}
+              onPress={() => {
+                dispatch(ownerActions.setBus(bus));
+                navigate('BusDetails');
+              }}
               style={styles.routeContainer}
               key={i.toString()}>
               <Text style={styles.routeTitle}>
