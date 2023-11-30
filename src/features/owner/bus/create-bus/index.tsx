@@ -35,7 +35,9 @@ const twoTwoLayout = [
 
 const CreateBusScreen = () => {
   const route = useRoute();
-  const {bus_data, fromSettings} = route.params;
+  const {bus, fromSettings} = route.params;
+
+  console.log('Data', route.params);
   const dispatch = useDispatch();
 
   const seatArrangements = useMemo(
@@ -72,15 +74,15 @@ const CreateBusScreen = () => {
   });
 
   useEffect(() => {
-    if (fromSettings && bus_data) {
-      console.log('TEST', bus_data);
-      setValue('busNumber', bus_data.busNumber);
-      setValue('model', bus_data.model);
-      setValue('seatingCapacity', bus_data.seatingCapacity.toString());
-      setValue('arrangement', bus_data.arrangement);
-      setValue('seats', bus_data.seats);
+    if (fromSettings && bus) {
+      console.log('TEST', bus);
+      setValue('busNumber', bus.busNumber);
+      setValue('model', bus.model);
+      setValue('seatingCapacity', bus.seatingCapacity.toString());
+      setValue('arrangement', bus.arrangement);
+      setValue('seats', bus.seats);
     }
-  }, [fromSettings, bus_data, setValue]);
+  }, [fromSettings, bus, setValue]);
 
   const seatingCapacity = parseInt(watch('seatingCapacity'), 10);
   const selectedArrangement = watch('arrangement');
@@ -165,7 +167,7 @@ const CreateBusScreen = () => {
       } else {
         // Merge the generated seat data with the existing seat data without modifying the state
         const mergedSeats = mergeSeatsWithoutModifying(
-          bus_data.seats,
+          bus.seats,
           layout,
           seatingCapacity,
         );
@@ -173,13 +175,7 @@ const CreateBusScreen = () => {
         setValue('seats', mergedSeats);
       }
     }
-  }, [
-    bus_data.seats,
-    fromSettings,
-    seatingCapacity,
-    selectedArrangement,
-    setValue,
-  ]);
+  }, [bus.seats, fromSettings, seatingCapacity, selectedArrangement, setValue]);
 
   const handleSeatPress = (rowIndex, seatIndex) => {
     setSeatData(prevSeatData => {
@@ -226,9 +222,7 @@ const CreateBusScreen = () => {
     const formattedData = {
       ...data,
 
-      ...(fromSettings && bus_data
-        ? {busId: bus_data._id, userId: bus_data.user_id}
-        : {}),
+      ...(fromSettings && bus ? {busId: bus._id, userId: bus.user_id} : {}),
     };
     dispatch(ownerActions.createBus(formattedData));
   };

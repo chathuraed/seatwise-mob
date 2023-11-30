@@ -1,6 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {useIsFocused, useRoute} from '@react-navigation/native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 import {scale, verticalScale} from '../../../../styles/scaling';
 import {Colors} from '../../../../resources/colors';
 import {getCapitalize} from '../../../../util';
@@ -27,6 +33,26 @@ const BusDetailsScreen = () => {
       fetchData();
     }
   }, [dispatch, bus._id, isFocused]);
+
+  const renderSeat = seat => {
+    const {number, state} = seat;
+    const seatStyle = [
+      styles.seat,
+      state === 'available' && styles.availableSeat,
+      state === 'no-seat' && styles.noSeat,
+      state === 'disabled' && styles.disabledSeat,
+    ];
+
+    return (
+      <TouchableOpacity
+        key={number}
+        style={seatStyle}
+        onPress={() => {}}
+        disabled={state === 'no-seat'}>
+        <Text>{number}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -56,32 +82,60 @@ const BusDetailsScreen = () => {
         <Text style={styles.routeText}>Model : {bus.model}</Text>
         <Text style={styles.routeText}>Capacity : {bus.seatingCapacity}</Text>
         <View style={styles.hr} />
-        {
-          bus.seats && bus.seats.length ? (
-            <Text>Seat layout available</Text>
-          ) : null
-          // <View
-          //   style={{
-          //     flexDirection: 'row',
-          //     justifyContent: 'space-between',
-          //     alignItems: 'center',
-          //   }}>
-          //   <Text style={{fontSize: scale(14), fontWeight: '600'}}>
-          //     Seat layout not available
-          //   </Text>
-          //   <TouchableOpacity
-          //     style={{
-          //       backgroundColor: Colors.green,
-          //       padding: scale(6),
-          //       borderRadius: scale(6),
-          //     }}
-          //     onPress={() => navigate('CreateSchedule', {bus_data})}>
-          //     <Text style={{fontSize: scale(14), fontWeight: '600'}}>
-          //       Add New
-          //     </Text>
-          //   </TouchableOpacity>
-          // </View>
-        }
+        {bus.seats && bus.seats.length ? (
+          <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+                marginBottom: scale(8),
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: scale(80),
+                }}>
+                <View
+                  style={{
+                    width: scale(12),
+                    height: scale(12),
+                    backgroundColor: '#DB4220',
+                    marginRight: scale(4),
+                    borderWidth: scale(1),
+                  }}
+                />
+                <Text>Disabled</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: scale(80),
+                }}>
+                <View
+                  style={{
+                    width: scale(12),
+                    height: scale(12),
+                    backgroundColor: '#E5E4E2',
+                    marginRight: scale(4),
+                    borderWidth: scale(1),
+                  }}
+                />
+                <Text>Available</Text>
+              </View>
+            </View>
+            <ScrollView>
+              {bus.seats.map((row, rowIndex) => (
+                <View key={rowIndex} style={{flex: 1, flexDirection: 'row'}}>
+                  {row.map((seat, seatIndex) =>
+                    renderSeat(seat, rowIndex, seatIndex),
+                  )}
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        ) : null}
       </View>
     </View>
   );
@@ -120,6 +174,29 @@ const styles = StyleSheet.create({
     height: scale(1),
     backgroundColor: Colors.border,
     marginVertical: scale(16),
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  seat: {
+    padding: 10,
+    margin: 6,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 45,
+    height: 35,
+  },
+  availableSeat: {
+    backgroundColor: '#E5E4E2',
+  },
+  noSeat: {
+    backgroundColor: 'transparent',
+  },
+  disabledSeat: {
+    backgroundColor: '#DB4220',
   },
 });
 
