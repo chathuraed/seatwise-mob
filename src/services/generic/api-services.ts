@@ -79,6 +79,7 @@ const WebService = {
 
       const response: AxiosResponse<T> = await axios(apiUrl, requestConfig);
 
+      console.log('my response', response);
       if (response.status === 401) {
         const refreshResult = await WebService.refreshToken();
         if (refreshResult) {
@@ -106,20 +107,10 @@ const WebService = {
     try {
       const apiUrl = `${AppService.getAPI()}auth/refresh-token`;
       const storedRefreshToken = await AsyncStorage.getItem('refreshToken');
-      const requestBody = {
+
+      const refreshTokenResponse = await axios.post(apiUrl, {
         token: storedRefreshToken,
-      };
-
-      const requestOptions: AxiosRequestConfig = {
-        method: 'POST',
-        headers: {
-          accept: '*/*',
-          'Content-Type': 'application/json-patch+json',
-        },
-        data: JSON.stringify(requestBody),
-      };
-
-      const refreshTokenResponse = await axios(apiUrl, requestOptions);
+      });
 
       console.log('refreshTokenResponse', refreshTokenResponse);
 

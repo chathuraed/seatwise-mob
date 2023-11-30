@@ -224,10 +224,12 @@ export function* createBusGenerator({
     yield put(appActions.removeErrors());
 
     const response = yield call(OwnerService.createBus, {
+      ...(payload.busId ? {userId: payload.userId, busId: payload.busId} : {}),
       busNumber: payload.busNumber,
       model: payload.model,
       seatingCapacity: payload.seatingCapacity,
       arrangement: payload.arrangement,
+      seats: payload.seats,
     });
 
     if (response.status === 201) {
@@ -236,6 +238,15 @@ export function* createBusGenerator({
         appActions.showToast({
           title: 'Success',
           message: 'Bus added successfully',
+        }),
+      );
+      yield RootNavigation.goBack();
+    } else if (response.status === 200) {
+      console.log('update success');
+      yield put(
+        appActions.showToast({
+          title: 'Success',
+          message: 'Bus updated successfully',
         }),
       );
       yield RootNavigation.goBack();

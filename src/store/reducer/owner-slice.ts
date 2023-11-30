@@ -5,6 +5,7 @@ interface OwnerState {
   routes: any;
   buses: any;
   route: object | undefined;
+  bus: object | undefined;
 }
 
 // Define the Account type if not already defined
@@ -19,6 +20,7 @@ const initialState: OwnerState = {
   routes: [],
   buses: [],
   route: undefined,
+  bus: undefined,
 };
 
 // Create the slice

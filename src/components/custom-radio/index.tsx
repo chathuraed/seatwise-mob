@@ -22,11 +22,12 @@ const CustomRadio = props => {
         </View>
       ) : null}
 
-      <View style={{marginBottom: -15}}>
+      <View>
         <RadioGroup
           radioButtons={items}
           onPress={onChange}
           selectedId={value}
+          layout="row"
         />
       </View>
 

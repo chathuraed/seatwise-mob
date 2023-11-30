@@ -21,8 +21,11 @@ export interface IScheduleRequest {
 }
 
 export interface IBusRequest {
+  busId?: string;
+  userId?: string;
   busNumber: string;
   model: string;
   seatingCapacity: string;
   arrangement: string;
+  seats: any;
 }
