@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   routeTitle: {
     color: '#53587A',
     fontSize: scale(16),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: 'bold',
     lineHeight: scale(20),
     letterSpacing: 0.36,

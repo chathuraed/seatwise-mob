@@ -35,9 +35,9 @@ const twoTwoLayout = [
 
 const CreateBusScreen = () => {
   const route = useRoute()
-  const {bus, fromSettings} = route.params
-
   console.log('Data', route.params)
+  const {bus, fromSettings} = route.params || {}
+
   const dispatch = useDispatch()
 
   const seatArrangements = useMemo(
@@ -76,11 +76,11 @@ const CreateBusScreen = () => {
   useEffect(() => {
     if (fromSettings && bus) {
       console.log('TEST', bus)
-      setValue('busNumber', bus.busNumber)
-      setValue('model', bus.model)
-      setValue('seatingCapacity', bus.seatingCapacity.toString())
-      setValue('arrangement', bus.arrangement)
-      setValue('seats', bus.seats)
+      setValue('busNumber', bus.busNumber || '') // Use an empty string as a default value if bus.busNumber is null or undefined
+      setValue('model', bus.model || '') // Use an empty string as a default value if bus.model is null or undefined
+      setValue('seatingCapacity', bus.seatingCapacity?.toString() || '') // Convert to string and use an empty string as a default value
+      setValue('arrangement', bus.arrangement || '2x3') // Default to '2x3' if bus.arrangement is null or undefined
+      setValue('seats', bus.seats || []) // Default to an empty array if bus.seats is null or undefined
     }
   }, [fromSettings, bus, setValue])
 
@@ -175,7 +175,7 @@ const CreateBusScreen = () => {
         setValue('seats', mergedSeats)
       }
     }
-  }, [bus.seats, fromSettings, seatingCapacity, selectedArrangement, setValue])
+  }, [bus, fromSettings, seatingCapacity, selectedArrangement, setValue])
 
   const handleSeatPress = (rowIndex, seatIndex) => {
     setSeatData(prevSeatData => {
@@ -221,8 +221,7 @@ const CreateBusScreen = () => {
     Keyboard.dismiss()
     const formattedData = {
       ...data,
-
-      ...(fromSettings && bus ? {busId: bus._id, userId: bus.user_id} : {}),
+      ...(fromSettings && bus ? {busId: bus._id} : {}),
     }
     dispatch(ownerActions.createBus(formattedData))
   }

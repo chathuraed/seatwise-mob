@@ -66,6 +66,7 @@ const CreateRouteScreen = () => {
       busId: '',
       origin: '',
       destination: '',
+      price: '',
     },
   })
 
@@ -167,6 +168,25 @@ const CreateRouteScreen = () => {
               />
             )}
             name="destination"
+          />
+
+          <Controller
+            control={control}
+            rules={{
+              required: VALIDATION_MESSAGES.REQUIRED,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <TextField
+                label={'Price per seat'}
+                keyboardType="number-pad"
+                containerStyle={{marginBottom: 15}}
+                value={value}
+                onBlur={onBlur}
+                onChange={onChange}
+                errorMessage={errors?.price?.message}
+              />
+            )}
+            name="price"
           />
         </View>
         <View

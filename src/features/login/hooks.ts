@@ -15,7 +15,7 @@ interface IUseLoginHook {
 export const useLoginHook = (): IUseLoginHook => {
   const dispatch = useDispatch()
 
-  const [loginData, setLoginData] = React.useState({email: '', password: ''})
+  const [loginData, setLoginData] = React.useState({email: 'owner@mail.com', password: 'owner'})
 
   const handleChange = (
     name: string,

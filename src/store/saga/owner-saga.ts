@@ -1,4 +1,4 @@
-import {call, put, takeLatest} from 'redux-saga/effects'
+import {call, put, select, takeLatest} from 'redux-saga/effects'
 import {appActions} from '../reducer/app-slice'
 import {ownerActions} from '../reducer/owner-slice'
 import OwnerService from '../../services/owner/owner-service'
@@ -9,6 +9,7 @@ import {
 } from '../../services/owner/types'
 
 import * as RootNavigation from '../../navigation/rootNavigation'
+import {selectCurrentAccount} from '../reducer/auth-slice'
 
 export function* getAllRoutesGenerator(): Generator<any, void, any> {
   try {
@@ -257,8 +258,11 @@ export function* createBusGenerator({
     yield put(appActions.setLoading('Please Wait'))
     yield put(appActions.removeErrors())
 
+    const user = yield select(selectCurrentAccount)
+
     const response = yield call(OwnerService.createBus, {
-      ...(payload.busId ? {userId: payload.userId, busId: payload.busId} : {}),
+      ...(payload.busId ? {busId: payload.busId} : {}),
+      userId: user.userId,
       busNumber: payload.busNumber,
       model: payload.model,
       seatingCapacity: payload.seatingCapacity,

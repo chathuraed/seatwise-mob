@@ -1,10 +1,10 @@
 import {createNavigationContainerRef} from '@react-navigation/native'
-import {RootStackParamList} from './MainNavigator'
 
-export const navigationRef = createNavigationContainerRef<RootStackParamList>()
+export const navigationRef = createNavigationContainerRef()
 
-export async function navigate(name: any, params?: object) {
+export async function navigate(name, params) {
   if (navigationRef.isReady()) {
+    console.log('Navigating to ', name)
     await navigationRef.navigate(name, params)
   }
 }

@@ -4,22 +4,14 @@ import {createStackNavigator} from '@react-navigation/stack'
 
 import {navigationRef} from './rootNavigation'
 import {useDispatch} from 'react-redux'
-import AppNavigator, {AppStackParamList} from './AppNavigator'
+import AppNavigator from './AppNavigator'
 import {authActions} from '../store/reducer/auth-slice'
 import OnboardingScreen from '../features/onboarding'
 import ProductTourScreen from '../features/product-tour'
 import LandingScreen from '../features/landing'
 import LoginScreen from '../features/login'
 
-export type RootStackParamList = {
-  Onboarding: undefined
-  ProductTour: undefined
-  Landing: undefined
-  Login: undefined
-  App: AppStackParamList
-}
-
-const Stack = createStackNavigator<RootStackParamList>()
+const Stack = createStackNavigator()
 
 const MainNavigator = () => {
   const dispatch = useDispatch()
@@ -32,7 +24,7 @@ const MainNavigator = () => {
     }
 
     checkAuthToken()
-  }, [])
+  }, [dispatch])
 
   return (
     <NavigationContainer ref={navigationRef}>

@@ -28,9 +28,9 @@ export const ownerSlice = createSlice({
   name: 'feature/owner',
   initialState,
   reducers: {
-    getAllRoutes: state => {},
-    getAllBuses: state => {},
-    createRoute: state => {},
+    getAllRoutes: () => {},
+    getAllBuses: () => {},
+    createRoute: () => {},
     setRoutes: (state, action: PayloadAction<any[]>) => {
       state.routes = action.payload
     },
@@ -43,17 +43,17 @@ export const ownerSlice = createSlice({
     setBus: (state, action: PayloadAction<any[]>) => {
       state.bus = action.payload
     },
-    createSchedule: state => {},
-    createBus: state => {},
-    getRoute: state => {},
-    getBus: state => {},
+    createSchedule: () => {},
+    createBus: () => {},
+    getRoute: () => {},
+    getBus: () => {},
   },
 })
 
 // Export the actions
 export const {actions: ownerActions} = ownerSlice
 
-const selectDomain = state => state['feature/owner'] || initialState
+const selectDomain = () => state['feature/owner'] || initialState
 
 export const selectRoutes = createSelector(
   [selectDomain],

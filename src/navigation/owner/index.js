@@ -21,20 +21,11 @@ import {Button} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {useDispatch} from 'react-redux'
 import {authActions} from '../../store/reducer/auth-slice'
+import {useNavigation} from '@react-navigation/native'
+import {navigate} from '../rootNavigation'
 
-export type DrawerParamList = {
-  Dashboard: undefined
-  Bookings: undefined
-  Buses: undefined
-  Routes: undefined
-  Schedules: undefined
-  Drivers: undefined
-  Assistants: undefined
-}
-
-const RoutesStackNavigator: React.FC = () => {
-  const Stack = createNativeStackNavigator()
-
+const Stack = createNativeStackNavigator()
+const RoutesStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="RouteList">
       <Stack.Screen
@@ -91,10 +82,7 @@ const RoutesStackNavigator: React.FC = () => {
     </Stack.Navigator>
   )
 }
-
-const BusStackNavigator: React.FC = () => {
-  const Stack = createNativeStackNavigator()
-
+const BusStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="BusList">
       <Stack.Screen
@@ -132,14 +120,13 @@ const BusStackNavigator: React.FC = () => {
 
 const CustomDrawerContent = props => {
   const dispatch = useDispatch()
-  const {navigation} = props
 
   const handleLogout = async () => {
     // Implement your logout logic here
     // For example, navigate to the login screen
     await AsyncStorage.clear()
     dispatch(authActions.logoutUser())
-    navigation.navigate('Login')
+    navigate('Login')
   }
 
   return (
@@ -153,9 +140,8 @@ const CustomDrawerContent = props => {
   )
 }
 
-const OwnerDrawer: React.FC = () => {
-  const Drawer = createDrawerNavigator<DrawerParamList>()
-
+const Drawer = createDrawerNavigator()
+const OwnerDrawer = () => {
   return (
     <Drawer.Navigator
       initialRouteName="Dashboard"

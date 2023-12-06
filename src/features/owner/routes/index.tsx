@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   busTitle: {
     color: '#53587A',
     fontSize: scale(18),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: 'bold',
     lineHeight: scale(20),
     letterSpacing: 0.36,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   routeTitle: {
     color: '#53587A',
     fontSize: scale(12),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: 'bold',
     lineHeight: scale(20),
     letterSpacing: 0.36,

@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     fontSize: scale(30),
     fontWeight: '700',
     color: 'white',
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
   },
   start_button: {
     zIndex: 5,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   start_button_text: {
     color: 'white',
     fontSize: scale(16),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '700',
     paddingVertical: verticalScale(17),
     paddingHorizontal: scale(60),
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   version_text: {
     color: 'white',
     fontSize: scale(10),
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontWeight: '700',
     letterSpacing: 0.3,
   },

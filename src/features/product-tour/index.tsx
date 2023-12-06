@@ -7,9 +7,9 @@ import {
   View,
 } from 'react-native'
 import React from 'react'
-import {useNavigation} from '@react-navigation/native'
 import {scale, verticalScale, width} from '../../styles/scaling'
 import {Images} from '../../resources'
+import {navigate} from '../../navigation/rootNavigation'
 
 const STEPS = [
   {
@@ -65,8 +65,6 @@ const Indicator = ({scrollX}) => {
 }
 
 const ProductTourScreen = () => {
-  const navigation = useNavigation()
-
   const scrollX = React.useRef<any>(new Animated.Value(0)).current
 
   const flatListRef = React.useRef(null)
@@ -80,7 +78,7 @@ const ProductTourScreen = () => {
       const nextIndex = currentIndex + 1
       flatListRef.current?.scrollToIndex({index: nextIndex})
     } else {
-      navigation.navigate('Landing')
+      navigate('Landing')
     }
   }
   return (
@@ -89,7 +87,7 @@ const ProductTourScreen = () => {
         <View style={styles.logo} />
         <TouchableOpacity
           style={styles.skip_button}
-          onPress={() => navigation.navigate('Onboarding')}>
+          onPress={() => navigate('Login')}>
           <Text style={styles.skip_text}>skip</Text>
         </TouchableOpacity>
       </View>
@@ -167,7 +165,7 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(8),
     color: 'black',
     fontSize: scale(12),
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontWeight: '400',
     lineHeight: scale(22),
     letterSpacing: 0.36,
@@ -178,7 +176,7 @@ const styles = StyleSheet.create({
   content_heading: {
     color: 'black',
     fontSize: scale(25),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '500',
     lineHeight: verticalScale(40),
     letterSpacing: 0.75,
@@ -187,7 +185,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
     color: '#292929',
     fontSize: scale(12),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '400',
     lineHeight: verticalScale(20),
     letterSpacing: 0.36,
@@ -216,7 +214,7 @@ const styles = StyleSheet.create({
   start_button_text: {
     color: 'white',
     fontSize: scale(16),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '700',
     paddingVertical: verticalScale(17),
     paddingHorizontal: scale(60),

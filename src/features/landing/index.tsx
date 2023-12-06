@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   title_main: {
     color: '#252B5C',
     fontSize: scale(25),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '500',
     lineHeight: scale(40),
     letterSpacing: 0.75,
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   title_secondary: {
     color: '#1F4C6B',
     fontSize: scale(25),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '800',
     lineHeight: scale(40),
   },
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   start_button_text: {
     color: 'white',
     fontSize: scale(16),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '700',
     paddingVertical: verticalScale(17),
     paddingHorizontal: scale(60),
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     marginHorizontal: scale(10),
     color: '#A1A5C1',
     fontSize: scale(10),
-    fontFamily: 'Raleway',
+    fontFamily: 'Lato-Regular',
     fontWeight: '600',
     letterSpacing: 0.3,
   },
@@ -167,14 +167,14 @@ const styles = StyleSheet.create({
   have_account: {
     color: '#53587A',
     fontSize: scale(12),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '400',
     letterSpacing: 0.36,
   },
   register: {
     color: '#1F4C6B',
     fontSize: scale(12),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '700',
     letterSpacing: 0.36,
   },

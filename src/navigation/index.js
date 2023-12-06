@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   loadingText: {
     color: '#252B5C',
     fontSize: scale(16),
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Regular',
     fontWeight: '500',
     lineHeight: scale(40),
     letterSpacing: 0.75,

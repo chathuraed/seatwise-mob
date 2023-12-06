@@ -5,6 +5,7 @@ import {createLogger} from 'redux-logger'
 import {appSlice} from './reducer/app-slice'
 import {authSlice} from './reducer/auth-slice'
 import {ownerSlice} from './reducer/owner-slice'
+import {searchSlice} from './reducer/search-slice'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -17,6 +18,7 @@ const store = configureStore({
     'feature/app': appSlice.reducer,
     'feature/auth': authSlice.reducer,
     'feature/owner': ownerSlice.reducer,
+    'feature/search': searchSlice.reducer,
     // 'feature/cart': cartSlice.reducer,
   },
   middleware: getDefaultMiddleware => {
