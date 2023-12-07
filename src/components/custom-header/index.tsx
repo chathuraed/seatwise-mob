@@ -13,8 +13,7 @@ const CustomHeader = ({title}: any) => {
     <View
       style={[
         styles.headerContainer,
-        Platform.OS === 'android' && styles.androidHeader,
-        {height: scale(84)},
+        Platform.OS === 'android' ? {height: scale(50)} : {height: scale(84)},
       ]}>
       <TouchableOpacity
         onPress={() => {

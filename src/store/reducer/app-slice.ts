@@ -41,7 +41,7 @@ export const appSlice = createSlice({
 // Export the actions
 export const {actions: appActions} = appSlice
 
-const selectDomain = state => state['feature/app'] || initialState
+const selectDomain = (state: any) => state['feature/app'] || initialState
 
 export const selectLoading = createSelector([selectDomain], app => app.loading)
 

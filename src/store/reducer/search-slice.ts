@@ -44,7 +44,7 @@ export const searchSlice = createSlice({
 // Export the actions
 export const {actions: searchActions} = searchSlice
 
-const selectDomain = state => state['feature/search'] || initialState
+const selectDomain = (state: any) => state['feature/search'] || initialState
 
 export const selectLoading = createSelector(
   [selectDomain],

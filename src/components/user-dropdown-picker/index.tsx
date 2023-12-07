@@ -1,12 +1,48 @@
 import React, {useRef, useState} from 'react'
 import {Text, View} from 'react-native'
 import {scale} from '../../styles/scaling'
-import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown'
+import {
+  AutocompleteDropdown,
+  AutocompleteDropdownRef,
+} from 'react-native-autocomplete-dropdown'
 import {Colors} from '../../resources'
 
 const UserDropdownPickerField = props => {
-  const dropdownController = useRef(null)
+  const dropdownController = useRef<AutocompleteDropdownRef>()
+
+  const searchRef = useRef(null)
   const {label, containerStyle, errorMessage, onChange, items, value} = props
+
+  const [suggestionsList, setSuggestionsList] = useState(null)
+
+  const filterItems = React.useCallback(
+    inputQuery => {
+      const filterToken = inputQuery.toLowerCase()
+
+      if (typeof inputQuery !== 'string') {
+        setSuggestionsList(null)
+        return
+      }
+
+      const suggestions = items
+        .filter(item => item.title.toLowerCase().includes(filterToken))
+        .map(item => ({
+          id: item.id,
+          title: item.title,
+        }))
+
+      setSuggestionsList(suggestions)
+    },
+    [items],
+  )
+
+  const clearSuggestions = React.useCallback(() => {
+    setSuggestionsList(null)
+  }, [])
+
+  const showAllItems = () => {
+    setSuggestionsList(items.map(item => ({id: item.id, title: item.title})))
+  }
 
   return (
     <View style={containerStyle}>
@@ -24,8 +60,18 @@ const UserDropdownPickerField = props => {
         </View>
       )}
       <AutocompleteDropdown
+        ref={searchRef}
         controller={controller => {
           dropdownController.current = controller
+        }}
+        onBlur={() => {
+          dropdownController.current.setItem(value)
+        }}
+        initialValue={value}
+        dataSet={suggestionsList}
+        onChangeText={filterItems}
+        onSelectItem={item => {
+          item && onChange(item)
         }}
         inputContainerStyle={{
           paddingVertical: scale(8),
@@ -36,8 +82,7 @@ const UserDropdownPickerField = props => {
         }}
         clearOnFocus={false}
         closeOnBlur={true}
-        closeOnSubmit={false}
-        useFilter={false}
+        closeOnSubmit={true}
         textInputProps={{
           placeholder: `Select ${label}`,
           autoCorrect: false,
@@ -52,9 +97,9 @@ const UserDropdownPickerField = props => {
           },
         }}
         containerStyle={{flexGrow: 1, flexShrink: 1}}
-        onSelectItem={onChange}
-        initialValue={value}
-        dataSet={items}
+        onClear={clearSuggestions}
+        useFilter={false}
+        onChevronPress={showAllItems}
       />
 
       {errorMessage ? (

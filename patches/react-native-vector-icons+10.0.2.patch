@@ -1,0 +1,34 @@
+diff --git a/node_modules/react-native-vector-icons/fonts.gradle b/node_modules/react-native-vector-icons/fonts.gradle
+index ddcf377..8609821 100644
+--- a/node_modules/react-native-vector-icons/fonts.gradle
++++ b/node_modules/react-native-vector-icons/fonts.gradle
+@@ -24,13 +24,21 @@ afterEvaluate {
+         }
+     }
+ 
+-    android.applicationVariants.all { def variant ->
+-        def targetName = variant.name.capitalize()
+-
+-        def generateAssetsTask = tasks.findByName("generate${targetName}Assets")
+-        generateAssetsTask.dependsOn(fontCopyTask)
+-
++     android.applicationVariants.all { def variant ->
++         def targetName = variant.name.capitalize()
++        def lintVitalReportTask = tasks.findByName("lintVitalReport${targetName}")
++        if(lintVitalReportTask) {
++          lintVitalReportTask.dependsOn(fontCopyTask)
++        }
+         def lintVitalAnalyzeTask = tasks.findByName("lintVitalAnalyze${targetName}")
+-        lintVitalAnalyzeTask?.dependsOn(fontCopyTask)
+-    }
++        if(lintVitalAnalyzeTask) {
++          lintVitalAnalyzeTask.dependsOn(fontCopyTask)
++        }
++        def lintAnalyzeTask = tasks.findByName("lintAnalyze${targetName}")
++        if(lintAnalyzeTask) {
++          lintAnalyzeTask.dependsOn(fontCopyTask)
++        }
++         def generateAssetsTask = tasks.findByName("generate${targetName}Assets")
++         generateAssetsTask.dependsOn(fontCopyTask)
++     }
+ }

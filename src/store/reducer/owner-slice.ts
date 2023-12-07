@@ -53,7 +53,7 @@ export const ownerSlice = createSlice({
 // Export the actions
 export const {actions: ownerActions} = ownerSlice
 
-const selectDomain = () => state['feature/owner'] || initialState
+const selectDomain = (state: any) => state['feature/owner'] || initialState
 
 export const selectRoutes = createSelector(
   [selectDomain],

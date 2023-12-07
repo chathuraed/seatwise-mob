@@ -37,10 +37,24 @@ const FilterScreen = () => {
     control,
     handleSubmit,
     formState: {errors},
+    setValue,
   } = useForm({
     mode: 'all',
-    defaultValues: filters,
+    defaultValues: {
+      from: '',
+      to: '',
+      date: moment(new Date()).format('DD-MM-YYYY').toString(),
+    },
   })
+
+  React.useEffect(() => {
+    if (filters) {
+      console.log('filters', filters)
+      setValue('from', filters.from) // Use an empty string as a default value if bus.busNumber is null or undefined
+      setValue('to', filters.to) // Use an empty string as a default value if bus.model is null or undefined
+      setValue('date', filters.date)
+    }
+  }, [filters, setValue])
 
   const search = fields => {
     console.log(fields)
