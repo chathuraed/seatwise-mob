@@ -73,7 +73,20 @@ const WebService = {
 
       const response: AxiosResponse<T> = await axios(apiUrl, requestConfig)
 
-      console.log('my response', response)
+      if (__DEV__) {
+        console.log(
+          '******************* RESPONSE ******************',
+          '\nURL :',
+          apiUrl,
+          '\nRes Time:',
+          moment().format('HH:mm:ss'),
+          '\nStatus:',
+          response.status,
+          '\nData:',
+          response.data,
+          '\n*********************************************',
+        )
+      }
       if (response.status === 401) {
         const refreshResult = await WebService.refreshToken()
         if (refreshResult) {
@@ -83,7 +96,7 @@ const WebService = {
             requestData,
             secured,
             options,
-          ) // Add return here
+          )
         } else {
           return Promise.reject(false)
         }

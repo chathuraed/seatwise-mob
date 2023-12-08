@@ -4,7 +4,7 @@ import {appActions} from '../reducer/app-slice'
 import {searchActions} from '../reducer/search-slice'
 import PassengerService from '../../services/passenger/passenger-service'
 
-export function* getAllRoutesGenerator({
+export function* getSchedulesGenerator({
   payload,
 }: {
   payload: any
@@ -15,31 +15,34 @@ export function* getAllRoutesGenerator({
 
     const response = yield call(PassengerService.loadSchedules, payload)
 
-    console.log('Get Schedule', response)
-    // if (response.status === 200) {
-    //   const {data} = response
-    //   yield put(ownerActions.setRoutes(data))
-    // } else if (response.status === 400) {
-    //   let data = yield call([response, 'json'])
-    //   yield put(
-    //     appActions.setError({
-    //       error: {
-    //         title: '',
-    //         message: data.Message,
-    //       },
-    //       type: '',
-    //     }),
-    //   )
-    // }
+    if (response.status === 200) {
+      const {data} = response
+
+      if (data.length) {
+        yield put(searchActions.setSchedules(data))
+        yield put(
+          appActions.navigateToLocation({
+            screen: 'Results',
+          }),
+        )
+      }
+    }
   } catch (error) {
-    console.log(error)
+    console.log(error.data)
+    yield put(
+      appActions.showToast({
+        type: 'error',
+        title: 'Sorry',
+        message: error.data.message,
+      }),
+    )
   } finally {
     yield put(searchActions.removeLoading())
   }
 }
 
 export function* passengerSaga() {
-  yield takeLatest(searchActions.getSchedules, getAllRoutesGenerator)
+  yield takeLatest(searchActions.getSchedules, getSchedulesGenerator)
 }
 
 export default passengerSaga

@@ -27,7 +27,7 @@ export function* getAllRoutesGenerator(): Generator<any, void, any> {
         appActions.setError({
           error: {
             title: '',
-            message: data.Message,
+            message: data.message,
           },
           type: '',
         }),
@@ -61,7 +61,7 @@ export function* getRouteGenerator({
         appActions.setError({
           error: {
             title: '',
-            message: data.Message,
+            message: data.message,
           },
           type: '',
         }),
@@ -87,6 +87,7 @@ export function* createRouteGenerator({
       busId: payload.busId,
       origin: payload.origin,
       destination: payload.destination,
+      price: payload.price,
     })
 
     if (response.status === 201) {
@@ -202,7 +203,7 @@ export function* getAllBusesGenerator(): Generator<any, void, any> {
         appActions.setError({
           error: {
             title: '',
-            message: data.Message,
+            message: data.message,
           },
           type: '',
         }),
@@ -236,7 +237,7 @@ export function* getBusGenerator({
         appActions.setError({
           error: {
             title: '',
-            message: data.Message,
+            message: data.message,
           },
           type: '',
         }),

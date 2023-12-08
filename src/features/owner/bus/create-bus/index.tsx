@@ -35,7 +35,6 @@ const twoTwoLayout = [
 
 const CreateBusScreen = () => {
   const route = useRoute()
-  console.log('Data', route.params)
   const {bus, fromSettings} = route.params || {}
 
   const dispatch = useDispatch()
@@ -75,7 +74,6 @@ const CreateBusScreen = () => {
 
   useEffect(() => {
     if (fromSettings && bus) {
-      console.log('TEST', bus)
       setValue('busNumber', bus.busNumber || '') // Use an empty string as a default value if bus.busNumber is null or undefined
       setValue('model', bus.model || '') // Use an empty string as a default value if bus.model is null or undefined
       setValue('seatingCapacity', bus.seatingCapacity?.toString() || '') // Convert to string and use an empty string as a default value

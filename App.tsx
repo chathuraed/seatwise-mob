@@ -8,16 +8,19 @@ import KeyboardStatusProvider from './src/contexts/keyboard-status-provider'
 import InitialPoint from './src/navigation'
 import store from './src/store'
 import Toast from 'react-native-toast-message'
+import {ModalProvider} from './src/contexts/modal-provider'
 
 function App() {
   return (
     <>
       <Provider store={store}>
-        <SafeAreaProvider>
-          <KeyboardStatusProvider>
-            <InitialPoint />
-          </KeyboardStatusProvider>
-        </SafeAreaProvider>
+        <ModalProvider>
+          <SafeAreaProvider>
+            <KeyboardStatusProvider>
+              <InitialPoint />
+            </KeyboardStatusProvider>
+          </SafeAreaProvider>
+        </ModalProvider>
       </Provider>
       <Toast />
     </>

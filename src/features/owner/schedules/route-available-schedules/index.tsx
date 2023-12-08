@@ -22,11 +22,8 @@ const RouteAvailableSchedulesScreen = () => {
   const dispatch = useDispatch()
   const selectedRoute = useSelector(selectRoute)
 
-  console.log(selectedRoute)
-
   React.useEffect(() => {
     const fetchData = () => {
-      console.log('focused', selectedRoute._id)
       const params = {
         id: selectedRoute._id,
       }

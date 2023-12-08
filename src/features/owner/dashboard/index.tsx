@@ -1,9 +1,10 @@
 // BlankScreen.js
 import React from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, Button} from 'react-native'
 import {scale, verticalScale} from '../../../styles/scaling'
 import {useDashboardHook} from './hook'
 import CustomHeader from '../../../components/custom-header'
+import {ModalType, useModalProvider} from '../../../contexts/modal-provider'
 
 const ITEMS = [
   {
@@ -40,6 +41,15 @@ const ITEMS = [
 
 const DashboardScreen = () => {
   const {data} = useDashboardHook()
+  const {notify} = useModalProvider()
+
+  const handleShowModal = () => {
+    notify({
+      type: ModalType.SUCCESS,
+      message: 'Modal Message',
+      onApprove: () => {},
+    })
+  }
 
   return (
     <View style={styles.container}>
@@ -53,6 +63,7 @@ const DashboardScreen = () => {
             </View>
           </View>
         ))}
+        <Button onPress={handleShowModal} title="SHOW" />
       </View>
     </View>
   )

@@ -9,18 +9,15 @@ export function* navigateToLocationGenerator({payload}) {
 
 export function* toastGenerator({payload}) {
   Toast.show({
-    type: 'success',
+    type: payload.type ? payload.type : 'error',
     text1: payload.title,
     text2: payload.message,
   })
 }
 
 export function* appSaga() {
-  yield takeLatest(
-    appActions.navigateToLocation.type,
-    navigateToLocationGenerator,
-  )
-  yield takeLatest(appActions.showToast.type, toastGenerator)
+  yield takeLatest(appActions.navigateToLocation, navigateToLocationGenerator)
+  yield takeLatest(appActions.showToast, toastGenerator)
 }
 
 export default appSaga

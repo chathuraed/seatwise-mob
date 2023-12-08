@@ -50,7 +50,7 @@ export function* loginUserGenerator({
         appActions.setError({
           error: {
             title: '',
-            message: data.Message,
+            message: data.message,
           },
           type: '',
         }),

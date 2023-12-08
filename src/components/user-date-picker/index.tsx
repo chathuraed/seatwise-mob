@@ -25,7 +25,6 @@ const UserDatePickerField = props => {
   }, [value])
 
   const getDisplayValue = useCallback(dateValueToCheck => {
-    console.log('current date', dateValueToCheck)
     if (!dateValueToCheck) {
       return ''
     }

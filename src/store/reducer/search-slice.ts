@@ -10,6 +10,8 @@ interface IFilter {
 interface SearchState {
   loading: boolean
   filters?: IFilter
+  schedules?: any
+  bookings?: any
 }
 
 const initialState: SearchState = {
@@ -19,6 +21,8 @@ const initialState: SearchState = {
     to: '',
     date: moment(new Date()).format('DD-MM-YYYY').toString(),
   },
+  schedules: [],
+  bookings: [],
 }
 
 export const searchSlice = createSlice({
@@ -38,6 +42,9 @@ export const searchSlice = createSlice({
       state.filters = initialState.filters
     },
     getSchedules: () => {},
+    setSchedules: (state, action: PayloadAction<any>) => {
+      state.schedules = action.payload
+    },
   },
 })
 
@@ -54,4 +61,9 @@ export const selectLoading = createSelector(
 export const selectFilters = createSelector(
   [selectDomain],
   search => search.filters,
+)
+
+export const selectSchedules = createSelector(
+  [selectDomain],
+  search => search.schedules,
 )

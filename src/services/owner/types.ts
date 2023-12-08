@@ -8,6 +8,7 @@ export interface IRouteRequest {
   origin: string
   destination: string
   busId: string
+  price: number
 }
 
 export interface IScheduleRequest {

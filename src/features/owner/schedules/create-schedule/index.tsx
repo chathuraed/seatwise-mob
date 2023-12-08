@@ -100,7 +100,6 @@ const CreateScheduleScreen = () => {
       ...(fromSettings && schedule ? {scheduleId: schedule._id} : {}),
     }
 
-    console.log(formattedData)
     dispatch(ownerActions.createSchedule(formattedData))
   }
 

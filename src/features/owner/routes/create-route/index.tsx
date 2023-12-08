@@ -72,7 +72,6 @@ const CreateRouteScreen = () => {
 
   const create = data => {
     Keyboard.dismiss()
-    console.log(JSON.stringify(data))
     dispatch(ownerActions.createRoute(data))
   }
 

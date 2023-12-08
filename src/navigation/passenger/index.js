@@ -5,6 +5,7 @@ import SearchScreen from '../../features/passenger/search'
 import BookingsScreen from '../../features/passenger/bookings'
 import SettingsScreen from '../../features/passenger/settings'
 import FilterScreen from '../../features/passenger/search/filter'
+import ResultScreen from '../../features/passenger/search/results'
 
 const Stack = createStackNavigator()
 
@@ -24,11 +25,22 @@ const Tab = createBottomTabNavigator()
 
 function PassengerStackNavigator() {
   return (
-    <Stack.Navigator
-      initialRouteName="SearchTab"
-      screenOptions={{headerShown: false}}>
-      <Stack.Screen name="SearchTab" component={SearchTab} />
-      <Stack.Screen name="Filters" component={FilterScreen} />
+    <Stack.Navigator initialRouteName="SearchTab">
+      <Stack.Screen
+        name="SearchTab"
+        component={SearchTab}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Filters"
+        component={FilterScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Results"
+        component={ResultScreen}
+        options={{headerBackTitle: null, headerBackTitleVisible: false}}
+      />
     </Stack.Navigator>
   )
 }
