@@ -71,6 +71,26 @@ const RouteAvailableSchedulesScreen = () => {
           </Text>
         </View>
 
+        <View
+          style={{
+            alignItems: 'flex-end',
+          }}>
+          <TouchableOpacity
+            style={{
+              padding: scale(4),
+            }}
+            onPress={() => navigate('CreateSchedule', {selectedRoute})}>
+            <Text
+              style={{
+                fontSize: scale(14),
+                fontWeight: '600',
+                color: Colors.green,
+              }}>
+              UPDATE
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.hr} />
         <Text style={{fontSize: scale(14), fontWeight: '600'}}>
           Bus Details
@@ -93,6 +113,13 @@ const RouteAvailableSchedulesScreen = () => {
               Seating Arrangement :{' '}
             </Text>
             <Text style={styles.text}>{selectedRoute.bus.arrangement}</Text>
+          </View>
+
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.text, {fontWeight: '500'}]}>
+              Price per Seat :{' '}
+            </Text>
+            <Text style={styles.text}>LKR {selectedRoute.price}</Text>
           </View>
         </View>
         <View style={styles.hr} />

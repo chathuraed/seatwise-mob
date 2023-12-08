@@ -10,6 +10,8 @@ import {
 
 import * as RootNavigation from '../../navigation/rootNavigation'
 import {selectCurrentAccount} from '../reducer/auth-slice'
+import {showModal} from '../reducer/modal-slice'
+import {ModalType} from '../../contexts/modal-provider'
 
 export function* getAllRoutesGenerator(): Generator<any, void, any> {
   try {
@@ -34,7 +36,13 @@ export function* getAllRoutesGenerator(): Generator<any, void, any> {
       )
     }
   } catch (error) {
-    console.log(error)
+    yield put(
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
+      }),
+    )
   } finally {
     yield put(appActions.removeLoading())
   }
@@ -68,11 +76,18 @@ export function* getRouteGenerator({
       )
     }
   } catch (error) {
-    console.log(error)
+    yield put(
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
+      }),
+    )
   } finally {
     yield put(appActions.removeLoading())
   }
 }
+
 export function* createRouteGenerator({
   payload,
 }: {
@@ -112,18 +127,17 @@ export function* createRouteGenerator({
     }
   } catch (error) {
     yield put(
-      appActions.setError({
-        error: {
-          title: '',
-          message: error.data.error,
-        },
-        type: '',
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
       }),
     )
   } finally {
     yield put(appActions.removeLoading())
   }
 }
+
 export function* createScheduleGenerator({
   payload,
 }: {
@@ -163,23 +177,19 @@ export function* createScheduleGenerator({
       yield RootNavigation.goBack()
     } else {
       yield put(
-        appActions.setError({
-          error: {
-            title: '',
-            message: error.data.error,
-          },
-          type: '',
+        showModal({
+          type: ModalType.ERROR,
+          title: 'Failed',
+          message: error.data.error,
         }),
       )
     }
   } catch (error) {
     yield put(
-      appActions.setError({
-        error: {
-          title: '',
-          message: error.data.error,
-        },
-        type: '',
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
       }),
     )
   } finally {
@@ -210,7 +220,13 @@ export function* getAllBusesGenerator(): Generator<any, void, any> {
       )
     }
   } catch (error) {
-    console.log(error)
+    yield put(
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
+      }),
+    )
   } finally {
     yield put(appActions.removeLoading())
   }
@@ -244,7 +260,13 @@ export function* getBusGenerator({
       )
     }
   } catch (error) {
-    console.log(error)
+    yield put(
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
+      }),
+    )
   } finally {
     yield put(appActions.removeLoading())
   }
@@ -302,12 +324,10 @@ export function* createBusGenerator({
     }
   } catch (error) {
     yield put(
-      appActions.setError({
-        error: {
-          title: '',
-          message: error.data.error,
-        },
-        type: '',
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
       }),
     )
   } finally {

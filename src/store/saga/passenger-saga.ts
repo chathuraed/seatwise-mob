@@ -3,6 +3,8 @@ import {appActions} from '../reducer/app-slice'
 
 import {searchActions} from '../reducer/search-slice'
 import PassengerService from '../../services/passenger/passenger-service'
+import {showModal} from '../reducer/modal-slice'
+import {ModalType} from '../../components/custom-modal'
 
 export function* getSchedulesGenerator({
   payload,
@@ -28,12 +30,11 @@ export function* getSchedulesGenerator({
       }
     }
   } catch (error) {
-    console.log(error.data)
     yield put(
-      appActions.showToast({
-        type: 'error',
-        title: 'Sorry',
-        message: error.data.message,
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
       }),
     )
   } finally {

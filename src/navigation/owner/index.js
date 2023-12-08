@@ -153,7 +153,7 @@ const OwnerDrawer = () => {
       <Drawer.Screen name="Bookings" component={SchedulesScreen} />
       <Drawer.Screen name="Buses" component={BusStackNavigator} />
       <Drawer.Screen name="Routes" component={RoutesStackNavigator} />
-      <Drawer.Screen name="Schedules" component={SchedulesScreen} />
+      {/* <Drawer.Screen name="Schedules" component={SchedulesScreen} /> */}
       <Drawer.Screen name="Drivers" component={DriverScreen} />
       <Drawer.Screen name="Assistants" component={AssistantScreen} />
     </Drawer.Navigator>

@@ -6,6 +6,7 @@ import BookingsScreen from '../../features/passenger/bookings'
 import SettingsScreen from '../../features/passenger/settings'
 import FilterScreen from '../../features/passenger/search/filter'
 import ResultScreen from '../../features/passenger/search/results'
+import ProfileScreen from '../../features/passenger/profile'
 
 const Stack = createStackNavigator()
 
@@ -39,6 +40,11 @@ function PassengerStackNavigator() {
       <Stack.Screen
         name="Results"
         component={ResultScreen}
+        options={{headerBackTitle: null, headerBackTitleVisible: false}}
+      />
+      <Stack.Screen
+        name="UpdateProfile"
+        component={ProfileScreen}
         options={{headerBackTitle: null, headerBackTitleVisible: false}}
       />
     </Stack.Navigator>
