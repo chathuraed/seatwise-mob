@@ -4,8 +4,24 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import {scale} from '../../styles/scaling'
 import {Colors} from '../../resources'
 
-const CustomModal = ({visible, config, hide}) => {
-  const {type, title, message, onApprove} = config
+export enum ModalType {
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR',
+}
+
+interface CustomModalProps {
+  visible: boolean
+  config: {
+    type?: ModalType | null
+    title?: string | null
+    message: string
+    onApprove?: (() => void) | null
+  }
+  hide?: () => void
+}
+
+const CustomModal: React.FC<CustomModalProps> = ({visible, config, hide}) => {
+  const {type, title, message} = config
 
   return (
     <Modal
@@ -29,9 +45,11 @@ const CustomModal = ({visible, config, hide}) => {
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Ionicons
-              name={type === 'ERROR' ? 'close-circle' : 'checkmark-circle'}
+              name={
+                type === ModalType.ERROR ? 'close-circle' : 'checkmark-circle'
+              }
               size={scale(30)}
-              color={type === 'ERROR' ? Colors.error : Colors.green}
+              color={type === ModalType.ERROR ? Colors.error : Colors.green}
             />
             <Text
               style={{fontSize: 18, fontWeight: 'bold', marginLeft: scale(8)}}>

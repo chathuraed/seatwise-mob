@@ -2,14 +2,25 @@ import React from 'react'
 import {ActivityIndicator, Platform, StyleSheet, Text, View} from 'react-native'
 import PropTypes from 'prop-types'
 import MainNavigator from './MainNavigator'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {BlurView} from '@react-native-community/blur'
 import {selectLoading, selectLoadingText} from '../store/reducer/app-slice'
 import {scale} from '../styles/scaling'
+import {hideModal, selectModal} from '../store/reducer/modal-slice'
+import CustomModal from '../components/custom-modal'
 
 const InitialPoint = () => {
+  const dispatch = useDispatch()
   const isLoading = useSelector(selectLoading)
   const loadingText = useSelector(selectLoadingText)
+  const {isVisible, config} = useSelector(selectModal)
+
+  const hide = React.useCallback(() => {
+    dispatch(hideModal())
+    if (config.onApprove) {
+      config.onApprove()
+    }
+  }, [config, dispatch])
 
   return (
     <View style={styles.container}>
@@ -25,6 +36,7 @@ const InitialPoint = () => {
           {loadingText && <Text style={styles.loadingText}>{loadingText}</Text>}
         </View>
       )}
+      <CustomModal visible={isVisible} config={config} hide={hide} />
     </View>
   )
 }

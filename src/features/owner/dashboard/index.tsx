@@ -5,6 +5,8 @@ import {scale, verticalScale} from '../../../styles/scaling'
 import {useDashboardHook} from './hook'
 import CustomHeader from '../../../components/custom-header'
 import {ModalType, useModalProvider} from '../../../contexts/modal-provider'
+import {showModal} from '../../../store/reducer/modal-slice'
+import {useDispatch} from 'react-redux'
 
 const ITEMS = [
   {
@@ -40,10 +42,20 @@ const ITEMS = [
 ]
 
 const DashboardScreen = () => {
+  const dispatch = useDispatch()
   const {data} = useDashboardHook()
   const {notify} = useModalProvider()
 
-  const handleShowModal = () => {
+  const handleModalRedux = () => {
+    dispatch(
+      showModal({
+        type: ModalType.SUCCESS,
+        message: 'Modal Message',
+      }),
+    )
+  }
+
+  const handleModalContext = () => {
     notify({
       type: ModalType.SUCCESS,
       message: 'Modal Message',
@@ -63,7 +75,8 @@ const DashboardScreen = () => {
             </View>
           </View>
         ))}
-        <Button onPress={handleShowModal} title="SHOW" />
+        <Button onPress={handleModalContext} title="SHOW/Context" />
+        <Button onPress={handleModalRedux} title="SHOW/Redux" />
       </View>
     </View>
   )
