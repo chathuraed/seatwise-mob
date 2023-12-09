@@ -15,6 +15,7 @@ import {
   selectFilters,
   selectSchedules,
 } from '../../../../store/reducer/search-slice'
+import {navigate} from '../../../../navigation/rootNavigation'
 
 const ResultScreen = () => {
   const filters = useSelector(selectFilters)
@@ -35,7 +36,7 @@ const ResultScreen = () => {
           {schedules.map((schedule, i) => (
             <TouchableOpacity
               key={i.toString()}
-              onPress={() => {}}
+              onPress={() => navigate('BookSeat', {schedule, filters})}
               style={{
                 marginHorizontal: scale(16),
                 marginTop: scale(8),

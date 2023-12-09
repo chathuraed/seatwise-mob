@@ -7,6 +7,8 @@ import SettingsScreen from '../../features/passenger/settings'
 import FilterScreen from '../../features/passenger/search/filter'
 import ResultScreen from '../../features/passenger/search/results'
 import ProfileScreen from '../../features/passenger/profile'
+import BookSeatScreen from '../../features/passenger/book-seat'
+import MakePaymentScreen from '../../features/passenger/make-payment'
 
 const Stack = createStackNavigator()
 
@@ -40,8 +42,31 @@ function PassengerStackNavigator() {
       <Stack.Screen
         name="Results"
         component={ResultScreen}
+        options={{
+          headerBackTitle: null,
+          headerBackTitleVisible: false,
+          title: 'Available Buses',
+        }}
+      />
+      <Stack.Screen
+        name="BookSeat"
+        component={BookSeatScreen}
+        options={{
+          headerBackTitle: null,
+          headerBackTitleVisible: false,
+          title: 'Select the seats',
+        }}
+      />
+      <Stack.Screen
+        name="MakePayment"
+        component={MakePaymentScreen}
         options={{headerBackTitle: null, headerBackTitleVisible: false}}
       />
+      {/* <Stack.Screen
+        name="PaymentCompleted"
+        component={ResultScreen}
+        options={{headerBackTitle: null, headerBackTitleVisible: false}}
+      /> */}
       <Stack.Screen
         name="UpdateProfile"
         component={ProfileScreen}
