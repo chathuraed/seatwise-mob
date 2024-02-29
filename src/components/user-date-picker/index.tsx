@@ -99,7 +99,7 @@ const UserDatePickerField = props => {
             onConfirm={handleConfirm}
             onCancel={() => setDatePickerVisibility(false)}
             date={new Date(value || new Date())}
-            minimumDate={new Date()}
+            // minimumDate={new Date()}
           />
         </View>
 

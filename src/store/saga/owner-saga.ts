@@ -13,6 +13,42 @@ import {selectCurrentAccount} from '../reducer/auth-slice'
 import {showModal} from '../reducer/modal-slice'
 import {ModalType} from '../../contexts/modal-provider'
 
+export function* getDashboardDataGenerator(): Generator<any, void, any> {
+  try {
+    yield put(appActions.setLoading('Loading'))
+    yield put(appActions.removeErrors())
+
+    const response = yield call(OwnerService.getDashboard)
+
+    if (response.status === 200) {
+      const {data} = response
+      yield put(ownerActions.setDashboardData(data))
+      // yield put(ownerActions.setRoutes(data))
+    } else if (response.status === 400) {
+      let data = yield call([response, 'json'])
+      yield put(
+        appActions.setError({
+          error: {
+            title: '',
+            message: data.message,
+          },
+          type: '',
+        }),
+      )
+    }
+  } catch (error) {
+    yield put(
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
+      }),
+    )
+  } finally {
+    yield put(appActions.removeLoading())
+  }
+}
+
 export function* getAllRoutesGenerator(): Generator<any, void, any> {
   try {
     yield put(appActions.setLoading('Loading'))
@@ -108,7 +144,8 @@ export function* createRouteGenerator({
     if (response.status === 201) {
       console.log('success')
       yield put(
-        appActions.showToast({
+        showModal({
+          type: ModalType.SUCCESS,
           title: 'Success',
           message: 'Route added successfully',
         }),
@@ -160,7 +197,8 @@ export function* createScheduleGenerator({
     if (response.status === 201) {
       console.log('success')
       yield put(
-        appActions.showToast({
+        showModal({
+          type: ModalType.SUCCESS,
           title: 'Success',
           message: 'Schedule added successfully',
         }),
@@ -169,7 +207,8 @@ export function* createScheduleGenerator({
     } else if (response.status === 200) {
       console.log('update success')
       yield put(
-        appActions.showToast({
+        showModal({
+          type: ModalType.SUCCESS,
           title: 'Success',
           message: 'Schedule updated successfully',
         }),
@@ -294,18 +333,18 @@ export function* createBusGenerator({
     })
 
     if (response.status === 201) {
-      console.log('success')
       yield put(
-        appActions.showToast({
+        showModal({
+          type: ModalType.SUCCESS,
           title: 'Success',
           message: 'Bus added successfully',
         }),
       )
       yield RootNavigation.goBack()
     } else if (response.status === 200) {
-      console.log('update success')
       yield put(
-        appActions.showToast({
+        showModal({
+          type: ModalType.SUCCESS,
           title: 'Success',
           message: 'Bus updated successfully',
         }),
@@ -335,6 +374,46 @@ export function* createBusGenerator({
   }
 }
 
+export function* getBookingsByDateGenerator({
+  payload,
+}: {
+  payload: any
+}): Generator<any, void, any> {
+  try {
+    yield put(appActions.setLoading('Loading'))
+    yield put(appActions.removeErrors())
+
+    const response = yield call(OwnerService.loadBookingsByDate, payload)
+
+    if (response.status === 200) {
+      const {data} = response
+      console.log('bus', data)
+      yield put(ownerActions.setBookings(data.bookings))
+    } else if (response.status === 400) {
+      let data = yield call([response, 'json'])
+      yield put(
+        appActions.setError({
+          error: {
+            title: '',
+            message: data.message,
+          },
+          type: '',
+        }),
+      )
+    }
+  } catch (error) {
+    yield put(
+      showModal({
+        type: ModalType.ERROR,
+        title: 'Failed',
+        message: error.data.error,
+      }),
+    )
+  } finally {
+    yield put(appActions.removeLoading())
+  }
+}
+
 export function* ownerSaga() {
   yield takeLatest(ownerActions.getAllRoutes, getAllRoutesGenerator)
   yield takeLatest(ownerActions.getRoute, getRouteGenerator)
@@ -343,6 +422,8 @@ export function* ownerSaga() {
   yield takeLatest(ownerActions.getAllBuses, getAllBusesGenerator)
   yield takeLatest(ownerActions.getBus, getBusGenerator)
   yield takeLatest(ownerActions.createBus, createBusGenerator)
+  yield takeLatest(ownerActions.getDashboardData, getDashboardDataGenerator)
+  yield takeLatest(ownerActions.getBookingsByDate, getBookingsByDateGenerator)
 }
 
 export default ownerSaga

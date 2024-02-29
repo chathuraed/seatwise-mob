@@ -50,7 +50,10 @@ const createNavigator = (initialRouteName, component) => {
 const OwnerNavigator = createNavigator('OwnerHome', OwnerDrawer)
 const DriverNavigator = createNavigator('DriverHome', DriverHomeScreen)
 const AssistantNavigator = createNavigator('AssistantHome', AssistantHomeScreen)
-const PassengerNavigator = createNavigator('PassengerHome', PassengerStackNavigator)
+const PassengerNavigator = createNavigator(
+  'PassengerHome',
+  PassengerStackNavigator,
+)
 
 const AppNavigator = () => {
   const account = useSelector(selectCurrentAccount)

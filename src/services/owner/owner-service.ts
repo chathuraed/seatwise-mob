@@ -1,6 +1,9 @@
 import WebService from '../generic/api-services'
 
 const OwnerService = {
+  getDashboard: async () => {
+    return WebService.request('owner/dashboard', 'GET', {}, true)
+  },
   loadRoutes: async () => {
     return WebService.request('owner/routes', 'GET', {}, true)
   },
@@ -21,6 +24,9 @@ const OwnerService = {
   },
   loadRoute: async (params: any) => {
     return WebService.request('owner/route', 'GET', params, true)
+  },
+  loadBookingsByDate: async (body: any) => {
+    return WebService.request('owner/bookings-by-date', 'POST', body, true)
   },
 }
 

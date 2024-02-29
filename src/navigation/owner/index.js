@@ -23,6 +23,7 @@ import {useDispatch} from 'react-redux'
 import {authActions} from '../../store/reducer/auth-slice'
 import {useNavigation} from '@react-navigation/native'
 import {navigate} from '../rootNavigation'
+import BookingScreen from '../../features/owner/bookigs'
 
 const Stack = createNativeStackNavigator()
 const RoutesStackNavigator = () => {
@@ -150,12 +151,12 @@ const OwnerDrawer = () => {
       }}
       drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name="Dashboard" component={DashboardScreen} />
-      <Drawer.Screen name="Bookings" component={SchedulesScreen} />
+      <Drawer.Screen name="Bookings" component={BookingScreen} />
       <Drawer.Screen name="Buses" component={BusStackNavigator} />
       <Drawer.Screen name="Routes" component={RoutesStackNavigator} />
       {/* <Drawer.Screen name="Schedules" component={SchedulesScreen} /> */}
-      <Drawer.Screen name="Drivers" component={DriverScreen} />
-      <Drawer.Screen name="Assistants" component={AssistantScreen} />
+      {/* <Drawer.Screen name="Drivers" component={DriverScreen} />
+      <Drawer.Screen name="Assistants" component={AssistantScreen} /> */}
     </Drawer.Navigator>
   )
 }

@@ -7,6 +7,7 @@ import {authSlice} from './reducer/auth-slice'
 import {ownerSlice} from './reducer/owner-slice'
 import {searchSlice} from './reducer/search-slice'
 import {modalSlice} from './reducer/modal-slice'
+import {passengerSlice} from './reducer/passenger-slice'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -21,6 +22,7 @@ const store = configureStore({
     'feature/auth': authSlice.reducer,
     'feature/owner': ownerSlice.reducer,
     'feature/search': searchSlice.reducer,
+    'feature/passenger': passengerSlice.reducer,
   },
   middleware: getDefaultMiddleware => {
     return getDefaultMiddleware({thunk: false})

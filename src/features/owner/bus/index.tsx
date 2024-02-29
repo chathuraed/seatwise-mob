@@ -1,5 +1,11 @@
 import React from 'react'
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native'
 import {scale, verticalScale} from '../../../styles/scaling'
 import {getCapitalize} from '../../../util'
 import Ionicon from 'react-native-vector-icons/Ionicons'
@@ -20,7 +26,7 @@ const BusesScreen = ({}) => {
     <View style={styles.container}>
       <CustomHeader title="Buses" />
       <View style={styles.spacing} />
-      <Layout scrollEnabled={true}>
+      <ScrollView>
         {buses.length > 0 ? (
           buses.map((bus, i) => (
             <TouchableOpacity
@@ -44,7 +50,7 @@ const BusesScreen = ({}) => {
             <Text style={styles.centerText}>No buses available</Text>
           </View>
         )}
-      </Layout>
+      </ScrollView>
 
       <TouchableOpacity
         style={styles.addButton}

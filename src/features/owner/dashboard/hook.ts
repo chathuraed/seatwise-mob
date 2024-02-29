@@ -14,7 +14,7 @@ export const useDashboardHook = (): IUseDashboardHook => {
 
   React.useEffect(() => {
     const fetchData = () => {
-      dispatch(ownerActions.getAllRoutes())
+      dispatch(ownerActions.getDashboardData())
     }
 
     fetchData()

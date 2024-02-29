@@ -3,8 +3,14 @@ import {NativeSyntheticEvent, TextInputChangeEventData} from 'react-native'
 import {useDispatch} from 'react-redux'
 import {authActions} from '../../store/reducer/auth-slice'
 
-interface IUseLoginHook {
-  loginData: {email: string; password: string}
+interface IUseRegistrationHook {
+  loginData: {
+    first_name: string
+    last_name: string
+    email: string
+    password: string
+    role: string
+  }
   handleChange: (
     name: string,
     e: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -12,10 +18,16 @@ interface IUseLoginHook {
   login: () => void
 }
 
-export const useLoginHook = (): IUseLoginHook => {
+export const useRegistrationHook = (): IUseRegistrationHook => {
   const dispatch = useDispatch()
 
-  const [loginData, setLoginData] = React.useState({email: '', password: ''})
+  const [loginData, setLoginData] = React.useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    role: 'passenger',
+  })
 
   const handleChange = (
     name: string,
@@ -29,8 +41,7 @@ export const useLoginHook = (): IUseLoginHook => {
   }
 
   const login = React.useCallback(() => {
-    dispatch(authActions.loginUser(loginData))
-    setLoginData({email: '', password: ''})
+    dispatch(authActions.registerUser(loginData))
   }, [dispatch, loginData])
 
   return {loginData, handleChange, login}

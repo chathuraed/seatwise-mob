@@ -10,6 +10,7 @@ import OnboardingScreen from '../features/onboarding'
 import ProductTourScreen from '../features/product-tour'
 import LandingScreen from '../features/landing'
 import LoginScreen from '../features/login'
+import RegistrationScreen from '../features/registration'
 
 const Stack = createStackNavigator()
 
@@ -37,6 +38,7 @@ const MainNavigator = () => {
         <Stack.Screen name="ProductTour" component={ProductTourScreen} />
         <Stack.Screen name="Landing" component={LandingScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegistrationScreen} />
         <Stack.Screen name="App" component={AppNavigator} />
       </Stack.Navigator>
     </NavigationContainer>

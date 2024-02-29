@@ -14,6 +14,8 @@ export interface Account {
   role: string
   iat: number
   exp: number
+  first_name?: string
+  last_name?: string
 }
 
 const initialState: AuthState = {
@@ -58,6 +60,7 @@ export const authSlice = createSlice({
     submitForgotPassword: _state => {},
     submitResetPassword: _state => {},
     submitChangePassword: _state => {},
+    registerUser: _state => {},
   },
 })
 

@@ -2,10 +2,12 @@ import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 // Define the state type
 interface OwnerState {
+  dashboard: any
   routes: any
   buses: any
   route: object | undefined
   bus: object | undefined
+  bookings: any[]
 }
 
 // Define the Account type if not already defined
@@ -17,10 +19,12 @@ export interface Account {
 
 // Define the initial state
 const initialState: OwnerState = {
+  dashboard: null,
   routes: [],
   buses: [],
   route: undefined,
   bus: undefined,
+  bookings: [],
 }
 
 // Create the slice
@@ -47,6 +51,14 @@ export const ownerSlice = createSlice({
     createBus: () => {},
     getRoute: () => {},
     getBus: () => {},
+    getDashboardData: () => {},
+    setDashboardData: (state, action: PayloadAction<any>) => {
+      state.dashboard = action.payload
+    },
+    getBookingsByDate: () => {},
+    setBookings: (state, action: PayloadAction<any[]>) => {
+      state.bookings = action.payload
+    },
   },
 })
 
@@ -66,7 +78,12 @@ export const selectBuses = createSelector([selectDomain], owner => owner.buses)
 
 export const selectBus = createSelector([selectDomain], owner => owner.bus)
 
-// export const selectCurrentAccount = createSelector(
-//   [selectDomain],
-//   auth => auth.currentAccount,
-// );
+export const selectDashboard = createSelector(
+  [selectDomain],
+  owner => owner.dashboard,
+)
+
+export const selectBookings = createSelector(
+  [selectDomain],
+  owner => owner.bookings,
+)

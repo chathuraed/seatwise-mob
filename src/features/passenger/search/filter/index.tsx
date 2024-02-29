@@ -56,8 +56,21 @@ const FilterScreen = () => {
   }, [filters, setValue])
 
   const search = fields => {
-    dispatch(searchActions.setFilter(fields))
-    dispatch(searchActions.getSchedules(fields))
+    console.log(fields)
+
+    const data = {
+      from: {
+        id: 'Colombo',
+        title: 'Colombo',
+      },
+      to: {
+        id: 'Kurunegala',
+        title: 'Kurunegala',
+      },
+      date: '01-01-2024',
+    }
+    dispatch(searchActions.setFilter(data))
+    dispatch(searchActions.getSchedules(data))
   }
 
   return (

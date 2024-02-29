@@ -69,14 +69,14 @@ const LandingScreen = () => {
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{marginTop: verticalScale(35), alignSelf: 'center'}}
         onPress={() => {}}>
         <View style={{flexDirection: 'row'}}>
           <Text style={styles.have_account}>Don’t have an account? </Text>
           <Text style={styles.register}>Register</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   )
 }

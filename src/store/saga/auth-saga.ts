@@ -5,6 +5,8 @@ import AppService from '../../services/generic/app-service'
 import {appActions} from '../reducer/app-slice'
 import {Account, authActions} from '../reducer/auth-slice'
 import jwt_decode from 'jwt-decode'
+import {showModal} from '../reducer/modal-slice'
+import {ModalType} from '../../contexts/modal-provider'
 
 export function* loginUserGenerator({
   payload,
@@ -195,60 +197,68 @@ export function* submitSignUpFormGenerator({
   payload: any
 }): Generator<any, void, any> {
   try {
-    yield put(appActions.setLoading('Saving...'))
+    yield put(appActions.setLoading('Logging in...'))
     yield put(appActions.removeErrors())
 
-    // const response = yield call(AuthService.submitSignUpForm, payload);
+    const response = yield call(AuthService.registerUser, {
+      first_name: payload.first_name,
+      last_name: payload.last_name,
+      email: payload.email,
+      password: payload.password,
+      role: payload.role,
+    })
+    console.log('response', response.status)
 
-    // if (response.status === 200) {
-    //   let data = yield call([response, 'json']);
+    if (response.status === 201) {
+      yield put(
+        showModal({
+          type: ModalType.SUCCESS,
+          title: 'User registered.',
+          message: 'You will be navigate to Login screen',
+        }),
+      )
+      // const {data} = response
+      // // let data = yield call([response, 'json']);
 
-    //   yield put(authActions.setSignUpUserId(data.userId));
-    //   yield put(authActions.setSignUpUserEmail(payload.email));
-    //   yield put(authActions.setSignUpStep(SIGN_UP_STEP.ENTER_OTP));
-    // } else if (response.status === 400) {
-    //   let data = yield call([response, 'json']);
+      // AppService.accessToken = data.token
+      // AppService.refreshToken = data.refreshToken
 
-    //   console.log('error', data);
+      // yield call(AsyncStorage.setItem, 'authToken', data.token)
+      // yield call(AsyncStorage.setItem, 'refreshToken', data.refreshToken)
 
-    //   let errorMessage = '';
-    //   if (data.errors) {
-    //     const firstKey = Object.keys(data.errors)[0];
-    //     errorMessage =
-    //       data.errors && firstKey && data.errors[firstKey]
-    //         ? data.errors[firstKey][0]
-    //         : '';
-    //   }
-    //   if (data.Message) {
-    //     errorMessage = data.Message;
-    //   }
+      // console.log('refresh', data.refreshToken)
 
-    //   yield put(
-    //     appActions.setError({
-    //       error: {
-    //         title: '',
-    //         message: errorMessage,
-    //       },
-    //       type: '',
-    //     }),
-    //   );
-    // } else {
-    //   yield put(
-    //     appActions.setError({
-    //       error: {
-    //         title: '',
-    //         message: 'Something went wrong.',
-    //       },
-    //       type: '',
-    //     }),
-    //   );
-    // }
+      // const account: Account = jwt_decode(data.token)
+
+      // yield put(authActions.setCurrentAccount(account))
+      // yield put(authActions.loginUserSuccess())
+
+      yield put(
+        appActions.navigateToLocation({
+          screen: 'Login',
+        }),
+      )
+    } else if (response.status === 400) {
+      let data = yield call([response, 'json'])
+      console.log('test', data)
+
+      yield put(
+        appActions.setError({
+          error: {
+            title: '',
+            message: data.message,
+          },
+          type: '',
+        }),
+      )
+    }
   } catch (error) {
+    console.log(error)
     yield put(
       appActions.setError({
         error: {
           title: '',
-          message: 'Something went wrong.',
+          message: error.data.error,
         },
         type: '',
       }),
@@ -259,6 +269,7 @@ export function* submitSignUpFormGenerator({
 }
 
 export function* authSaga() {
+  yield takeLatest(authActions.registerUser, submitSignUpFormGenerator)
   yield takeLatest(authActions.loginUser, loginUserGenerator)
   yield takeLatest(authActions.checkAuthToken, checkAuthTokenGenerator)
   yield takeLatest(authActions.refreshAuthToken, refreshAuthTokenGenerator)

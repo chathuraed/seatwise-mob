@@ -9,17 +9,46 @@ import ResultScreen from '../../features/passenger/search/results'
 import ProfileScreen from '../../features/passenger/profile'
 import BookSeatScreen from '../../features/passenger/book-seat'
 import MakePaymentScreen from '../../features/passenger/make-payment'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import {Colors} from '../../resources'
 
 const Stack = createStackNavigator()
 
 const SearchTab = () => {
   return (
-    <Tab.Navigator
-      initialRouteName="Search"
-      screenOptions={{headerShown: false}}>
-      <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Bookings" component={BookingsScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+    <Tab.Navigator initialRouteName="Search" screenOptions={{}}>
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Search',
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name="search" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Bookings"
+        component={BookingsScreen}
+        options={{
+          tabBarLabel: 'Bookings',
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name="bookmarks" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Settings',
+          tabBarIcon: ({color, size}) => (
+            <Ionicons name="settings" color={color} size={size} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   )
 }

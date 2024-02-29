@@ -10,8 +10,11 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native'
-import {useDispatch} from 'react-redux'
-import {authActions} from '../../../store/reducer/auth-slice'
+import {useDispatch, useSelector} from 'react-redux'
+import {
+  authActions,
+  selectCurrentAccount,
+} from '../../../store/reducer/auth-slice'
 import {navigate} from '../../../navigation/rootNavigation'
 import {scale} from '../../../styles/scaling'
 import {Colors, Images} from '../../../resources'
@@ -21,6 +24,7 @@ import CustomButton from '../../../components/custom-button'
 
 const SettingsScreen = () => {
   const dispatch = useDispatch()
+  const account = useSelector(selectCurrentAccount)
 
   const logout = async () => {
     await AsyncStorage.clear()
@@ -59,7 +63,7 @@ const SettingsScreen = () => {
               fontWeight: '700',
               letterSpacing: 0.42,
             }}>
-            Chathura
+            {account && account.first_name}
           </Text>
           <Text
             style={{
@@ -69,7 +73,7 @@ const SettingsScreen = () => {
               letterSpacing: 0.3,
               marginVertical: scale(8),
             }}>
-            chathura@mail.com
+            {account && account.email}
           </Text>
           <Image
             style={{
@@ -82,7 +86,7 @@ const SettingsScreen = () => {
           />
         </View>
 
-        <View
+        {/* <View
           style={{
             marginTop: scale(32),
             justifyContent: 'center',
@@ -118,13 +122,23 @@ const SettingsScreen = () => {
               Bookings
             </Text>
           </View>
-        </View>
+        </View> */}
 
         <View
           style={{
             flex: 1,
             justifyContent: 'flex-end',
           }}>
+          {/* <CustomButton
+            style={{
+              backgroundColor: 'transparent',
+              borderColor: 'transparent',
+              marginBottom: scale(16),
+            }}
+            textStyle={{color: Colors.textMain}}
+            onPress={() => logout()}
+            title="Reset Password"
+          /> */}
           <CustomButton
             style={{backgroundColor: Colors.green, borderColor: 'transparent'}}
             onPress={() => logout()}

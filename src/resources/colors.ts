@@ -12,6 +12,7 @@ const Colors = {
   textLinkBlue: '#1F4C6B',
   error: '#FD5F4A',
   border: '#D4D4D4',
+  warning: '#eed202',
 }
 
 export {Colors}

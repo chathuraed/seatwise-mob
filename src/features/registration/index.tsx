@@ -10,18 +10,13 @@ import React from 'react'
 import {Icons} from '../../resources'
 import {scale, verticalScale} from '../../styles/scaling'
 import Layout from '../../components/layout'
-import {RootStackParamList} from '../../navigation/MainNavigator'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
-import {useLoginHook} from './hooks'
+import {useRegistrationHook} from './hooks'
 import ErrorMessage from '../../components/error-message'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
-type LoginScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>
-}
-
-const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
-  const {loginData, handleChange, login} = useLoginHook()
+const RegistrationScreen: React.FC<any> = ({navigation}) => {
+  const {loginData, handleChange, login} = useRegistrationHook()
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
@@ -46,13 +41,87 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
           </TouchableOpacity>
           <View style={styles.topic_container}>
             <Text style={styles.title_main}>Let's </Text>
-            <Text style={styles.title_secondary}>Sign in</Text>
+            <Text style={styles.title_secondary}>Register</Text>
           </View>
           {/* <Text style={styles.subtitle}>
             quis nostrud exercitation ullamco laboris nisi ut
           </Text> */}
           <View
             style={{marginHorizontal: scale(24), marginTop: verticalScale(34)}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#F5F4F8',
+                height: verticalScale(70),
+                borderRadius: scale(10),
+                alignItems: 'center',
+              }}>
+              <Image
+                style={{
+                  width: scale(25),
+                  height: scale(25),
+                  marginHorizontal: scale(16),
+                }}
+                source={Icons.envelop}
+                resizeMode="contain"
+              />
+              <TextInput
+                style={{
+                  paddingVertical: scale(16),
+                  flexGrow: 1,
+                  color: '#A1A5C1',
+                  fontSize: scale(12),
+                  fontFamily: 'Lato-Regular',
+                  fontWeight: '400',
+                  letterSpacing: 0.36,
+                }}
+                value={loginData.first_name}
+                placeholder="First Name"
+                textContentType="givenName"
+                keyboardType="default"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onChange={e => handleChange('first_name', e)}
+              />
+            </View>
+            <View style={{height: verticalScale(17)}} />
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '#F5F4F8',
+                height: verticalScale(70),
+                borderRadius: scale(10),
+                alignItems: 'center',
+              }}>
+              <Image
+                style={{
+                  width: scale(25),
+                  height: scale(25),
+                  marginHorizontal: scale(16),
+                }}
+                source={Icons.envelop}
+                resizeMode="contain"
+              />
+              <TextInput
+                style={{
+                  paddingVertical: scale(16),
+                  flexGrow: 1,
+                  color: '#A1A5C1',
+                  fontSize: scale(12),
+                  fontFamily: 'Lato-Regular',
+                  fontWeight: '400',
+                  letterSpacing: 0.36,
+                }}
+                value={loginData.last_name}
+                placeholder="Last Name"
+                textContentType="givenName"
+                keyboardType="default"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onChange={e => handleChange('last_name', e)}
+              />
+            </View>
+            <View style={{height: verticalScale(17)}} />
             <View
               style={{
                 flexDirection: 'row',
@@ -126,30 +195,19 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                 onChange={e => handleChange('password', e)}
               />
             </View>
-            <View
-              style={{
-                marginTop: verticalScale(10),
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <TouchableOpacity onPress={() => {}}>
-                <Text style={styles.option_text}>Forgot password?</Text>
-              </TouchableOpacity>
-              {/* <Text style={styles.option_text}>Show password</Text> */}
-            </View>
           </View>
           <TouchableOpacity style={styles.button} onPress={login}>
-            <Text style={styles.start_button_text}>Login</Text>
+            <Text style={styles.start_button_text}>Register</Text>
           </TouchableOpacity>
 
           {/* Bottom */}
           <View style={{justifyContent: 'flex-end'}}>
-            <View style={styles.orContainer}>
+            {/* <View style={styles.orContainer}>
               <View style={styles.hr} />
               <Text style={styles.or}>OR</Text>
               <View style={styles.hr} />
-            </View>
-            <View style={styles.button_container}>
+            </View> */}
+            {/* <View style={styles.button_container}>
               <TouchableOpacity
                 onPress={() => {}}
                 style={styles.touch_container}>
@@ -170,13 +228,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
                   />
                 </View>
               </TouchableOpacity>
-            </View>
+            </View> */}
             <TouchableOpacity
               style={{marginTop: verticalScale(35), alignSelf: 'center'}}
-              onPress={() => navigation.navigate('Register')}>
+              onPress={() => navigation.navigate('Login')}>
               <View style={{flexDirection: 'row'}}>
-                <Text style={styles.have_account}>Don’t have an account? </Text>
-                <Text style={styles.register}>Register</Text>
+                <Text style={styles.have_account}>
+                  Already have an account?{' '}
+                </Text>
+                <Text style={styles.register}>Login</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -187,7 +247,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   )
 }
 
-export default LoginScreen
+export default RegistrationScreen
 
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'white'},

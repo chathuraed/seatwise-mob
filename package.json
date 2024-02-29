@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "cc": "rimraf node_modules/.cache/babel-loader/*,",
+    "android": "npm run cc && react-native run-android",
+    "ios": "npm run cc && react-native run-ios",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "start": "react-native start",
